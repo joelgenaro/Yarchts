@@ -1,6 +1,10 @@
 import React from "react";
 import { Search } from "lucide-react";
 import { SiteLogo } from "@/components/svg";
+import logo from "@/public/images/logo/logo-1.png";
+import {
+  Img,
+} from "@react-email/components";
 import Link from "next/link";
 const horizontalHeader = ({ handleOpenSearch }: { handleOpenSearch: () => void; }) => {
   return (
@@ -10,7 +14,11 @@ const horizontalHeader = ({ handleOpenSearch }: { handleOpenSearch: () => void; 
           href="/dashboard"
           className="flex items-center gap-2 text-primary"
         >
-          <SiteLogo className="h-7 w-7" />
+          {/* <SiteLogo className="h-7 w-7" /> */}
+          <Img
+            src={logo.src}
+            alt="DashTail"
+          />
           <span className="hidden text-xl font-semibold lg:inline-block">
             {" "}
             DashTail

@@ -4,6 +4,10 @@ import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { Search } from "lucide-react";
 import { SiteLogo } from "@/components/svg";
+import logo from "@/public/images/logo/logo-1.png";
+import {
+  Img,
+} from "@react-email/components";
 import Link from "next/link";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
@@ -68,7 +72,11 @@ const VerticalHeader: React.FC<VerticalHeaderProps> = ({ handleOpenSearch }) => 
 
   const MainLogo = (
     <Link href="/dashboard" className=" text-primary">
-      <SiteLogo className="h-7 w-7" />
+      {/* <SiteLogo className="h-7 w-7" /> */}
+      <Img
+        src={logo.src}
+        alt="DashTail"
+      />
     </Link>
   );
   const SearchButton = (
@@ -81,7 +89,7 @@ const VerticalHeader: React.FC<VerticalHeaderProps> = ({ handleOpenSearch }) => 
         <span>
           <Search className="w-4 h-4 " />
         </span>
-        <span className="hidden  md:block"> Search...</span>
+        <span className="hidden md:block"> Search...</span>
       </button>
     </div>
   );

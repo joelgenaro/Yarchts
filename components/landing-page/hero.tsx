@@ -19,7 +19,7 @@ const Hero = () => {
             <div className="pt-32 md:pt-48">
               <div className="flex justify-center gap-4 mt-9 lg:gap-8">
                 <Button asChild size="xl">
-                  <Link href="/dashboard"> View Demo </Link>
+                  <Link href="/dashboard"> Dashboard </Link>
                 </Button>
               </div>
             </div>
