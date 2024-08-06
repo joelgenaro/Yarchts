@@ -10,7 +10,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 const MenuBar = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (value: boolean) => void; }) => {
   return (
     <button
-      className="relative group  disabled:cursor-not-allowed opacity-50"
+      className="relative opacity-50 group disabled:cursor-not-allowed"
       onClick={() => setCollapsed(!collapsed)}
     >
       <div>
@@ -67,7 +67,7 @@ const VerticalHeader: React.FC<VerticalHeaderProps> = ({ handleOpenSearch }) => 
   let searchButtonContent = null;
 
   const MainLogo = (
-    <Link href="/dashboard" className=" text-primary ">
+    <Link href="/dashboard" className=" text-primary">
       <SiteLogo className="h-7 w-7" />
     </Link>
   );
@@ -75,13 +75,13 @@ const VerticalHeader: React.FC<VerticalHeaderProps> = ({ handleOpenSearch }) => 
     <div>
       <button
         type="button"
-        className=" inline-flex  gap-2 items-center text-default-600 text-sm"
+        className="inline-flex items-center hidden gap-2 text-sm text-default-600"
         onClick={handleOpenSearch}
       >
         <span>
-          <Search className=" h-4 w-4" />
+          <Search className="w-4 h-4 " />
         </span>
-        <span className=" md:block hidden"> Search...</span>
+        <span className="hidden  md:block"> Search...</span>
       </button>
     </div>
   );
@@ -125,7 +125,7 @@ const VerticalHeader: React.FC<VerticalHeaderProps> = ({ handleOpenSearch }) => 
   }
   return (
     <>
-      <div className="flex items-center md:gap-6 gap-3">
+      <div className="flex items-center gap-3 md:gap-6">
         {LogoContent}
         {menuBarContent}
         {searchButtonContent}

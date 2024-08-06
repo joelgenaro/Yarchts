@@ -18,12 +18,12 @@ import FullScreen from "./full-screen";
 
 const NavTools = ({ isDesktop, isMobile, sidebarType }: { isDesktop: boolean; isMobile: boolean; sidebarType: string }) => {
   return (
-    <div className="nav-tools flex items-center  gap-2">
+    <div className="flex items-center gap-2 nav-tools">
       {isDesktop && <Language />}
       {isDesktop && <FullScreen />}
 
       <ThemeButton />
-      <Inbox />
+      {/* <Inbox /> */}
       <NotificationMessage />
 
       <div className="ltr:pl-2 rtl:pr-2">
@@ -58,7 +58,7 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
         })}
       >
         <div className="w-full bg-card/90 backdrop-blur-lg md:px-6 px-[15px] py-3 border-b">
-          <div className="flex justify-between items-center h-full">
+          <div className="flex items-center justify-between h-full">
             <HorizontalHeader handleOpenSearch={handleOpenSearch} />
             <NavTools
               isDesktop={isDesktop}
@@ -68,7 +68,7 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
           </div>
         </div>
         {isDesktop && (
-          <div className=" bg-card bg-card/90 backdrop-blur-lg  w-full px-6  shadow-md">
+          <div className="w-full px-6 shadow-md bg-card bg-card/90 backdrop-blur-lg">
             <HorizontalMenu trans={trans} />
           </div>
         )}
@@ -85,9 +85,9 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
           "sticky top-6": navbarType === "sticky",
         })}
       >
-        <div className="xl:mx-20 mx-4">
+        <div className="mx-4 xl:mx-20">
           <div className="w-full bg-card/90 backdrop-blur-lg md:px-6 px-[15px] py-3 rounded-md my-6 shadow-md border-b">
-            <div className="flex justify-between items-center h-full">
+            <div className="flex items-center justify-between h-full">
               <VerticalHeader
                 handleOpenSearch={handleOpenSearch}
               />
@@ -116,7 +116,7 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
         })}
       >
         <div className="w-full bg-card/90 backdrop-blur-lg md:px-6 px-[15px] py-3 border-b">
-          <div className="flex justify-between items-center h-full">
+          <div className="flex items-center justify-between h-full">
             <VerticalHeader
 
               handleOpenSearch={handleOpenSearch}
@@ -146,7 +146,7 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
         })}
       >
         <div className="w-full bg-card/90 backdrop-blur-lg md:px-6 px-[15px] py-3 rounded-md my-6 shadow-md border-b">
-          <div className="flex justify-between items-center h-full">
+          <div className="flex items-center justify-between h-full">
             <VerticalHeader
 
               handleOpenSearch={handleOpenSearch}
@@ -172,7 +172,7 @@ const Header = ({ handleOpenSearch, trans }: { handleOpenSearch: () => void; tra
       })}
     >
       <div className="w-full bg-card/90 backdrop-blur-lg md:px-6 px-[15px] py-3 border-b">
-        <div className="flex justify-between items-center h-full">
+        <div className="flex items-center justify-between h-full">
           <VerticalHeader
 
             handleOpenSearch={handleOpenSearch}
