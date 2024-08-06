@@ -83,7 +83,7 @@ const FooterContent = () => {
   return (
     <div className="block md:flex md:justify-between text-muted-foreground">
       <p className="text-xs sm:mb-0 md:text-sm">
-        COPYRIGHT © {new Date().getFullYear()}
+        COPYRIGHT © {new Date().getFullYear()} FenceForfps. All rights Reserved
       </p>
     </div>
   );
