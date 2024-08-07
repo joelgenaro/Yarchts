@@ -114,9 +114,9 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
               pathname: `projects/${project?.id}/overview`,
             }}
           >
-            <div className="flex gap-2">
+            <div className="flex gap-5">
               <div>
-                <Avatar className="w-12 h-12 rounded">
+                <Avatar className="h-[64px] w-[64px] ring-1 ring-border ring-offset-[3px]  ring-offset-background">
                   <AvatarImage src={project?.logo?.src} alt="" />
                   <AvatarFallback className="uppercase rounded bg-success/30 text-success">
                     {project?.title?.slice(0, 2)}
