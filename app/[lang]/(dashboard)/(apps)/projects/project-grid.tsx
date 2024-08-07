@@ -57,7 +57,6 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
       <Card>
         <CardHeader className="flex-row items-center gap-3 mb-0 border-none">
           <div className="flex-1">
-
           </div>
           <div className="flex-none cursor-pointer">
             {project?.isFavorite ? (
