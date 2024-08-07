@@ -55,23 +55,9 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
         onConfirm={() => onAction(project?.id)}
       />
       <Card>
-        <CardHeader className="flex-row items-center gap-3 border-none mb-0">
+        <CardHeader className="flex-row items-center gap-3 mb-0 border-none">
           <div className="flex-1">
-            <Badge
-              color={
-                project?.status === "review"
-                  ? "warning"
-                  : project?.status === "completed"
-                    ? "success"
-                    : project?.status === "in progress"
-                      ? "default"
-                      : "info"
-              }
-              variant={mode === "dark" ? "soft" : "soft"}
-              className=" capitalize"
-            >
-              {project?.status}
-            </Badge>
+
           </div>
           <div className="flex-none cursor-pointer">
             {project?.isFavorite ? (
@@ -90,9 +76,9 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
             <DropdownMenuTrigger asChild>
               <Button
                 size="icon"
-                className="flex-none h-6 w-6 bg-default-200 rounded-full hover:bg-default-300"
+                className="flex-none w-6 h-6 rounded-full bg-default-200 hover:bg-default-300"
               >
-                <MoreHorizontal className="h-4 w-4 text-default-700" />
+                <MoreHorizontal className="w-4 h-4 text-default-700" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[196px]" align="end">
@@ -131,90 +117,55 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
           >
             <div className="flex gap-2">
               <div>
-                <Avatar className="rounded h-12 w-12">
+                <Avatar className="w-12 h-12 rounded">
                   <AvatarImage src={project?.logo?.src} alt="" />
-                  <AvatarFallback className="rounded uppercase bg-success/30 text-success">
+                  <AvatarFallback className="uppercase rounded bg-success/30 text-success">
                     {project?.title?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
               </div>
               <div>
-                <div className="text-base font-semibold text-default-900 capitalize mb-1">
+                <div className="mb-1 text-base font-semibold capitalize text-default-900">
                   {project?.title}
                 </div>
-                {project?.description && (
-                  <div className="text-xs font-medium text-default-600 max-h-[34px]  overflow-hidden">
-                    {project?.description}
-                  </div>
-                )}
+                <Badge
+                  color={
+                    project?.status === "review"
+                      ? "warning"
+                      : project?.status === "completed"
+                        ? "success"
+                        : project?.status === "in progress"
+                          ? "default"
+                          : "info"
+                  }
+                  variant={mode === "dark" ? "soft" : "soft"}
+                  className="capitalize "
+                >
+                  {project?.status}
+                </Badge>
               </div>
             </div>
           </Link>
           {/* team, priority */}
-          <div className="flex  mt-6 gap-10">
-            <div className="flex-1">
-              <div className="text-sm font-medium text-default-900 mb-3">
-                Team:
+          <div className="flex gap-10 mt-6">
+            {project?.description && (
+              <div className="text-xs font-medium text-default-600 max-h-[34px]  overflow-hidden">
+                {project?.description}
               </div>
-              {project?.assign?.length > 0 && (
-                <div>
-                  <AvatarGroup
-                    max={3}
-                    total={project.assign.length}
-                    countClass="h-7 w-7"
-                  >
-                    {project.assign?.map((user, index) => (
-                      <Avatar
-                        className="ring-1 ring-background ring-offset-[2px]  ring-offset-background h-7 w-7 "
-                        key={`assign-member-${index}`}
-                      >
-                        <AvatarImage src={user?.image?.src} />
-                        <AvatarFallback>DC</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </AvatarGroup>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col items-end">
-              <div className="text-sm font-medium text-default-900 mb-3 text-right ">
-                Priority:
-              </div>
-              {project.priority && (
-                <Badge
-                  color={prioritiesColorMap[project.priority]}
-
-                  className=" capitalize"
-                >
-                  {project?.priority}
-                </Badge>
-              )}
-            </div>
-          </div>
-          <div className="mt-5">
-            <div className="flex justify-between mb-2">
-              <span className="text-sm font-medium text-default-900 capitalize">
-                Project Progress:
-              </span>
-              <span className="text-xs font-medium text-default-600">
-                {project?.percentage ? project?.percentage : 0}%
-              </span>
-            </div>
-            <Progress value={project?.percentage ? project?.percentage : 0} />
+            )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between border-t  p-4">
+        <CardFooter className="flex justify-between p-4 border-t">
           <div>
             <div className="text-xs  text-default-600 mb-[2px]">
-              Assigned Date:
+              Created Date:
             </div>
             <span className="text-xs font-medium text-default-900">
               {project?.assignDate}
             </span>
           </div>
           <div>
-            <div className="text-xs  text-default-600 mb-[2px]">Due Date:</div>
+            <div className="text-xs  text-default-600 mb-[2px]">Payment Due Date:</div>
             <span className="text-xs font-medium text-default-900">
               {project?.dueDate}
             </span>

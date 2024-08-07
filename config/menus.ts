@@ -1999,7 +1999,7 @@ export const menusConfig = {
       {
         title: "Fence companies",
         icon: Components,
-        href: "/email",
+        href: "/projects",
       },
     ],
   },
