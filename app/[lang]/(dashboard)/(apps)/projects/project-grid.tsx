@@ -82,20 +82,14 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
                   className="w-full"
                   target="_blank"
                 >
-                  View
+                  Enable
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onSelect={() => setOpen(true)}
               >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onSelect={() => (console.log("edit"))}
-              >
-                Edit
+                Disable
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
