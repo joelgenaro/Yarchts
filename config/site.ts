@@ -16,5 +16,5 @@ export const siteConfig = {
   footerType: "static",
   // sticky,  static, hidden
   sidebarBg: "none",
-  radius: 0.3,
+  radius: 0.4,
 };

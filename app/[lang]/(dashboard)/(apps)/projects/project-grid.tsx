@@ -28,19 +28,12 @@ import {
 import { Icon } from "@iconify/react";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 
-
-const prioritiesColorMap: { [key: string]: any } = {
-  high: "destructive",
-  low: "info",
-  medium: "warning",
-};
 import { useTheme } from "next-themes";
 import { type Project } from "@/app/api/projects/data";
 interface ProjectGridProps {
   project: Project;
-  onEdit: (project: Project) => void;
 }
-const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
+const ProjectGrid = ({ project }: ProjectGridProps) => {
   const [open, setOpen] = React.useState<boolean>(false);
   async function onAction(id: string) {
     await deleteProjectAction(id);
@@ -100,7 +93,7 @@ const ProjectGrid = ({ project, onEdit }: ProjectGridProps) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onSelect={() => onEdit(project)}
+                onSelect={() => (console.log("edit"))}
               >
                 Edit
               </DropdownMenuItem>
