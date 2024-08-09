@@ -12,10 +12,10 @@ export const roles = pgTable('roles', {
 });
 
 export const rolesRelations = relations(roles, ({ many }) => ({
-    usersToroles: many(usersToroles),
+    usersToRoles: many(usersToRoles),
 }));
 
-export const usersToroles = pgTable(
+export const usersToRoles = pgTable(
     'users_to_roles',
     {
         userId: integer('user_id')
@@ -30,13 +30,13 @@ export const usersToroles = pgTable(
     }),
 );
 
-export const usersTorolesRelations = relations(usersToroles, ({ one }) => ({
+export const usersToRolesRelations = relations(usersToRoles, ({ one }) => ({
     role: one(roles, {
-        fields: [usersToroles.roleId],
+        fields: [usersToRoles.roleId],
         references: [roles.id],
     }),
     user: one(users, {
-        fields: [usersToroles.userId],
+        fields: [usersToRoles.userId],
         references: [users.id],
     }),
 }));

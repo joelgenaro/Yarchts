@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "migrate": "dotenv -e .env.local drizzle-kit generate && tsx db/migrate.ts",
+    "migrate": "dotenv -e .env.local drizzle-kit generate && dotenv -e .env.local tsx db/migrate.ts",
     "lint": "next lint"
   },
   "dependencies": {

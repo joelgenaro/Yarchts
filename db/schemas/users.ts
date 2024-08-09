@@ -1,26 +1,30 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
-import { usersToroles } from './roles';
+import { usersToRoles } from './roles';
+import { colors } from './colors';
+import { heights } from './heights';
+import { lengths } from './lengths';
+import { categories } from './categories';
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    is_fav: boolean('is_fav'),
-    is_active: text('is_active'),
+    isFav: boolean('is_fav'),
+    isActive: text('is_active'),
     email: text('email').notNull(),
-    email_verified_at: timestamp('email_verified_at'),
+    emailVerifiedAt: timestamp('email_verified_at'),
     phone: text('phone'),
     password: text('password'),
     overview: text('overview'),
-    facebook_id: text('facebook_id'),
-    gtag_id: text('gtag_id'),
+    facebookId: text('facebook_id'),
+    gtagId: text('gtag_id'),
     webhook: text('webhook'),
     website: text('website'),
-    photo_path: text('photo_path'),
-    stripe_id: text('stripe_id'),
-    pm_type: text('pm_type'),
-    pm_last_four: text('pm_last_four'),
-    trial_ends_at: text('trial_ends_at'),
+    photoPath: text('photo_path'),
+    stripeId: text('stripe_id'),
+    pmType: text('pm_type'),
+    pmLastFour: text('pm_last_four'),
+    trialEndsAt: text('trial_ends_at'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()
@@ -28,6 +32,22 @@ export const users = pgTable('users', {
     deletedAt: timestamp('deleted_at'),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
-    usersToroles: many(usersToroles),
+export const usersRolesRelations = relations(users, ({ many }) => ({
+    usersToRoles: many(usersToRoles),
+}));
+
+export const usersColorsRelations = relations(users, ({ many }) => ({
+    colors: many(colors),
+}));
+
+export const usersHeightsRelations = relations(users, ({ many }) => ({
+    heights: many(heights),
+}));
+
+export const usersLengthsRelations = relations(users, ({ many }) => ({
+    lengths: many(lengths),
+}));
+
+export const usersCategoriesRelations = relations(users, ({ many }) => ({
+    categories: many(categories),
 }));
