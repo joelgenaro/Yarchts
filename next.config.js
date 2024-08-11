@@ -51,9 +51,6 @@ const nextConfig = {
   experimental: {
     taint: true,
   },
-  experimental: {
-    ppr: "incremental",
-  },
 };
 
 module.exports = nextConfig;
