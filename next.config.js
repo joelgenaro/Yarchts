@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-
 const nextConfig = {
   webpack(config) {
     // Grab the existing rule that handles SVG imports
@@ -49,7 +48,12 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    taint: true,
+  },
+  experimental: {
+    ppr: "incremental",
+  },
 };
-
 
 module.exports = nextConfig;

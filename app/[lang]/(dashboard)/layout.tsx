@@ -4,6 +4,8 @@ import { getServerSession, NextAuthOptions } from "next-auth";
 import { redirect } from "next/navigation";
 import { getDictionary } from "@/app/dictionaries";
 
+export const experimental_ppr = true;
+
 const layout = async ({ children, params: { lang } }: { children: React.ReactNode; params: { lang: any } }) => {
   const session = await getServerSession(authOptions as NextAuthOptions);
 
