@@ -1,6 +1,6 @@
 {
-  "id": "4661eda6-7627-4f84-a6e1-01609845697d",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "ed6bde07-14ea-49ae-a2b3-d73f06b433d2",
+  "prevId": "4d5f4ada-c99c-46ea-9fb7-cb415d460fe5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -457,13 +457,15 @@
           "name": "is_fav",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": false
         },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": false
         },
         "email": {
           "name": "email",
@@ -523,7 +525,8 @@
           "name": "photo_path",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "''"
         },
         "stripe_id": {
           "name": "stripe_id",

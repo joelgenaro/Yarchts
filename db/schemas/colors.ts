@@ -12,6 +12,9 @@ export const colors = pgTable('colors', {
         .$onUpdate(() => new Date()),
 });
 
+export type ColorSelect = typeof colors.$inferSelect;
+export type ColorInsert = typeof colors.$inferInsert;
+
 export const colorsUsersRelations = relations(colors, ({ one }) => ({
     user: one(users, {
         fields: [colors.userId],

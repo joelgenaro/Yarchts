@@ -12,6 +12,9 @@ export const styles = pgTable('styles', {
         .$onUpdate(() => new Date()),
 });
 
+export type StyleSelect = typeof styles.$inferSelect;
+export type StyleInsert = typeof styles.$inferInsert;
+
 export const stylesCategoriesRelations = relations(styles, ({ one }) => ({
     category: one(categories, {
         fields: [styles.categoryId],

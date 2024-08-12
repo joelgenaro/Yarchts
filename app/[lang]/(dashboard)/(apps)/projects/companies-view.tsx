@@ -5,18 +5,18 @@ import {
   CardHeader, CardContent
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import ProjectGrid from "./project-grid";
+import CompanyGrid from "./company-grid";
 import Blank from "@/components/blank";
 import EcommerceStats from "./company-stats";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 import { type Project } from "@/app/api/projects/data";
 import CompanyStats from "./company-stats";
-interface ProjectsViewProps {
-  projects: Project[];
+interface CompanyViewProps {
+  companies: any[];
 }
-const CompaniesView = ({ projects }: ProjectsViewProps) => {
-  if (projects.length < 1) {
+const CompaniesView = ({ companies }: CompanyViewProps) => {
+  if (companies.length < 1) {
     return (
       <Blank className="max-w-[320px] mx-auto flex flex-col items-center justify-center h-full space-y-3">
         <div className="text-xl font-semibold text-default-900">
@@ -46,10 +46,10 @@ const CompaniesView = ({ projects }: ProjectsViewProps) => {
         </CardContent>
       </Card>
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-4 lg:grid-cols-2">
-        {projects?.map((project, i) => (
-          <ProjectGrid
-            project={project}
-            key={`project-grid-${i}`}
+        {companies?.map((company, i) => (
+          <CompanyGrid
+            company={company?.users}
+            key={`company-grid-${i}`}
           />
         ))}
       </div>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-
+import clsx from 'clsx';
 import {
   Card,
   CardContent,
@@ -27,16 +27,17 @@ import {
 } from "@/components/ui/avatar";
 import { Icon } from "@iconify/react";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import { UserSelect } from '@/db/schemas/users';
+import { formatDate } from "@/lib/utils";
 
 import { useTheme } from "next-themes";
-import { type Project } from "@/app/api/projects/data";
-interface ProjectGridProps {
-  project: Project;
+interface CompanyGridProps {
+  company: UserSelect;
 }
-const ProjectGrid = ({ project }: ProjectGridProps) => {
+const CompanyGrid = ({ company }: CompanyGridProps) => {
   const [open, setOpen] = React.useState<boolean>(false);
-  async function onAction(id: string) {
-    await deleteProjectAction(id);
+  async function onAction(id: number) {
+    // await deleteProjectAction(id);
   }
   const { theme: mode } = useTheme();
 
@@ -45,14 +46,28 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
       <DeleteConfirmationDialog
         open={open}
         onClose={() => setOpen(false)}
-        onConfirm={() => onAction(project?.id)}
+        onConfirm={() => onAction(company?.id)}
       />
-      <Card>
+      <Card className={clsx({
+        'opacity-50': company?.isActive === false
+      },
+      )}>
         <CardHeader className="flex-row items-center gap-3 mb-0 border-none">
           <div className="flex-1">
+            <Badge
+              color={
+                company?.isActive
+                  ? "success"
+                  : "destructive"
+              }
+              variant={mode === "dark" ? "soft" : "soft"}
+              className="capitalize "
+            >
+              {company?.isActive ? "Enabled" : "Disabled"}
+            </Badge>
           </div>
           <div className="flex-none cursor-pointer">
-            {project?.isFavorite ? (
+            {company?.isFav ? (
               <Icon
                 icon="heroicons:star-solid"
                 className="text-yellow-400 w-[18px] h-[18px]"
@@ -77,7 +92,7 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
               <DropdownMenuItem className="cursor-pointer">
                 <Link
                   href={{
-                    pathname: `projects/${project?.id}`,
+                    pathname: `companys/${company?.id}`,
                   }}
                   className="w-full"
                   target="_blank"
@@ -98,45 +113,28 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
           {/* logo, title,desc */}
           <Link
             href={{
-              pathname: `projects/${project?.id}/overview`,
+              pathname: `companys/${company?.id}/overview`,
             }}
           >
             <div className="flex gap-5">
               <div>
-                <Avatar className="h-[64px] w-[64px] ring-1 ring-border ring-offset-[3px]  ring-offset-background">
-                  <AvatarImage src={project?.logo?.src} alt="" />
+                <Avatar className="w-12 h-12 rounded">
+                  <AvatarImage src={company?.photoPath ? company?.photoPath : ""} alt="" />
                   <AvatarFallback className="uppercase rounded bg-success/30 text-success">
-                    {project?.title?.slice(0, 2)}
+                    {company?.name?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
               </div>
-              <div>
-                <div className="mb-1 text-base font-semibold capitalize text-default-900">
-                  {project?.title}
-                </div>
-                <Badge
-                  color={
-                    project?.status === "review"
-                      ? "warning"
-                      : project?.status === "completed"
-                        ? "success"
-                        : project?.status === "in progress"
-                          ? "default"
-                          : "info"
-                  }
-                  variant={mode === "dark" ? "soft" : "soft"}
-                  className="capitalize "
-                >
-                  {project?.status}
-                </Badge>
+              <div className="text-base font-semibold capitalize text-default-900">
+                {company?.name}
               </div>
             </div>
           </Link>
           {/* team, priority */}
           <div className="flex gap-10 mt-6">
-            {project?.description && (
+            {company?.overview && (
               <div className="text-xs font-medium text-default-600 max-h-[34px]  overflow-hidden">
-                {project?.description}
+                {company?.overview}
               </div>
             )}
           </div>
@@ -147,13 +145,13 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
               Created Date:
             </div>
             <span className="text-xs font-medium text-default-900">
-              {project?.assignDate}
+              {formatDate(company?.createdAt)}
             </span>
           </div>
           <div>
             <div className="text-xs  text-default-600 mb-[2px]">Payment Due Date:</div>
             <span className="text-xs font-medium text-default-900">
-              {project?.dueDate}
+              {formatDate(company?.trialEndsAt)}
             </span>
           </div>
         </CardFooter>
@@ -162,4 +160,4 @@ const ProjectGrid = ({ project }: ProjectGridProps) => {
   );
 };
 
-export default ProjectGrid;
+export default CompanyGrid;

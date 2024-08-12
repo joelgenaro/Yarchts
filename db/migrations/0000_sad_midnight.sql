@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS "roles" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_to_roles" (
 	"user_id" integer NOT NULL,
-	"group_id" integer NOT NULL,
-	CONSTRAINT "users_to_roles_user_id_group_id_pk" PRIMARY KEY("user_id","group_id")
+	"role_id" integer NOT NULL,
+	CONSTRAINT "users_to_roles_user_id_role_id_pk" PRIMARY KEY("user_id","role_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "styles" (
@@ -107,7 +107,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "users_to_roles" ADD CONSTRAINT "users_to_roles_group_id_roles_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."roles"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "users_to_roles" ADD CONSTRAINT "users_to_roles_role_id_roles_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."roles"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

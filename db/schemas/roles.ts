@@ -11,6 +11,9 @@ export const roles = pgTable('roles', {
         .$onUpdate(() => new Date()),
 });
 
+export type RoleSelect = typeof roles.$inferSelect;
+export type RoleInsert = typeof roles.$inferInsert;
+
 export const rolesRelations = relations(roles, ({ many }) => ({
     usersToRoles: many(usersToRoles),
 }));
@@ -29,6 +32,9 @@ export const usersToRoles = pgTable(
         pk: primaryKey({ columns: [t.userId, t.roleId] }),
     }),
 );
+
+export type UserToRoleSelect = typeof usersToRoles.$inferSelect;
+export type UserToRoleInsert = typeof usersToRoles.$inferInsert;
 
 export const usersToRolesRelations = relations(usersToRoles, ({ one }) => ({
     role: one(roles, {

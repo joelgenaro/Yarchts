@@ -9,8 +9,8 @@ import { categories } from './categories';
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    isFav: boolean('is_fav'),
-    isActive: boolean('is_active'),
+    isFav: boolean('is_fav').default(false),
+    isActive: boolean('is_active').default(false),
     email: text('email').notNull(),
     emailVerifiedAt: timestamp('email_verified_at'),
     phone: text('phone'),
@@ -31,6 +31,9 @@ export const users = pgTable('users', {
         .$onUpdate(() => new Date()),
     deletedAt: timestamp('deleted_at'),
 });
+
+export type UserSelect = typeof users.$inferSelect;
+export type UserInsert = typeof users.$inferInsert;
 
 export const usersRolesRelations = relations(users, ({ many }) => ({
     usersToRoles: many(usersToRoles),

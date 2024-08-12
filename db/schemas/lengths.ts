@@ -2,7 +2,7 @@ import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 
-export const heights = pgTable('heights', {
+export const lengths = pgTable('lengths', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     userId: integer('user_id').notNull(),
@@ -12,9 +12,12 @@ export const heights = pgTable('heights', {
         .$onUpdate(() => new Date()),
 });
 
-export const heightsUsersRelations = relations(heights, ({ one }) => ({
+export type LengthSelect = typeof lengths.$inferSelect;
+export type LengthInsert = typeof lengths.$inferInsert;
+
+export const lengthsUsersRelations = relations(lengths, ({ one }) => ({
     user: one(users, {
-        fields: [heights.userId],
+        fields: [lengths.userId],
         references: [users.id],
     }),
 }));

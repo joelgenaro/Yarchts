@@ -125,7 +125,8 @@ export function isObjectNotEmpty(obj: any): boolean {
   return Object.keys(obj).length > 0;
 }
 
-export const formatDate = (date: string | number | Date): string => {
+export const formatDate = (date: string | number | Date | null): string => {
+  if (!date) return "";
   const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
   return new Date(date).toLocaleDateString("en-US", options);
 };

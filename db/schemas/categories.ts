@@ -1,8 +1,9 @@
 import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
+import { styles } from './styles';
 
-export const lengths = pgTable('lengths', {
+export const categories = pgTable('categories', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     userId: integer('user_id').notNull(),
@@ -12,9 +13,16 @@ export const lengths = pgTable('lengths', {
         .$onUpdate(() => new Date()),
 });
 
-export const lengthsUsersRelations = relations(lengths, ({ one }) => ({
+export type CategorySelect = typeof categories.$inferSelect;
+export type CategoryInsert = typeof categories.$inferInsert;
+
+export const categoriesUsersRelations = relations(categories, ({ one }) => ({
     user: one(users, {
-        fields: [lengths.userId],
+        fields: [categories.userId],
         references: [users.id],
     }),
+}));
+
+export const categoriesStylesRelations = relations(categories, ({ many }) => ({
+    styles: many(styles),
 }));

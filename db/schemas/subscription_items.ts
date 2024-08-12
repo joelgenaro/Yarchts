@@ -12,3 +12,6 @@ export const subscriptionItems = pgTable('subscription_items', {
         .notNull()
         .$onUpdate(() => new Date()),
 });
+
+export type SubscriptionItemSelect = typeof subscriptionItems.$inferSelect;
+export type SubscriptionItemInsert = typeof subscriptionItems.$inferInsert;
