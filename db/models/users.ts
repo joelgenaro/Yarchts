@@ -10,7 +10,7 @@ export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     isFav: boolean('is_fav'),
-    isActive: text('is_active'),
+    isActive: boolean('is_active'),
     email: text('email').notNull(),
     emailVerifiedAt: timestamp('email_verified_at'),
     phone: text('phone'),

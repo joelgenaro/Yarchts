@@ -1,11 +1,12 @@
-import { getProjects } from "@/config/project-config";
-import ProjectsView from "./projects-view";
-export default async function ProjectPage({ params }: { params: string }) {
-  const projects = await getProjects();
+import { getCompanies } from "@/db/queries/company";
+import CompaniesView from "./companies-view";
+
+export default async function ProjectPage() {
+  const companies = await getCompanies();
 
   return (
     <div>
-      <ProjectsView projects={projects} />
+      <CompaniesView projects={companies} />
     </div>
   );
 }

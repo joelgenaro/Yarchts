@@ -21,7 +21,7 @@ export const usersToRoles = pgTable(
         userId: integer('user_id')
             .notNull()
             .references(() => users.id),
-        roleId: integer('group_id')
+        roleId: integer('role_id')
             .notNull()
             .references(() => roles.id),
     },

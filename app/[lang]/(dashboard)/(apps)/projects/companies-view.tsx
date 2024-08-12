@@ -15,7 +15,7 @@ import CompanyStats from "./company-stats";
 interface ProjectsViewProps {
   projects: Project[];
 }
-const ProjectsView = ({ projects }: ProjectsViewProps) => {
+const CompaniesView = ({ projects }: ProjectsViewProps) => {
   if (projects.length < 1) {
     return (
       <Blank className="max-w-[320px] mx-auto flex flex-col items-center justify-center h-full space-y-3">
@@ -57,4 +57,4 @@ const ProjectsView = ({ projects }: ProjectsViewProps) => {
   );
 };
 
-export default ProjectsView;
+export default CompaniesView;

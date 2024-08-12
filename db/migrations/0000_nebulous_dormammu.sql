@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"is_fav" boolean,
-	"is_active" text,
+	"is_active" boolean,
 	"email" text NOT NULL,
 	"email_verified_at" timestamp,
 	"phone" text,
