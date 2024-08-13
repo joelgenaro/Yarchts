@@ -121,7 +121,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
             <div className="flex gap-5">
               <div>
                 <Avatar className="w-12 h-12 rounded">
-                  <AvatarImage src={company?.photoPath ? company?.photoPath : ""} alt="" />
+                  <AvatarImage src={company?.photoPath ?? ""} alt="" />
                   <AvatarFallback className="uppercase rounded bg-success/30 text-success">
                     {company?.name?.slice(0, 2)}
                   </AvatarFallback>

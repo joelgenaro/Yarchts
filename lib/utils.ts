@@ -172,3 +172,7 @@ export const translate = (title: string, trans: Translations): string => {
   return title;
 };
 
+export const formatNumber = (num: number): string => {
+  return new Intl.NumberFormat('en-US').format(num);
+}
+

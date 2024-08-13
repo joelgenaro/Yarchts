@@ -1,37 +1,88 @@
 "use client"
 
+import React, { useEffect, useState } from "react";
 import { CupBar, NoteIcon, CheckShape, Spam } from "@/components/svg";
 import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react";
 import { TabsTrigger } from "@/components/ui/tabs";
+import { useCompaniesStore } from "@/store/companies";
+import { produce } from "immer";
+
+type CompanyData = {
+  text: string;
+  total: number;
+  color: string;
+  icon: JSX.Element;
+};
 
 const CompanyStats = () => {
-  const data = [
+  const [data, setData] = useState<CompanyData[]>([
     {
       text: "All companies",
-      total: "42,750.98",
+      total: 0,
       color: "primary",
       icon: <CupBar className="w-3.5 h-3.5" />
     },
     {
       text: "Favorite companies",
-      total: "536,23,3",
+      total: 0,
       color: "warning",
       icon: <NoteIcon className="w-3.5 h-3.5" />
     },
     {
       text: "Enabled companies",
-      total: "234,1",
+      total: 0,
       color: "success",
       icon: <CheckShape className="w-3.5 h-3.5" />
     },
     {
       text: "Disabled companies",
-      total: "332,34",
+      total: 0,
       color: "destructive",
       icon: <Spam className="w-3.5 h-3.5" />
     },
-  ];
+  ]);
+  const setFilteredCompanies = useCompaniesStore((state) => state.setFilteredCompanies);
+  const companies = useCompaniesStore((state) => state.companies);
+
+  useEffect(() => {
+    setData(prevData => produce(prevData, draft => {
+      draft.map(item => {
+        switch (item.text) {
+          case 'All companies':
+            item.total = companies.length;
+            break;
+          case 'Favorite companies':
+            item.total = companies.filter(company => company.isFav === true).length;
+            break;
+          case 'Enabled companies':
+            item.total = companies.filter(company => company.isActive === true).length;
+            break;
+          case 'Disabled companies':
+            item.total = companies.filter(company => company.isActive === false).length;
+            break;
+          default:
+            break;
+        }
+      });
+    }));
+  }, [companies]);
+
+  const handleClick = (type: string) => {
+    switch (type) {
+      case 'Favorite companies':
+        setFilteredCompanies(companies.filter(company => company.isFav === true));
+        break;
+      case 'Enabled companies':
+        setFilteredCompanies(companies.filter(company => company.isActive === true));
+        break;
+      case 'Disabled companies':
+        setFilteredCompanies(companies.filter(company => company.isActive === false));
+        break;
+      default:
+        setFilteredCompanies(companies);
+        break;
+    }
+  }
 
   return (
     <>
@@ -39,6 +90,7 @@ const CompanyStats = () => {
         <TabsTrigger
           key={`company-state-${index}`}
           value={item.text}
+          onClick={() => handleClick(item.text)}
           className={cn(
             "flex flex-col gap-1.5 p-4 overflow-hidden   items-start  relative before:absolute before:left-1/2 before:-translate-x-1/2 before:bottom-1 before:h-[2px] before:w-9 before:bg-primary/50 dark:before:bg-primary-foreground before:hidden data-[state=active]:shadow-none data-[state=active]:before:block",
             {

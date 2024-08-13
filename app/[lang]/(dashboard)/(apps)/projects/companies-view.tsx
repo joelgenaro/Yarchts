@@ -1,20 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader, CardContent
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import CompanyGrid from "./company-grid";
 import Blank from "@/components/blank";
 import { Tabs, TabsList } from "@/components/ui/tabs";
+import { UserSelect } from '@/db/schemas/users';
 import CompanyStats from "./company-stats";
+import CompanyGrid from "./company-grid";
+import { useCompaniesStore } from "@/store/companies";
+import { useDebouncedCallback } from 'use-debounce';
+
 interface CompanyViewProps {
-  companies: any[];
+  data: UserSelect[];
 }
-const CompaniesView = ({ companies }: CompanyViewProps) => {
-  if (companies.length < 1) {
+
+const CompaniesView = ({ data }: CompanyViewProps) => {
+  const [search, setSearch] = useState<string>("");
+  const setCompanies = useCompaniesStore((state) => state.setCompanies);
+  const setFilteredCompanies = useCompaniesStore((state) => state.setFilteredCompanies);
+  const companies = useCompaniesStore((state) => state.companies);
+  const filteredCompanies = useCompaniesStore((state) => state.filteredCompanies);
+
+  useEffect(() => {
+    setCompanies(data);
+    setFilteredCompanies(data);
+  }, [data]);
+
+  const handleSearch = useDebouncedCallback((term: string) => {
+    setSearch(term);
+    setFilteredCompanies(companies.filter(company => company.name.toLowerCase().includes(term.toLowerCase())));
+  }, 300);
+
+  if (data.length < 1) {
     return (
       <Blank className="max-w-[320px] mx-auto flex flex-col items-center justify-center h-full space-y-3">
         <div className="text-xl font-semibold text-default-900">
@@ -24,6 +45,7 @@ const CompaniesView = ({ companies }: CompanyViewProps) => {
       </Blank>
     );
   }
+
   return (
     <div className="space-y-5">
       <Tabs defaultValue="All companies">
@@ -35,7 +57,9 @@ const CompaniesView = ({ companies }: CompanyViewProps) => {
               </div>
             </div>
             <div className="flex flex-wrap flex-none gap-3 ">
-              <Input placeholder="search..." />
+              <Input placeholder="search..." defaultValue={search} onChange={(e) => {
+                handleSearch(e.target.value);
+              }} />
             </div>
           </CardHeader>
           <CardContent className="p-4 mt-3">
@@ -45,9 +69,9 @@ const CompaniesView = ({ companies }: CompanyViewProps) => {
           </CardContent>
         </Card>
         <div className="grid grid-cols-1 gap-5 mt-5 xl:grid-cols-4 lg:grid-cols-2">
-          {companies?.map((company, i) => (
+          {filteredCompanies?.map((company, i) => (
             <CompanyGrid
-              company={company?.users}
+              company={company}
               key={`company-grid-${i}`}
             />
           ))}

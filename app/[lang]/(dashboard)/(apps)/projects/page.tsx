@@ -6,7 +6,7 @@ export default async function ProjectPage() {
 
   return (
     <div>
-      <CompaniesView companies={companies} />
+      <CompaniesView data={companies} />
     </div>
   );
 }
