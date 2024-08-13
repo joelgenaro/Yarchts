@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
@@ -29,11 +30,12 @@ import { Icon } from "@iconify/react";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { UserSelect } from '@/db/schemas/users';
 import { formatDate } from "@/lib/utils";
-
 import { useTheme } from "next-themes";
+
 interface CompanyGridProps {
   company: UserSelect;
 }
+
 const CompanyGrid = ({ company }: CompanyGridProps) => {
   const [open, setOpen] = React.useState<boolean>(false);
   async function onAction(id: number) {

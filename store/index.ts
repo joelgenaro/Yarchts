@@ -15,13 +15,12 @@ interface ThemeStoreState {
   setFooterType: (value: string) => void;
   isRtl: boolean;
   setRtl: (value: boolean) => void;
-  
 }
 
 export const useThemeStore = create<ThemeStoreState>()(
- persist(
-      (set) => ({
-           theme: siteConfig.theme,
+  persist(
+    (set) => ({
+      theme: siteConfig.theme,
       setTheme: (theme) => set({ theme }),
       radius: siteConfig.radius,
       setRadius: (value) => set({ radius: value }),
@@ -48,14 +47,14 @@ export const useThemeStore = create<ThemeStoreState>()(
       setFooterType: (value) => set({ footerType: value }),
       isRtl: false,
       setRtl: (value) => set({ isRtl: value }),
-        
-      }),
-      { name: "theme-store",
-      storage: createJSONStorage(() => localStorage), },
-    ),
+
+    }),
+    {
+      name: "theme-store",
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
 )
-
-
 
 interface SidebarState {
   collapsed: boolean;
@@ -69,14 +68,12 @@ interface SidebarState {
   setSidebarBg: (value: string) => void;
   mobileMenu: boolean;
   setMobileMenu: (value: boolean) => void;
-  
 }
 
-
 export const useSidebar = create<SidebarState>()(
-   persist(
-      (set) => ({
-          collapsed: false,
+  persist(
+    (set) => ({
+      collapsed: false,
       setCollapsed: (value) => set({ collapsed: value }),
       sidebarType:
         siteConfig.layout === "semibox" ? "popover" : siteConfig.sidebarType,
@@ -90,9 +87,11 @@ export const useSidebar = create<SidebarState>()(
       setSidebarBg: (value) => set({ sidebarBg: value }),
       mobileMenu: false,
       setMobileMenu: (value) => set({ mobileMenu: value }),
-      
-      }),
-      {  name: "sidebar-store",
-      storage: createJSONStorage(() => localStorage), },
-    ),
+
+    }),
+    {
+      name: "sidebar-store",
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
 )

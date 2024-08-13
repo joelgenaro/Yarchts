@@ -3,6 +3,7 @@
 import { CupBar, NoteIcon, CheckShape, Spam } from "@/components/svg";
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
+import { TabsTrigger } from "@/components/ui/tabs";
 
 const CompanyStats = () => {
   const data = [
@@ -31,18 +32,20 @@ const CompanyStats = () => {
       icon: <Spam className="w-3.5 h-3.5" />
     },
   ];
+
   return (
     <>
       {data.map((item, index) => (
-        <div
-          key={`reports-state-${index}`}
+        <TabsTrigger
+          key={`company-state-${index}`}
+          value={item.text}
           className={cn(
-            "flex flex-col gap-1.5 p-4 rounded-sm overflow-hidden bg-primary/10  items-start relative before:absolute before:left-1/2 before:-translate-x-1/2 before:bottom-1 before:h-[2px] before:w-9 before:bg-primary/50 dark:before:bg-primary-foreground before:hidden ",
+            "flex flex-col gap-1.5 p-4 overflow-hidden   items-start  relative before:absolute before:left-1/2 before:-translate-x-1/2 before:bottom-1 before:h-[2px] before:w-9 before:bg-primary/50 dark:before:bg-primary-foreground before:hidden data-[state=active]:shadow-none data-[state=active]:before:block",
             {
-              "bg-primary/40  dark:bg-primary/70": item.color === "primary",
-              "bg-orange-50 dark:bg-orange-500": item.color === "warning",
-              "bg-green-50 dark:bg-green-500": item.color === "success",
-              "bg-red-50 dark:bg-red-500 ": item.color === "destructive",
+              "bg-primary/30 data-[state=active]:bg-primary/30 dark:bg-primary/70": item.color === "primary",
+              "bg-orange-50 data-[state=active]:bg-orange-50 dark:bg-orange-500": item.color === "warning",
+              "bg-green-50 data-[state=active]:bg-green-50 dark:bg-green-500": item.color === "success",
+              "bg-red-50 data-[state=active]:bg-red-50 dark:bg-red-500 ": item.color === "destructive",
             }
           )}
         >
@@ -73,7 +76,7 @@ const CompanyStats = () => {
           <div className="flex items-center gap-1">
             <span className={`text-lg font-semibold text-${item.color} dark:text-primary-foreground`}>{item.total}</span>
           </div>
-        </div>
+        </TabsTrigger>
       ))}
     </>
   );
