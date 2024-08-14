@@ -1,10 +1,11 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, boolean, numeric } from 'drizzle-orm/pg-core';
 import { usersToRoles } from './roles';
 import { colors } from './colors';
 import { heights } from './heights';
 import { lengths } from './lengths';
 import { categories } from './categories';
+import { gates } from './gates';
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
@@ -24,6 +25,8 @@ export const users = pgTable('users', {
     stripeId: text('stripe_id'),
     pmType: text('pm_type'),
     pmLastFour: text('pm_last_four'),
+    minProfit: numeric('min_profit'),
+    holePrice: numeric('hole_price'),
     trialEndsAt: text('trial_ends_at'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
@@ -52,4 +55,8 @@ export const usersLengthsRelations = relations(users, ({ many }) => ({
 
 export const usersCategoriesRelations = relations(users, ({ many }) => ({
     categories: many(categories),
+}));
+
+export const usersGatesRelations = relations(users, ({ many }) => ({
+    gates: many(gates),
 }));

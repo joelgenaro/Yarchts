@@ -2,6 +2,7 @@ import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 import { styles } from './styles';
+import { removals } from './removals';
 
 export const categories = pgTable('categories', {
     id: serial('id').primaryKey(),
@@ -25,4 +26,8 @@ export const categoriesUsersRelations = relations(categories, ({ one }) => ({
 
 export const categoriesStylesRelations = relations(categories, ({ many }) => ({
     styles: many(styles),
+}));
+
+export const categoriesRemovalsRelations = relations(categories, ({ one }) => ({
+    removals: one(removals),
 }));

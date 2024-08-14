@@ -43,6 +43,13 @@
       "when": 1723637362795,
       "tag": "0005_married_swordsman",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1723653315117,
+      "tag": "0006_black_wonder_man",
+      "breakpoints": true
     }
   ]
 }
