@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardFooter,
 } from "@/components/ui/card";
-import { deleteProjectAction } from "@/action/project-action";
+import { deleteProjectAction } from "@/actions/project-action";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -31,6 +31,7 @@ import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { UserSelect } from '@/db/schemas/users';
 import { formatDate } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { updateCompanyActiveStateAction } from '@/actions/companines'
 
 interface CompanyGridProps {
   company: UserSelect;
@@ -42,6 +43,11 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
     // await deleteProjectAction(id);
   }
   const { theme: mode } = useTheme();
+
+  const updateCompanyActiveState = async (key: string, id: number) => {
+    const res = await updateCompanyActiveStateAction(key, id);
+    console.log(res);
+  }
 
   return (
     <>
@@ -68,7 +74,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
               {company?.isActive ? "Enabled" : "Disabled"}
             </Badge>
           </div>
-          <div className="flex-none cursor-pointer">
+          <div className="flex-none cursor-pointer" onClick={() => updateCompanyActiveState('isFav', company?.id)}>
             {company?.isFav ? (
               <Icon
                 icon="heroicons:star-solid"
@@ -93,20 +99,18 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
             <DropdownMenuContent className="w-[196px]" align="end">
               <DropdownMenuItem className="cursor-pointer">
                 <Link
-                  href={{
-                    pathname: `companys/${company?.id}`,
-                  }}
+                  href={''}
                   className="w-full"
-                  target="_blank"
+                  onClick={() => updateCompanyActiveState('isActive', company?.id)}
                 >
-                  Enable
+                  {company?.isActive ? 'Disable' : 'Enable'}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onSelect={() => setOpen(true)}
               >
-                Disable
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -114,9 +118,8 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
         <CardContent className="p-4 pt-0 pb-5">
           {/* logo, title,desc */}
           <Link
-            href={{
-              pathname: `companys/${company?.id}/overview`,
-            }}
+            href={company?.website ?? ""}
+            target="_blank"
           >
             <div className="flex gap-5">
               <div>

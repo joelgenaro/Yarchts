@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import {
   updateSubTaskAction,
   deleteSubTaskAction,
-} from "@/action/project-action";
+} from "@/actions/project-action";
 import {
   DropdownMenu,
   DropdownMenuContent,

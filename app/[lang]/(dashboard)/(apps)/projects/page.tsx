@@ -1,4 +1,4 @@
-import { getCompanies } from "@/db/services/companyService";
+import { getCompanies } from "@/db/queries/companyService";
 import CompaniesView from "./companies-view";
 
 export default async function ProjectPage() {

@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { addUser } from "@/action/auth-action";
+import { addUser } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Icon } from "@iconify/react";

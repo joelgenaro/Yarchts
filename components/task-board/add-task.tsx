@@ -13,7 +13,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, Plus } from "lucide-react";
 import Select from "react-select";
-import { addTaskAction } from "@/action/project-action";
+import { addTaskAction } from "@/actions/project-action";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { type Board as BoardType } from "@/app/api/boards/data";

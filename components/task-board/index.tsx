@@ -28,7 +28,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { editBoardAction, swapBoardAction } from "@/action/project-action";
+import { editBoardAction, swapBoardAction } from "@/actions/project-action";
 import { type Board as BoardType } from "@/app/api/boards/data";
 import { type Task as TaskType } from "@/app/api/tasks/data";
 import { type SubTask as SubTaskType } from "@/app/api/tasks/data";

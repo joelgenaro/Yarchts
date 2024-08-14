@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { updateTaskAction } from "@/action/project-action";
+import { updateTaskAction } from "@/actions/project-action";
 import { type Task as TaskType } from "@/app/api/tasks/data";
 const Priority = ({ task, taskId }: {
   task?: TaskType | any;
