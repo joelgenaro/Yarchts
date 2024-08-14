@@ -2,7 +2,8 @@
 
 import { db } from '@/db';
 import { users } from '@/db/schemas/users';
-import { eq, not } from 'drizzle-orm';
+import { usersToRoles, roles } from '@/db/schemas/roles';
+import { eq, getTableColumns, not, and, isNotNull, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const updateCompanyActiveStateAction = async (key: string, id: number) => {
@@ -25,7 +26,7 @@ export const updateCompanyActiveStateAction = async (key: string, id: number) =>
 
 export const deleteCompanyAction = async (id: number) => {
     try {
-        await await db.delete(users).where(eq(users.id, id));
+        await db.delete(users).where(eq(users.id, id));
 
         revalidatePath('/en/projects');
 
@@ -36,5 +37,19 @@ export const deleteCompanyAction = async (id: number) => {
         return {
             success: false, message: 'Failed to Delete Company.',
         };
+    }
+};
+
+export const getCompanies = async () => {
+    try {
+        const companies = await db.select({ ...getTableColumns(users) })
+            .from(users)
+            .leftJoin(usersToRoles, eq(users.id, usersToRoles.userId))
+            .leftJoin(roles, eq(usersToRoles.roleId, roles.id))
+            .where(and(eq(roles.name, 'company'), isNotNull(users.emailVerifiedAt)))
+            .orderBy(desc(users.createdAt));
+        return companies;
+    } catch (error) {
+        throw new Error('Failed to Get Companies.');
     }
 };
