@@ -43,7 +43,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
   const [open, setOpen] = React.useState<boolean>(false);
   const { theme: mode } = useTheme();
 
-  async function onAction(id: number) {
+  const onDeleteAction = async (id: number) => {
     setPending(true);
 
     const res = await deleteCompanyAction(id);
@@ -51,6 +51,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
     if (res.success) {
       reToast.success(res.message)
     } else {
+      console.log(res.message)
       reToast.error(res.message)
     }
     setPending(false)
@@ -73,7 +74,8 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
       <DeleteConfirmationDialog
         open={open}
         onClose={() => setOpen(false)}
-        onConfirm={() => onAction(company?.id)}
+        onConfirm={() => onDeleteAction(company?.id)}
+        defaultToast={false}
       />
       <Card className={clsx({
         'opacity-50': company?.isActive === false
