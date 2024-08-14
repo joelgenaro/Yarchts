@@ -38,8 +38,7 @@ const DeleteConfirmationDialog = ({ open, onClose, onConfirm, defaultToast = tru
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete this account and remove all data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -48,7 +47,7 @@ const DeleteConfirmationDialog = ({ open, onClose, onConfirm, defaultToast = tru
             className={isPending ? "pointer-events-none" : ""}
             onClick={() => startTransition(handleConfirm)}
           >
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             {isPending ? "Deleting.." : "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>

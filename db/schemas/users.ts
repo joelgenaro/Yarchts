@@ -29,7 +29,6 @@ export const users = pgTable('users', {
     updatedAt: timestamp('updated_at')
         .notNull()
         .$onUpdate(() => new Date()),
-    deletedAt: timestamp('deleted_at'),
 });
 
 export type UserSelect = typeof users.$inferSelect;

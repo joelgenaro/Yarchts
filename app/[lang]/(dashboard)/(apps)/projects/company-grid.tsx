@@ -31,22 +31,41 @@ import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { UserSelect } from '@/db/schemas/users';
 import { formatDate } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { updateCompanyActiveStateAction } from '@/actions/companines'
+import { updateCompanyActiveStateAction, deleteCompanyAction } from '@/actions/company'
+import { toast as reToast } from "react-hot-toast";
 
 interface CompanyGridProps {
   company: UserSelect;
 }
 
 const CompanyGrid = ({ company }: CompanyGridProps) => {
+  const [pending, setPending] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
-  async function onAction(id: number) {
-    // await deleteProjectAction(id);
-  }
   const { theme: mode } = useTheme();
 
+  async function onAction(id: number) {
+    setPending(true);
+
+    const res = await deleteCompanyAction(id);
+
+    if (res.success) {
+      reToast.success(res.message)
+    } else {
+      reToast.error(res.message)
+    }
+    setPending(false)
+  }
+
   const updateCompanyActiveState = async (key: string, id: number) => {
+    setPending(true);
     const res = await updateCompanyActiveStateAction(key, id);
-    console.log(res);
+
+    if (res.success) {
+      reToast.success(res.message)
+    } else {
+      reToast.error(res.message)
+    }
+    setPending(false)
   }
 
   return (
@@ -74,7 +93,13 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
               {company?.isActive ? "Enabled" : "Disabled"}
             </Badge>
           </div>
-          <div className="flex-none cursor-pointer" onClick={() => updateCompanyActiveState('isFav', company?.id)}>
+          <div className={clsx(
+            'flex-none',
+            {
+              'pointer-events-none': pending === true,
+              'cursor-pointer': pending === false,
+            },
+          )} onClick={() => updateCompanyActiveState('isFav', company?.id)}>
             {company?.isFav ? (
               <Icon
                 icon="heroicons:star-solid"
@@ -96,18 +121,22 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
                 <MoreHorizontal className="w-4 h-4 text-default-700" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[196px]" align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                <Link
-                  href={''}
-                  className="w-full"
-                  onClick={() => updateCompanyActiveState('isActive', company?.id)}
-                >
-                  {company?.isActive ? 'Disable' : 'Enable'}
-                </Link>
+            <DropdownMenuContent className='w-[196px]' align="end">
+              <DropdownMenuItem className={clsx(
+                {
+                  'pointer-events-none': pending === true,
+                  'cursor-pointer': pending === false,
+                },
+              )} onClick={() => updateCompanyActiveState('isActive', company?.id)}>
+                {company?.isActive ? 'Disable' : 'Enable'}
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="cursor-pointer"
+                className={clsx(
+                  {
+                    'pointer-events-none': pending === true,
+                    'cursor-pointer': pending === false,
+                  },
+                )}
                 onSelect={() => setOpen(true)}
               >
                 Delete
