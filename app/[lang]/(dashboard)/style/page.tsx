@@ -1,13 +1,16 @@
 "use client";
+
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import StyleView from "./style-view";
+import { columns } from "./components/columns";
+import { StyleView } from "./components/style-view";
+import { data } from "./data";
 
-const StylePage = async () => {
+const StylePage = () => {
 
   return (
     <div className="space-y-5">
@@ -15,8 +18,11 @@ const StylePage = async () => {
         <CardHeader>
           <CardTitle>Your Styles</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <StyleView />
+        <CardContent >
+          <StyleView
+            data={data}
+            columns={columns}
+          />
         </CardContent>
       </Card>
     </div>
