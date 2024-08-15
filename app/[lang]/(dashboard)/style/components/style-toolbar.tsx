@@ -47,6 +47,7 @@ export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
           options={statuses}
         />
       )}
+
       {priorityColumn && (
         <StyleTableFacetedFilter
           column={priorityColumn}
