@@ -1994,7 +1994,7 @@ export const menusConfig = {
       {
         title: "Setup Styles",
         icon: ClipBoard,
-        href: "/styles",
+        href: "/style",
       },
       {
         title: "Fence companies",
