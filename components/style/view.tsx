@@ -25,8 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { StyleTablePagination } from "./style-pagination";
-import { StyleTableToolbar } from "./style-toolbar";
+import { StyleTablePagination } from "./pagination";
+import { StyleTableToolbar } from "./toolbar";
 interface StyleTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];

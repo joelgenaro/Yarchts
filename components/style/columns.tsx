@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { labels, priorities, statuses } from "./data/data";
-import { StyleTableColumnHeader } from "./style-column-header";
-import { StyleTableRowActions } from "./style-row-actions";
+import { StyleTableColumnHeader } from "./column-header";
+import { StyleTableRowActions } from "./row-actions";
 import { ColumnDef } from "@tanstack/react-table";
 
 interface Task {

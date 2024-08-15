@@ -1,17 +1,18 @@
 "use client";
-import { X } from "lucide-react";
 
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { StyleTableViewOptions } from "./style-view-options";
-
+import { StyleTableViewOptions } from "./view-options";
 import { priorities, statuses } from "./data/data";
-import { StyleTableFacetedFilter } from "./style-faceted-filter";
+import { StyleTableFacetedFilter } from "./faceted-filter";
 import { Table } from "@tanstack/react-table";
 import { PlusCircle, MinusCircle } from "lucide-react";
+
 interface StyleTableToolbarProps {
   table: Table<any>;
 }
+
 export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
