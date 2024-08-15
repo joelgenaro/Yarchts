@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { StyleTableViewOptions } from "./view-options";
 import { priorities, statuses } from "./data/data";
 import { StyleTableFacetedFilter } from "./faceted-filter";
+import { StyleForm } from "./form";
 import { Table } from "@tanstack/react-table";
-import { PlusCircle, MinusCircle } from "lucide-react";
+import { MinusCircle } from "lucide-react";
 
 interface StyleTableToolbarProps {
   table: Table<any>;
@@ -31,10 +32,7 @@ export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
         className="h-8 min-w-[200px] max-w-sm"
       />
 
-      <Button variant="outline" size="sm" className="h-8">
-        <PlusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
-        Add
-      </Button>
+      <StyleForm />
 
       <Button variant="outline" size="sm" className="h-8">
         <MinusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />

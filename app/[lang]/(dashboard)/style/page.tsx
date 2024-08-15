@@ -10,7 +10,7 @@ import { columns } from "@/components/style/columns";
 import { StyleView } from "@/components/style/view";
 import { data } from "@/components/style/data";
 
-const StylePage = () => {
+const StylePage = async () => {
 
   return (
     <div className="space-y-5">
