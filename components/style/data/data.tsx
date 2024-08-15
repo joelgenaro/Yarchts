@@ -61,3 +61,11 @@ export const priorities = [
     icon: ChevronUp,
   },
 ]
+
+export const styles = {
+  'Aluminum': ['panel', 'post', 'lft', '3feet', '4feet', '5feet', '8feet', '10feet', 'heavy duty end posts'],
+  'Cedar': ['panel', 'post', 'lft', '3feet', '4feet', '5feet', '8feet', '10feet'],
+  'Chain Link': ['panel', 'post', 'lft', '3feet', '4feet', '5feet', '8feet', '10feet', 'end posts', 'corner posts'],
+  'Preasure Treated': ['panel', 'post', 'lft', '3feet', '4feet', '5feet', '8feet', '10feet'],
+  'Vinyl': ['panel', 'post', 'lft', '3feet', '4feet', '5feet', '8feet', '10feet', 'flat cap', 'gothic cap', 'new england cap', 'federation cap'],
+}
