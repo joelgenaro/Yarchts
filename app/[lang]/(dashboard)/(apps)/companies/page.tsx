@@ -1,5 +1,5 @@
 import { getCompanies } from "@/actions/company";
-import CompaniesView from "./companies-view";
+import CompaniesView from "@/components/companies/companies-view";
 
 export default async function CompaniesPage() {
   const companies = await getCompanies();

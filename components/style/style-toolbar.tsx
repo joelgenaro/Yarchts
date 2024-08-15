@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StyleTableViewOptions } from "./style-view-options";
 
-import { priorities, statuses } from "../data/data";
+import { priorities, statuses } from "./data/data";
 import { StyleTableFacetedFilter } from "./style-faceted-filter";
 import { Table } from "@tanstack/react-table";
 import { PlusCircle, MinusCircle } from "lucide-react";
@@ -47,7 +47,6 @@ export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
           options={statuses}
         />
       )}
-
       {priorityColumn && (
         <StyleTableFacetedFilter
           column={priorityColumn}

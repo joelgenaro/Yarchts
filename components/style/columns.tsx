@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { labels, priorities, statuses } from "../data/data";
+import { labels, priorities, statuses } from "./data/data";
 import { StyleTableColumnHeader } from "./style-column-header";
 import { StyleTableRowActions } from "./style-row-actions";
 import { ColumnDef } from "@tanstack/react-table";

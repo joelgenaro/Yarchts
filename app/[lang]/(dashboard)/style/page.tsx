@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { columns } from "./components/columns";
-import { StyleView } from "./components/style-view";
-import { data } from "./data";
+import { columns } from "@/components/style/columns";
+import { StyleView } from "@/components/style/style-view";
+import { data } from "@/components/style/data";
 
 const StylePage = () => {
 
