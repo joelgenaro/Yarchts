@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import BasicDataTable from "./basic-table";
+import StyleView from "./style-view";
 
 const StylePage = async () => {
 
@@ -16,7 +16,7 @@ const StylePage = async () => {
           <CardTitle>Your Styles</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <BasicDataTable />
+          <StyleView />
         </CardContent>
       </Card>
     </div>

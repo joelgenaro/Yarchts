@@ -73,7 +73,7 @@ const columns: ColumnDef<User>[] = [
       const user = row.original.user;
       return (
         <div className="font-medium text-card-foreground/80">
-          <div className="flex space-x-3 rtl:space-x-reverse items-center">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Avatar className="rounded-full">
               {user?.avatar ? (
                 <AvatarImage src={user.avatar} />
@@ -98,7 +98,7 @@ const columns: ColumnDef<User>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -115,7 +115,7 @@ const columns: ColumnDef<User>[] = [
           (row.getValue("status") === "success" && "success") ||
           (row.getValue("status") === "processing" && "info") || "default"
         }
-        className=" capitalize"
+        className="capitalize "
       >
         {row.getValue("status")}
       </Badge>
@@ -134,7 +134,7 @@ const columns: ColumnDef<User>[] = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium text-right">{formatted}</div>;
     },
   },
   {
@@ -147,9 +147,9 @@ const columns: ColumnDef<User>[] = [
         <div className=" text-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="w-8 h-8 p-0">
                 <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
+                <MoreHorizontal className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -170,7 +170,7 @@ const columns: ColumnDef<User>[] = [
   },
 ];
 
-export function BasicDataTable() {
+export function StyleView() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -197,7 +197,7 @@ export function BasicDataTable() {
 
   return (
     <>
-      <div className="flex items-center flex-wrap gap-2  px-4">
+      <div className="flex flex-wrap items-center gap-2 px-4">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) || ""}
@@ -209,7 +209,7 @@ export function BasicDataTable() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              Columns <ChevronDown className="w-4 h-4 ml-2" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -284,19 +284,19 @@ export function BasicDataTable() {
         </Table>
       </div>
 
-      <div className="flex items-center flex-wrap gap-4 px-4 py-4">
+      <div className="flex flex-wrap items-center gap-4 px-4 py-4">
         <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
 
-        <div className="flex gap-2  items-center">
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8"
+            className="w-8 h-8"
           >
             <Icon icon="heroicons:chevron-left" className="w-5 h-5 rtl:rotate-180" />
           </Button>
@@ -317,7 +317,7 @@ export function BasicDataTable() {
             disabled={!table.getCanNextPage()}
             variant="outline"
             size="icon"
-            className="h-8 w-8"
+            className="w-8 h-8"
           >
             <Icon icon="heroicons:chevron-right" className="w-5 h-5 rtl:rotate-180" />
           </Button>
@@ -327,4 +327,4 @@ export function BasicDataTable() {
   );
 }
 
-export default BasicDataTable;
+export default StyleView;
