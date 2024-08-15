@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Column } from "@tanstack/react-table";
 
-interface DataTableColumnHeaderProps {
+interface StyleTableColumnHeaderProps {
   column: Column<any, any>;
   title: string;
   className?: string;
 }
 
-export function DataTableColumnHeader({ column, title, className }:DataTableColumnHeaderProps) {
+export function StyleTableColumnHeader({ column, title, className }: StyleTableColumnHeaderProps) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
   }
@@ -38,11 +38,11 @@ export function DataTableColumnHeader({ column, title, className }:DataTableColu
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
-              <ChevronDown className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
+              <ChevronDown className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
             ) : column.getIsSorted() === "asc" ? (
-              <ChevronUp className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
+              <ChevronUp className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
             ) : (
-              <XCircle className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
+              <XCircle className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
             )}
           </Button>
         </DropdownMenuTrigger>

@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { labels, priorities, statuses } from "../data/data";
-import { DataTableColumnHeader } from "./style-column-header";
-import { DataTableRowActions } from "./style-row-actions";
+import { StyleTableColumnHeader } from "./style-column-header";
+import { StyleTableRowActions } from "./style-row-actions";
 import { ColumnDef } from "@tanstack/react-table";
 
 interface Task {
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Task" />
+      <StyleTableColumnHeader column={column} title="Task" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
     enableSorting: false,
@@ -52,7 +52,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <StyleTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
       const label = labels.find((label) => label.value === row.original.label);
@@ -70,7 +70,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <StyleTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "priority",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Priority" />
+      <StyleTableColumnHeader column={column} title="Priority" />
     ),
     cell: ({ row }) => {
       const priority = priorities.find(
@@ -130,6 +130,6 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <StyleTableRowActions row={row} />,
   },
 ];

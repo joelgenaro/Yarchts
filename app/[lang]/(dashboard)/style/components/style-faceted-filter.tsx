@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Check } from "lucide-react";
-import { PlusCircle } from "lucide-react";
+import { Filter } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -27,12 +27,12 @@ interface Option {
   label: string;
   icon?: React.ComponentType<{ className?: string }>;
 }
-interface DataTableFacetedFilterProps {
+interface StyleTableFacetedFilterProps {
   column: Column<any, any>;
   title: string;
   options: Option[];
 }
-export function DataTableFacetedFilter({ column, title, options }: DataTableFacetedFilterProps) {
+export function StyleTableFacetedFilter({ column, title, options }: StyleTableFacetedFilterProps) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -40,14 +40,14 @@ export function DataTableFacetedFilter({ column, title, options }: DataTableFace
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8">
-          <PlusCircle className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+          <Filter className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
           {title}
           {selectedValues?.size > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Separator orientation="vertical" className="h-4 mx-2" />
               <Badge
                 color="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="px-1 font-normal rounded-sm lg:hidden"
               >
                 {selectedValues.size}
               </Badge>
@@ -55,7 +55,7 @@ export function DataTableFacetedFilter({ column, title, options }: DataTableFace
                 {selectedValues.size > 2 ? (
                   <Badge
                     color="secondary"
-                    className="rounded-sm px-1 font-normal"
+                    className="px-1 font-normal rounded-sm"
                   >
                     {selectedValues.size} selected
                   </Badge>
@@ -66,7 +66,7 @@ export function DataTableFacetedFilter({ column, title, options }: DataTableFace
                       <Badge
                         color="secondary"
                         key={option.value}
-                        className="rounded-sm px-1 font-normal"
+                        className="px-1 font-normal rounded-sm"
                       >
                         {option.label}
                       </Badge>
@@ -111,11 +111,11 @@ export function DataTableFacetedFilter({ column, title, options }: DataTableFace
                       <Check className={cn("h-4 w-4")} />
                     </div>
                     {option.icon && (
-                      <option.icon className="ltr:mr-2 rtl:ml-2 h-4 w-4 text-muted-foreground" />
+                      <option.icon className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-muted-foreground" />
                     )}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
-                      <span className="ltr:ml-auto rtl:mr-auto flex h-4 w-4 items-center justify-center text-xs">
+                      <span className="flex items-center justify-center w-4 h-4 text-xs ltr:ml-auto rtl:mr-auto">
                         {facets.get(option.value)}
                       </span>
                     )}

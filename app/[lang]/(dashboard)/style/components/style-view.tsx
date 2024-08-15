@@ -25,13 +25,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTablePagination } from "./style-pagination";
-import { DataTableToolbar } from "./style-toolbar";
-interface DataTableProps<TData> {
+import { StyleTablePagination } from "./style-pagination";
+import { StyleTableToolbar } from "./style-toolbar";
+interface StyleTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
 }
-export function StyleView<TData>({ columns, data }: DataTableProps<TData>) {
+export function StyleView<TData>({ columns, data }: StyleTableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -61,7 +61,7 @@ export function StyleView<TData>({ columns, data }: DataTableProps<TData>) {
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <StyleTableToolbar table={table} />
       <div className="border rounded-md">
         <Table>
           <TableHeader>
@@ -112,7 +112,7 @@ export function StyleView<TData>({ columns, data }: DataTableProps<TData>) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <StyleTablePagination table={table} />
     </div>
   );
 }

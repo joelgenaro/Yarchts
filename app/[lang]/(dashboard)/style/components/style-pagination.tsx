@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/select";
 import { Table } from "@tanstack/react-table";
 
-interface DataTablePaginationProps {
+interface StyleTablePaginationProps {
   table: Table<any>;
 }
 
 
-export function DataTablePagination({ table }: DataTablePaginationProps) {
+export function StyleTablePagination({ table }: StyleTablePaginationProps) {
   return (
-    <div className="flex items-center flex-wrap gap-2 justify-between px-2">
+    <div className="flex flex-wrap items-center justify-between gap-2 px-2">
       <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -54,39 +54,39 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden w-8 h-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to first page</span>
-            <ChevronsLeft className="h-4 w-4 rtl:rotate-180" />
+            <ChevronsLeft className="w-4 h-4 rtl:rotate-180" />
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="w-8 h-8 p-0"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to previous page</span>
-            <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
+            <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="w-8 h-8 p-0"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to next page</span>
-            <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+            <ChevronRight className="w-4 h-4 rtl:rotate-180" />
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden w-8 h-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to last page</span>
-            <ChevronRight className="h-4 w-4 rtl:rotate-180" />
+            <ChevronRight className="w-4 h-4 rtl:rotate-180" />
           </Button>
         </div>
       </div>

@@ -3,15 +3,16 @@ import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableViewOptions } from "./style-view-options";
+import { StyleTableViewOptions } from "./style-view-options";
 
 import { priorities, statuses } from "../data/data";
-import { DataTableFacetedFilter } from "./style-faceted-filter";
+import { StyleTableFacetedFilter } from "./style-faceted-filter";
 import { Table } from "@tanstack/react-table";
-interface DataTableToolbarProps {
+import { PlusCircle, MinusCircle } from "lucide-react";
+interface StyleTableToolbarProps {
   table: Table<any>;
 }
-export function DataTableToolbar({ table }: DataTableToolbarProps) {
+export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -29,15 +30,25 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         className="h-8 min-w-[200px] max-w-sm"
       />
 
+      <Button variant="outline" size="sm" className="h-8">
+        <PlusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
+        Add
+      </Button>
+
+      <Button variant="outline" size="sm" className="h-8">
+        <MinusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
+        Delete
+      </Button>
+
       {statusColumn && (
-        <DataTableFacetedFilter
+        <StyleTableFacetedFilter
           column={statusColumn}
           title="Status"
           options={statuses}
         />
       )}
       {priorityColumn && (
-        <DataTableFacetedFilter
+        <StyleTableFacetedFilter
           column={priorityColumn}
           title="Priority"
           options={priorities}
@@ -53,7 +64,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           <X className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
         </Button>
       )}
-      <DataTableViewOptions table={table} />
+      <StyleTableViewOptions table={table} />
     </div>
 
   );

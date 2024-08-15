@@ -21,11 +21,11 @@ import {
 import { labels } from "../data/data";
 import { taskSchema } from "../data/schema";
 
-interface DataTableRowActionsProps {
+interface StyleTableRowActionsProps {
   row: Row<any>;
 }
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
   const task = taskSchema.parse(row.original);
 
   return (
@@ -35,7 +35,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <MoreHorizontal className="h-4 w-4" />
+          <MoreHorizontal className="w-4 h-4" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>

@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Table } from "@tanstack/react-table";
 
-interface DataTableViewOptionsProps {
+interface StyleTableViewOptionsProps {
   table: Table<any>;
 }
 
-export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
+export function StyleTableViewOptions({ table }: StyleTableViewOptionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
