@@ -51,11 +51,11 @@ export interface MenuItemProps {
   href?: string;
   child?: MenuItemProps[];
   megaMenu?: MenuItemProps[];
-  multi_menu? : MenuItemProps[]
+  multi_menu?: MenuItemProps[]
   nested?: MenuItemProps[]
   onClick: () => void;
 
-  
+
 }
 
 export const menusConfig = {
@@ -1994,12 +1994,12 @@ export const menusConfig = {
       {
         title: "Setup Styles",
         icon: ClipBoard,
-        href: "/chat",
+        href: "/styles",
       },
       {
         title: "Fence companies",
         icon: Components,
-        href: "/projects",
+        href: "/companies",
       },
     ],
   },

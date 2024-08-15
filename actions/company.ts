@@ -12,7 +12,7 @@ export const updateCompanyActiveStateAction = async (key: string, id: number) =>
             .set(key === 'isActive' ? { isActive: not(users.isActive) } : { isFav: not(users.isFav) })
             .where(eq(users.id, id));
 
-        revalidatePath('/en/projects');
+        revalidatePath('/en/companies');
 
         return {
             success: true, message: 'Successfuly Updated Company Status!',
@@ -28,7 +28,7 @@ export const deleteCompanyAction = async (id: number) => {
     try {
         await db.delete(users).where(eq(users.id, id));
 
-        revalidatePath('/en/projects');
+        revalidatePath('/en/companies');
 
         return {
             success: true, message: 'Successfuly Deleted Company!',

@@ -1,7 +1,7 @@
 import { getCompanies } from "@/actions/company";
 import CompaniesView from "./companies-view";
 
-export default async function ProjectPage() {
+export default async function CompaniesPage() {
   const companies = await getCompanies();
 
   return (
