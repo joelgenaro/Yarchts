@@ -50,6 +50,13 @@
       "when": 1723653315117,
       "tag": "0006_black_wonder_man",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1723800747884,
+      "tag": "0007_shocking_ink",
+      "breakpoints": true
     }
   ]
 }
