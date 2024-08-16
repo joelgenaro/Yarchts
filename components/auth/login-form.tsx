@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { SiteLogo } from "@/components/svg";
 import logo from "@/public/images/logo/logo-1.png";
 import { Icon } from "@iconify/react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -195,22 +194,6 @@ const LogInForm = () => {
           }
         >
           <Image src={GithubIcon} alt="google" className="w-5 h-5" priority={true} />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={facebook} alt="google" className="w-5 h-5" priority={true} />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={twitter} alt="google" className="w-5 h-5" priority={true} />
         </Button>
       </div>
       <div className="mt-5 text-base text-center 2xl:mt-8 text-default-600">
