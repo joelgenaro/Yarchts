@@ -5,7 +5,7 @@ import { users } from './users';
 export const gates = pgTable('gates', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    userId: integer('user_id').notNull(),
+    userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     laborPrice: numeric('labor_price'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')

@@ -5,7 +5,7 @@ import { users } from './users';
 export const heights = pgTable('heights', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    userId: integer('user_id').notNull(),
+    userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()

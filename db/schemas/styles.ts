@@ -5,7 +5,7 @@ import { categories } from './categories';
 export const styles = pgTable('styles', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    categoryId: integer('category_id').notNull(),
+    categoryId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
     heightId: integer('height_id').notNull(),
     colorId: integer('color_id').notNull(),
     lengthId: integer('length_id').notNull(),

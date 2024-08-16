@@ -4,7 +4,7 @@ import { categories } from './categories';
 export const removals = pgTable('removals', {
     id: serial('id').primaryKey(),
     chargePrice: numeric('charge_price'),
-    categoryId: integer('category_id').references(() => categories.id).notNull(),
+    categoryId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()

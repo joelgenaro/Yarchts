@@ -7,7 +7,7 @@ import { removals } from './removals';
 export const categories = pgTable('categories', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    userId: integer('user_id').notNull(),
+    userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()
