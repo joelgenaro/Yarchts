@@ -1,9 +1,13 @@
 import Credentials from "next-auth/providers/credentials";
-import { User as UserType, user } from "@/app/api/user/data";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { RetrieveUser } from "@/actions/user";
+import { db } from "@/db"
+import bcrypt from 'bcryptjs';
 
 export const authOptions = {
+  adapter: DrizzleAdapter(db),
   providers: [
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID as string,
@@ -25,16 +29,15 @@ export const authOptions = {
           password: string,
         };
 
-        const foundUser = user.find((u) => u.email === email)
+        const foundUser = await RetrieveUser(email);
 
         if (!foundUser) {
           return null;
         }
 
-        const valid = password === foundUser.password
+        const valid = await bcrypt.compare(String(password), foundUser.password!)
 
         if (!valid) {
-
           return null;
         }
 
