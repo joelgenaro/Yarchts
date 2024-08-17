@@ -21,7 +21,7 @@ export const users = pgTable('users', {
     gtagId: text('gtag_id'),
     webhook: text('webhook'),
     website: text('website'),
-    photoPath: text('photo_path'),
+    image: text('image'),
     stripeId: text('stripe_id'),
     pmType: text('pm_type'),
     pmLastFour: text('pm_last_four'),

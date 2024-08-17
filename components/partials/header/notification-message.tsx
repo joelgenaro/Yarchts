@@ -27,24 +27,24 @@ const NotificationMessage = () => {
           data-[state=open]:bg-default-100  dark:data-[state=open]:bg-default-200 
            hover:text-primary text-default-500 dark:text-default-800  rounded-full  "
         >
-          <Bell className="h-5 w-5 " />
-          <Badge className=" w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
+          <Bell className="w-5 h-5 " />
+          {/* <Badge className=" w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
             5
-          </Badge>
+          </Badge> */}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
+      {/* <DropdownMenuContent
         align="end"
         className=" z-[999] mx-4 lg:w-[412px] p-0"
       >
         <DropdownMenuLabel
           style={{ backgroundImage: `url(${shortImage.src})` }}
-          className="w-full h-full bg-cover bg-no-repeat p-4 flex items-center"
+          className="flex items-center w-full h-full p-4 bg-no-repeat bg-cover"
         >
-          <span className="text-base font-semibold text-white flex-1">
+          <span className="flex-1 text-base font-semibold text-white">
             Notification
           </span>
-          <span className="text-xs font-medium text-white flex-0 cursor-pointer hover:underline hover:decoration-default-100 dark:decoration-default-900">
+          <span className="text-xs font-medium text-white cursor-pointer flex-0 hover:underline hover:decoration-default-100 dark:decoration-default-900">
             Mark all as read{" "}
           </span>
         </DropdownMenuLabel>
@@ -53,10 +53,10 @@ const NotificationMessage = () => {
             {notifications.map((item, index) => (
               <DropdownMenuItem
                 key={`inbox-${index}`}
-                className="flex gap-9 py-2 px-4 cursor-pointer dark:hover:bg-background"
+                className="flex px-4 py-2 cursor-pointer gap-9 dark:hover:bg-background"
               >
-                <div className="flex-1 flex items-center gap-2">
-                  <Avatar className="h-10 w-10 rounded">
+                <div className="flex items-center flex-1 gap-2">
+                  <Avatar className="w-10 h-10 rounded">
                     <AvatarImage src={item.avatar.src} />
                     <AvatarFallback>SN</AvatarFallback>
                   </Avatar>
@@ -95,7 +95,7 @@ const NotificationMessage = () => {
             <Link href="/dashboard">View All</Link>
           </Button>
         </div>
-      </DropdownMenuContent>
+      </DropdownMenuContent> */}
     </DropdownMenu>
   );
 };

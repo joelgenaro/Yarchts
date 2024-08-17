@@ -19,10 +19,11 @@ import Link from "next/link";
 
 const ProfileInfo = () => {
   const { data: session } = useSession();
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className=" cursor-pointer">
-        <div className=" flex items-center  ">
+      <DropdownMenuTrigger asChild className="cursor-pointer ">
+        <div className="flex items-center ">
           {session?.user?.image && (
             <Image
               src={session?.user?.image}
@@ -35,7 +36,7 @@ const ProfileInfo = () => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-0" align="end">
-        <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
+        <DropdownMenuLabel className="flex items-center gap-2 p-3 mb-1">
           {session?.user?.image && (
             <Image
               src={session?.user?.image}
@@ -46,38 +47,32 @@ const ProfileInfo = () => {
             />
           )}
           <div>
-            <div className="text-sm font-medium text-default-800 capitalize ">
+            <div className="text-sm font-medium capitalize text-default-800 ">
               {session?.user?.name ?? "Mcc Callem"}
             </div>
-            <Link
-              href="/dashboard"
-              className="text-xs text-default-600 hover:text-primary"
-            >
-              @uxuidesigner
-            </Link>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuGroup>
+        {/* <DropdownMenuGroup>
           {[
             {
               name: "profile",
               icon: "heroicons:user",
-              href:"/user-profile"
+              href: "/user-profile"
             },
             {
               name: "Billing",
               icon: "heroicons:megaphone",
-              href:"/dashboard"
+              href: "/dashboard"
             },
             {
               name: "Settings",
               icon: "heroicons:paper-airplane",
-              href:"/dashboard"
+              href: "/dashboard"
             },
             {
               name: "Keyboard shortcuts",
               icon: "heroicons:language",
-              href:"/dashboard"
+              href: "/dashboard"
             },
           ].map((item, index) => (
             <Link
@@ -165,11 +160,11 @@ const ProfileInfo = () => {
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-        </DropdownMenuGroup>
+        </DropdownMenuGroup> */}
         <DropdownMenuSeparator className="mb-0 dark:bg-background" />
         <DropdownMenuItem
           onSelect={() => signOut()}
-          className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize my-1 px-3 dark:hover:bg-background cursor-pointer"
+          className="flex items-center gap-2 px-3 my-1 text-sm font-medium capitalize cursor-pointer text-default-600 dark:hover:bg-background"
         >
           <Icon icon="heroicons:power" className="w-4 h-4" />
           Log out

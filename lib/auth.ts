@@ -55,4 +55,20 @@ export const authOptions = {
     strategy: "jwt",
   },
   debug: process.env.NODE_ENV !== "production",
+  callbacks: {
+    // async jwt(token, user, account, profile, isNewUser) {
+    //   // Add access_token to the token right after signin
+    //   if (account?.accessToken) {
+    //     token.accessToken = account.accessToken
+    //   }
+    //   console.log("jwt", token, user)
+    //   return token
+    // },
+    // async session(session, token) {
+    //   // Add property to session, like an access_token from a provider.
+    //   // session.accessToken = token.accessToken
+    //   console.log("session", session, token)
+    //   return session
+    // }
+  }
 };
