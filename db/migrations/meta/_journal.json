@@ -5,64 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1723474411563,
-      "tag": "0000_sad_midnight",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1723481315412,
-      "tag": "0001_quiet_the_hunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1723481389259,
-      "tag": "0002_opposite_firedrake",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1723576194610,
-      "tag": "0003_loud_squadron_supreme",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1723576270348,
-      "tag": "0004_conscious_harrier",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1723637362795,
-      "tag": "0005_married_swordsman",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1723653315117,
-      "tag": "0006_black_wonder_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1723800747884,
-      "tag": "0007_shocking_ink",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1723919179374,
-      "tag": "0008_daily_malice",
+      "when": 1723957689681,
+      "tag": "0000_flaky_starjammers",
       "breakpoints": true
     }
   ]

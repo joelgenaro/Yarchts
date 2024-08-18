@@ -1,5 +1,5 @@
 {
-  "id": "4661eda6-7627-4f84-a6e1-01609845697d",
+  "id": "d92a9fef-28e5-4963-b451-e3937238658e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -41,7 +41,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "categories_user_id_users_id_fk": {
+          "name": "categories_user_id_users_id_fk",
+          "tableFrom": "categories",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -60,6 +74,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "user_id": {
           "name": "user_id",
@@ -82,7 +102,82 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "colors_user_id_users_id_fk": {
+          "name": "colors_user_id_users_id_fk",
+          "tableFrom": "colors",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gates": {
+      "name": "gates",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "labor_price": {
+          "name": "labor_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gates_user_id_users_id_fk": {
+          "name": "gates_user_id_users_id_fk",
+          "tableFrom": "gates",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -123,7 +218,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "heights_user_id_users_id_fk": {
+          "name": "heights_user_id_users_id_fk",
+          "tableFrom": "heights",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -164,7 +273,76 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "lengths_user_id_users_id_fk": {
+          "name": "lengths_user_id_users_id_fk",
+          "tableFrom": "lengths",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.removals": {
+      "name": "removals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "charge_price": {
+          "name": "charge_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category_id": {
+          "name": "category_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "removals_category_id_categories_id_fk": {
+          "name": "removals_category_id_categories_id_fk",
+          "tableFrom": "removals",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -232,7 +410,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "users_to_roles_role_id_roles_id_fk": {
@@ -245,7 +423,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -282,6 +460,139 @@
           "primaryKey": false,
           "notNull": true
         },
+        "height_id": {
+          "name": "height_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "color_id": {
+          "name": "color_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "length_id": {
+          "name": "length_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "panel_price": {
+          "name": "panel_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_price": {
+          "name": "post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lft_price": {
+          "name": "lft_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "3_feet_gate_price": {
+          "name": "3_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "4_feet_gate_price": {
+          "name": "4_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "5_feet_gate_price": {
+          "name": "5_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "8_feet_gate_price": {
+          "name": "8_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "10_feet_gate_price": {
+          "name": "10_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heavy_duty_end_post_price": {
+          "name": "heavy_duty_end_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_post_price": {
+          "name": "end_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "corner_post_price": {
+          "name": "corner_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flat_cap_price": {
+          "name": "flat_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gothic_cap_price": {
+          "name": "gothic_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "new_england_cap_price": {
+          "name": "new_england_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "federation_cap_price": {
+          "name": "federation_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "min_profit": {
+          "name": "min_profit",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "labor_cost": {
+          "name": "labor_cost",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "photo_path": {
+          "name": "photo_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -297,7 +608,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "styles_category_id_categories_id_fk": {
+          "name": "styles_category_id_categories_id_fk",
+          "tableFrom": "styles",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -433,7 +758,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "subscriptions_user_id_users_id_fk": {
+          "name": "subscriptions_user_id_users_id_fk",
+          "tableFrom": "subscriptions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -457,13 +796,15 @@
           "name": "is_fav",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": false
         },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": false
         },
         "email": {
           "name": "email",
@@ -519,8 +860,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "photo_path": {
-          "name": "photo_path",
+        "image": {
+          "name": "image",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -543,6 +884,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "min_profit": {
+          "name": "min_profit",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hole_price": {
+          "name": "hole_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
         "trial_ends_at": {
           "name": "trial_ends_at",
           "type": "text",
@@ -561,12 +914,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},

@@ -5,6 +5,7 @@ import { users } from './users';
 export const colors = pgTable('colors', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
+    image: text('image'),
     userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')

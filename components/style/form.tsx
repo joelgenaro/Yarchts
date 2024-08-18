@@ -17,6 +17,8 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { Icon } from '@iconify/react';
+import Image from "next/image";
+import avatar from "@/public/images/avatar/avatar-3.jpg"
 
 interface OptionType {
     value: string;
@@ -76,7 +78,7 @@ export function StyleForm() {
                     Add
                 </Button>
             </DialogTrigger>
-            <DialogContent size="4xl">
+            <DialogContent size="2xl">
                 <DialogHeader className="p-0">
                     <DialogTitle className="text-base font-medium text-default-700 ">
                         Create a New Style
@@ -88,33 +90,51 @@ export function StyleForm() {
                             <form>
                                 <div className="hidden lg:block">
                                     <div className="grid grid-cols-12 gap-x-[30px] gap-y-4 ">
-                                        <div className="col-span-12 lg:col-span-6">
-                                            <Label htmlFor="category">Category Name</Label>
-                                            <CreatableSelect
-                                                id="category"
-                                                name="category"
-                                                isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={styles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
-                                            />
+                                        <div className="col-span-12 lg:col-span-4">
+                                            <div className="flex items-center w-[124px] h-[124px] relative rounded-full">
+                                                <Image src={avatar} alt="avatar" className="object-cover w-full h-full rounded-full" priority={true} />
+                                                <Button asChild
+                                                    size="icon"
+                                                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full cursor-pointer"
+                                                >
+                                                    <Label
+                                                        htmlFor="avatar"
+                                                    >
+                                                        <Icon className="w-5 h-5 text-primary-foreground" icon="heroicons:pencil-square" />
+                                                    </Label>
+                                                </Button>
+                                                <Input type="file" className="hidden" id="avatar" />
+                                            </div>
                                         </div>
-                                        <div className="col-span-12 lg:col-span-6">
-                                            <Label htmlFor="style">Style Name</Label>
-                                            <CreatableSelect
-                                                id="style"
-                                                name="style"
-                                                isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={styles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
-                                            />
+                                        <div className="col-span-12 lg:col-span-8">
+                                            <div className="col-span-12 lg:col-span-6">
+                                                <Label htmlFor="category">Category Name</Label>
+                                                <CreatableSelect
+                                                    id="category"
+                                                    name="category"
+                                                    isClearable
+                                                    placeholder={'Type a new category or Choose from the list'}
+                                                    styles={styles}
+                                                    onChange={(newValue) => setValue(newValue)}
+                                                    onCreateOption={handleCreate}
+                                                    options={options}
+                                                    value={value}
+                                                />
+                                            </div>
+                                            <div className="col-span-12 mt-2 lg:col-span-6 ">
+                                                <Label htmlFor="style">Style Name</Label>
+                                                <CreatableSelect
+                                                    id="style"
+                                                    name="style"
+                                                    isClearable
+                                                    placeholder={'Type a new style or Choose from the list'}
+                                                    styles={styles}
+                                                    onChange={(newValue) => setValue(newValue)}
+                                                    onCreateOption={handleCreate}
+                                                    options={options}
+                                                    value={value}
+                                                />
+                                            </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
                                             <Label htmlFor="height">Panel Height ( in foot )</Label>
@@ -122,7 +142,7 @@ export function StyleForm() {
                                                 id="height"
                                                 name="height"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
+                                                placeholder={'Type a new height or Choose from the list'}
                                                 styles={styles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
@@ -136,7 +156,7 @@ export function StyleForm() {
                                                 id="color"
                                                 name="color"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
+                                                placeholder={'Pick a new color or Choose from the list'}
                                                 styles={styles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
@@ -150,7 +170,7 @@ export function StyleForm() {
                                                 id="length"
                                                 name="length"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
+                                                placeholder={'Type a new length or Choose from the list'}
                                                 styles={styles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
@@ -164,7 +184,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" placeholder="Your $/Lft Price" id="lft" />
+                                                <Input type="text" placeholder="" id="lft" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -173,7 +193,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="3_feet" placeholder="Your Gate Price" />
+                                                <Input type="text" id="3_feet" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -182,7 +202,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="4_feet" placeholder="Your Gate Price" />
+                                                <Input type="text" id="4_feet" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -191,7 +211,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="5_feet" placeholder="Your Gate Price" />
+                                                <Input type="text" id="5_feet" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -200,7 +220,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="8_feet" placeholder="Your Gate Price" />
+                                                <Input type="text" id="8_feet" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -209,7 +229,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="10_feet" placeholder="Yourt Gate Price" />
+                                                <Input type="text" id="10_feet" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -218,7 +238,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="panel_price" placeholder="Your Panel Price" />
+                                                <Input type="text" id="panel_price" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -227,7 +247,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="post_price" placeholder="Your Post Price" />
+                                                <Input type="text" id="post_price" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -236,7 +256,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="heavy_post" placeholder="Your Post Price" />
+                                                <Input type="text" id="heavy_post" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -245,7 +265,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="end_posts" placeholder="Your Post Price" />
+                                                <Input type="text" id="end_posts" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -254,7 +274,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="corner_posts" placeholder="Your Post Price" />
+                                                <Input type="text" id="corner_posts" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -263,7 +283,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="flat_cap" placeholder="Your Cap Price" />
+                                                <Input type="text" id="flat_cap" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -272,7 +292,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="gothic_cap" placeholder="Your Cap Price" />
+                                                <Input type="text" id="gothic_cap" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -281,7 +301,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="new_england_cap" placeholder="Your Cap Price" />
+                                                <Input type="text" id="new_england_cap" placeholder="" />
                                             </InputGroup>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -290,7 +310,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" id="federation_cap" placeholder="Your Cap Price" />
+                                                <Input type="text" id="federation_cap" placeholder="" />
                                             </InputGroup>
                                         </div>
                                     </div>
@@ -362,105 +382,105 @@ export function StyleForm() {
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" placeholder="Your $/Lft Price" id="lft" />
+                                            <Input type="text" placeholder="" id="lft" />
                                         </InputGroup>
                                         <Label htmlFor="3_feet">3 Feet Gate Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="3_feet" placeholder="Your Gate Price" />
+                                            <Input type="text" id="3_feet" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="4_feet">4 Feet Gate Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="4_feet" placeholder="Your Gate Price" />
+                                            <Input type="text" id="4_feet" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="5_feet">5 Feet Gate Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="5_feet" placeholder="Your Gate Price" />
+                                            <Input type="text" id="5_feet" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="8_feet">8 Feet Gate Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="8_feet" placeholder="Your Gate Price" />
+                                            <Input type="text" id="8_feet" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="10_feet">10 Feet Gate Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="10_feet" placeholder="Yourt Gate Price" />
+                                            <Input type="text" id="10_feet" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="panel_price">Panel Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="panel_price" placeholder="Your Panel Price" />
+                                            <Input type="text" id="panel_price" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="post_price">Post Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="post_price" placeholder="Your Post Price" />
+                                            <Input type="text" id="post_price" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="heavy_post">Heavy Duty End Post Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="heavy_post" placeholder="Your Post Price" />
+                                            <Input type="text" id="heavy_post" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="end_posts">End Posts</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="end_posts" placeholder="Your Post Price" />
+                                            <Input type="text" id="end_posts" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="corner_posts">Corner Posts</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="corner_posts" placeholder="Your Post Price" />
+                                            <Input type="text" id="corner_posts" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="flat_cap">Flat Cap Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="flat_cap" placeholder="Your Cap Price" />
+                                            <Input type="text" id="flat_cap" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="gothic_cap">Gothic Cap Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="gothic_cap" placeholder="Your Cap Price" />
+                                            <Input type="text" id="gothic_cap" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="new_england_cap">New England Cap Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="new_england_cap" placeholder="Your Cap Price" />
+                                            <Input type="text" id="new_england_cap" placeholder="" />
                                         </InputGroup>
                                         <Label htmlFor="federation_cap">Federation Cap Price</Label>
                                         <InputGroup merged>
                                             <InputGroupText>
                                                 <Icon icon="mdi:dollar" />
                                             </InputGroupText>
-                                            <Input type="text" id="federation_cap" placeholder="Your Cap Price" />
+                                            <Input type="text" id="federation_cap" placeholder="" />
                                         </InputGroup>
                                     </div>
                                 </div>
