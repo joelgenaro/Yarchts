@@ -20,7 +20,8 @@ export interface CalendarCategory {
 }
 
 // for style
-export interface CreateableSelectionOptions {
+export interface CreatableSelectionOptions {
+  id?: number;
   value: string;
   label: string;
   isFixed?: boolean;

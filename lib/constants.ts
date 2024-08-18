@@ -1,7 +1,7 @@
 // for style
 export const styleProperties = [{ label: '$/Lft Price', name: 'lftPrice' }, { label: '3 Feet Gate Price', name: 'thirdFeetGatePrice' }, { label: '4 Feet Gate Price', name: 'foruthFeetGatePrice' }, { label: '5 Feet Gate Price', name: 'fifthFeetGatePrice' }, { label: '8 Feet Gate Price', name: 'eighthFeetGatePrice' }, { label: '10 Feet Gate Price', name: 'tenthFeetGatePrice' }, { label: 'Panel Price', name: 'panelPrice' }, { label: 'Post Price', name: 'postPrice' }, { label: 'Heavy Duty End Post Price', name: 'HeavyDutyEndPostPrice' }, { label: 'End Posts Price', name: 'endPostPrice' }, { label: 'Corner Posts Price', name: 'cornerPostPrice' }, { label: 'Flat Cap Price', name: 'flatCapPrice' }, { label: 'Gothic Cap Price', name: 'gothicCapPrice' }, { label: 'New England Cap Price', name: 'newEnglandCapPrice' }, { label: 'Federation Cap Price', name: 'federationCapPrice' }];
 
-export const createableSelectionStyles = {
+export const creatableSelectionStyles = {
     multiValue: (base: any, state: any) => {
         return state.data.isFixed ? { ...base, opacity: "0.5" } : base;
     },
