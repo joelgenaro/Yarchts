@@ -16,30 +16,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
-import { createableSelectionStyles, styleProperties } from "@/lib/constants";
-import { CreateableSelectionOptions } from "@/lib/interfaces";
+import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
 import { createSelectionOption } from "@/lib/utils";
+import { CreatableSelectionOptions } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import Image from "next/image";
 import avatar from "@/public/images/avatar/avatar-3.jpg"
 
-const defaultOptions: CreateableSelectionOptions[] = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "orange", label: "Orange" },
-    { value: "apple", label: "Apple" },
-];
-
 export function StyleForm() {
-    const [options, setOptions] = useState(defaultOptions);
-    const [value, setValue] = useState<CreateableSelectionOptions | null>();
+    const [category, setCategory] = useState<CreatableSelectionOptions | null>();
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [style, setStyle] = useState<CreatableSelectionOptions | null>();
+    const [styleOptions, setStyleOptions] = useState([]);
+    const [height, setHeight] = useState<CreatableSelectionOptions | null>();
+    const [heightOptions, setHeightOptions] = useState([]);
+    const [color, setColor] = useState<CreatableSelectionOptions | null>();
+    const [colorOptions, setColorOptions] = useState([]);
+    const [length, setLength] = useState<CreatableSelectionOptions | null>();
+    const [lengthOptions, setLengthOptions] = useState([]);
 
-    const handleCreate = (inputValue: string) => {
-        setTimeout(() => {
-            const newOption = createSelectionOption(inputValue);
-            setValue(newOption);
-        }, 1000);
+    const handleCreate = (inputValue: string, type: string) => {
+        // setTimeout(() => {
+        //     const newOption = createSelectionOption(inputValue);
+        //     setValue(newOption);
+        // }, 1000);
     };
 
     return (
@@ -86,11 +86,11 @@ export function StyleForm() {
                                                     name="category"
                                                     isClearable
                                                     placeholder={'Type a new category or Choose from the list'}
-                                                    styles={createableSelectionStyles}
-                                                    onChange={(newValue) => setValue(newValue)}
-                                                    onCreateOption={handleCreate}
-                                                    options={options}
-                                                    value={value}
+                                                    styles={creatableSelectionStyles}
+                                                    onChange={(newValue) => setCategory(newValue)}
+                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
+                                                    options={categoryOptions}
+                                                    value={category}
                                                 />
                                             </div>
                                             <div className="col-span-12 mt-2 lg:col-span-6 ">
@@ -100,11 +100,11 @@ export function StyleForm() {
                                                     name="style"
                                                     isClearable
                                                     placeholder={'Type a new style or Choose from the list'}
-                                                    styles={createableSelectionStyles}
-                                                    onChange={(newValue) => setValue(newValue)}
-                                                    onCreateOption={handleCreate}
-                                                    options={options}
-                                                    value={value}
+                                                    styles={creatableSelectionStyles}
+                                                    onChange={(newValue) => setStyle(newValue)}
+                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
+                                                    options={styleOptions}
+                                                    value={style}
                                                 />
                                             </div>
                                         </div>
@@ -115,11 +115,11 @@ export function StyleForm() {
                                                 name="height"
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setHeight(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
+                                                options={heightOptions}
+                                                value={height}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -129,11 +129,11 @@ export function StyleForm() {
                                                 name="color"
                                                 isClearable
                                                 placeholder={'Pick a new color or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setColor(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
+                                                options={colorOptions}
+                                                value={color}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
@@ -143,11 +143,11 @@ export function StyleForm() {
                                                 name="panelPrice"
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setLength(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
+                                                options={lengthOptions}
+                                                value={length}
                                             />
                                         </div>
                                         {styleProperties.map((prop, index) => (<div key={index} className="col-span-12 lg:col-span-4">
@@ -170,12 +170,12 @@ export function StyleForm() {
                                                 id="category"
                                                 name="category"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                placeholder={'Type a new category or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setCategory(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
+                                                options={categoryOptions}
+                                                value={category}
                                             />
                                         </div>
 
@@ -185,12 +185,12 @@ export function StyleForm() {
                                                 id="style"
                                                 name="style"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                placeholder={'Type a new style or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setStyle(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
+                                                options={styleOptions}
+                                                value={style}
                                             />
                                         </div>
                                         <div>
@@ -199,12 +199,12 @@ export function StyleForm() {
                                                 id="height"
                                                 name="height"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                placeholder={'Type a new height or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setHeight(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
+                                                options={heightOptions}
+                                                value={height}
                                             />
                                         </div>
                                         <div>
@@ -213,12 +213,12 @@ export function StyleForm() {
                                                 id="color"
                                                 name="color"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                placeholder={'Pick a new color or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setColor(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
+                                                options={colorOptions}
+                                                value={color}
                                             />
                                         </div>
 
@@ -226,14 +226,14 @@ export function StyleForm() {
                                             <Label htmlFor="length">Panel Length ( in foot )</Label>
                                             <CreatableSelect
                                                 id="length"
-                                                name="length"
+                                                name="panelPrice"
                                                 isClearable
-                                                placeholder={'Type or Choose from the list'}
-                                                styles={createableSelectionStyles}
-                                                onChange={(newValue) => setValue(newValue)}
-                                                onCreateOption={handleCreate}
-                                                options={options}
-                                                value={value}
+                                                placeholder={'Type a new length or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => setLength(newValue)}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
+                                                options={lengthOptions}
+                                                value={length}
                                             />
                                         </div>
 
