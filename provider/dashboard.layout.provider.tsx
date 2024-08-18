@@ -11,7 +11,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import ThemeCustomize from "@/components/partials/customizer/theme-customizer";
 import MobileSidebar from "@/components/partials/sidebar/mobile-sidebar";
 import HeaderSearch from "@/components/header-search";
-import { useMounted } from "@/hooks/use-mounted";
+import { useMounted } from "@/lib/hooks/use-mounted";
 import LayoutLoader from "@/components/layout-loader";
 const DashBoardLayoutProvider = ({ children, trans }: { children: React.ReactNode, trans: any }) => {
   const { collapsed, sidebarType, setCollapsed, subMenu } = useSidebar();
