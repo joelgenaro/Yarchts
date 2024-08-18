@@ -6,13 +6,7 @@ import { cn } from "@/lib/utils";
 import { TabsTrigger } from "@/components/ui/tabs";
 import { useCompaniesStore } from "@/store/companies";
 import { produce } from "immer";
-
-type CompanyData = {
-  text: string;
-  total: number;
-  color: string;
-  icon: JSX.Element;
-};
+import { CompanyData } from "@/lib/types";
 
 const CompanyStats = () => {
   const [data, setData] = useState<CompanyData[]>([

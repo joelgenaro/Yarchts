@@ -8,15 +8,11 @@ import {
 import { Input } from "@/components/ui/input";
 import Blank from "@/components/blank";
 import { Tabs, TabsList } from "@/components/ui/tabs";
-import { UserSelect } from '@/db/schemas/users';
 import CompanyStats from "./stats";
 import CompanyGrid from "./grid";
 import { useCompaniesStore } from "@/store/companies";
 import { useDebouncedCallback } from 'use-debounce';
-
-interface CompanyViewProps {
-  data: UserSelect[];
-}
+import { CompanyViewProps } from "@/lib/interfaces";
 
 const CompaniesView = ({ data }: CompanyViewProps) => {
   const [search, setSearch] = useState<string>("");

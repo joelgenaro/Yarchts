@@ -16,23 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+import { createableSelectionStyles, styleProperties } from "@/lib/constants";
+import { CreateableSelectionOptions } from "@/lib/interfaces";
+import { createSelectionOption } from "@/lib/utils";
 import { Icon } from '@iconify/react';
 import Image from "next/image";
 import avatar from "@/public/images/avatar/avatar-3.jpg"
 
-interface OptionType {
-    value: string;
-    label: string;
-    isFixed?: boolean;
-    icon?: string;
-}
-
-const createOption = (label: string) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ''),
-});
-
-const defaultOptions: OptionType[] = [
+const defaultOptions: CreateableSelectionOptions[] = [
     { value: "chocolate", label: "Chocolate" },
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
@@ -40,32 +31,13 @@ const defaultOptions: OptionType[] = [
     { value: "apple", label: "Apple" },
 ];
 
-const styles = {
-    multiValue: (base: any, state: any) => {
-        return state.data.isFixed ? { ...base, opacity: "0.5" } : base;
-    },
-    multiValueLabel: (base: any, state: any) => {
-        return state.data.isFixed
-            ? { ...base, color: "#626262", paddingRight: 6 }
-            : base;
-    },
-    multiValueRemove: (base: any, state: any) => {
-        return state.data.isFixed ? { ...base, display: "none" } : base;
-    },
-    option: (provided: any, state: any) => ({
-        ...provided,
-        fontSize: "14px",
-    }),
-};
-
 export function StyleForm() {
     const [options, setOptions] = useState(defaultOptions);
-    const [value, setValue] = useState<OptionType | null>();
+    const [value, setValue] = useState<CreateableSelectionOptions | null>();
 
     const handleCreate = (inputValue: string) => {
         setTimeout(() => {
-            const newOption = createOption(inputValue);
-            setOptions((prev) => [...prev, newOption]);
+            const newOption = createSelectionOption(inputValue);
             setValue(newOption);
         }, 1000);
     };
@@ -90,8 +62,8 @@ export function StyleForm() {
                             <form>
                                 <div className="hidden lg:block">
                                     <div className="grid grid-cols-12 gap-x-[30px] gap-y-4 ">
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <div className="flex items-center w-[124px] h-[124px] relative rounded-full">
+                                        <div className="flex justify-center col-span-12 lg:col-span-4">
+                                            <div className=" w-[124px] h-[124px] relative rounded-full">
                                                 <Image src={avatar} alt="avatar" className="object-cover w-full h-full rounded-full" priority={true} />
                                                 <Button asChild
                                                     size="icon"
@@ -103,7 +75,7 @@ export function StyleForm() {
                                                         <Icon className="w-5 h-5 text-primary-foreground" icon="heroicons:pencil-square" />
                                                     </Label>
                                                 </Button>
-                                                <Input type="file" className="hidden" id="avatar" />
+                                                <Input type="file" className="hidden" id="avatar" name="photoPath" />
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-8">
@@ -114,7 +86,7 @@ export function StyleForm() {
                                                     name="category"
                                                     isClearable
                                                     placeholder={'Type a new category or Choose from the list'}
-                                                    styles={styles}
+                                                    styles={createableSelectionStyles}
                                                     onChange={(newValue) => setValue(newValue)}
                                                     onCreateOption={handleCreate}
                                                     options={options}
@@ -128,7 +100,7 @@ export function StyleForm() {
                                                     name="style"
                                                     isClearable
                                                     placeholder={'Type a new style or Choose from the list'}
-                                                    styles={styles}
+                                                    styles={createableSelectionStyles}
                                                     onChange={(newValue) => setValue(newValue)}
                                                     onCreateOption={handleCreate}
                                                     options={options}
@@ -143,7 +115,7 @@ export function StyleForm() {
                                                 name="height"
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
-                                                styles={styles}
+                                                styles={createableSelectionStyles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
                                                 options={options}
@@ -157,7 +129,7 @@ export function StyleForm() {
                                                 name="color"
                                                 isClearable
                                                 placeholder={'Pick a new color or Choose from the list'}
-                                                styles={styles}
+                                                styles={createableSelectionStyles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
                                                 options={options}
@@ -168,320 +140,113 @@ export function StyleForm() {
                                             <Label htmlFor="length">Panel Length ( in foot )</Label>
                                             <CreatableSelect
                                                 id="length"
-                                                name="length"
+                                                name="panelPrice"
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
-                                                styles={styles}
+                                                styles={createableSelectionStyles}
                                                 onChange={(newValue) => setValue(newValue)}
                                                 onCreateOption={handleCreate}
                                                 options={options}
                                                 value={value}
                                             />
                                         </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="lft">$/Lft Price</Label>
+                                        {styleProperties.map((prop, index) => (<div key={index} className="col-span-12 lg:col-span-4">
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" placeholder="" id="lft" />
+                                                <Input type="text" name={prop.name} id={prop.name} />
                                             </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="3_feet">3 Feet Gate Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="3_feet" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="4_feet">4 Feet Gate Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="4_feet" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="5_feet">5 Feet Gate Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="5_feet" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="8_feet">8 Feet Gate Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="8_feet" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="10_feet">10 Feet Gate Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="10_feet" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="panel_price">Panel Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="panel_price" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="post_price">Post Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="post_price" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="heavy_post">Heavy Duty End Post Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="heavy_post" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="end_posts">End Posts</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="end_posts" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="corner_posts">Corner Posts</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="corner_posts" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="flat_cap">Flat Cap Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="flat_cap" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="gothic_cap">Gothic Cap Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="gothic_cap" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="new_england_cap">New England Cap Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="new_england_cap" placeholder="" />
-                                            </InputGroup>
-                                        </div>
-                                        <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="federation_cap">Federation Cap Price</Label>
-                                            <InputGroup merged>
-                                                <InputGroupText>
-                                                    <Icon icon="mdi:dollar" />
-                                                </InputGroupText>
-                                                <Input type="text" id="federation_cap" placeholder="" />
-                                            </InputGroup>
-                                        </div>
+                                        </div>))}
+
                                     </div>
                                 </div>
                                 <div className="block lg:hidden">
                                     <div className="flex flex-col gap-4">
-                                        <Label htmlFor="category">Category Name</Label>
-                                        <CreatableSelect
-                                            id="category"
-                                            name="category"
-                                            isClearable
-                                            placeholder={'Type or Choose from the list'}
-                                            styles={styles}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                        />
-                                        <Label htmlFor="style">Style Name</Label>
-                                        <CreatableSelect
-                                            id="style"
-                                            name="style"
-                                            isClearable
-                                            placeholder={'Type or Choose from the list'}
-                                            styles={styles}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                        />
-                                        <Label htmlFor="height">Panel Height ( in foot )</Label>
-                                        <CreatableSelect
-                                            id="height"
-                                            name="height"
-                                            isClearable
-                                            placeholder={'Type or Choose from the list'}
-                                            styles={styles}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                        />
-                                        <Label htmlFor="color">Fence Color</Label>
-                                        <CreatableSelect
-                                            id="color"
-                                            name="color"
-                                            isClearable
-                                            placeholder={'Type or Choose from the list'}
-                                            styles={styles}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                        />
-                                        <Label htmlFor="length">Panel Length ( in foot )</Label>
-                                        <CreatableSelect
-                                            id="length"
-                                            name="length"
-                                            isClearable
-                                            placeholder={'Type or Choose from the list'}
-                                            styles={styles}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                        />
-                                        <Label htmlFor="lft">$/Lft Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" placeholder="" id="lft" />
-                                        </InputGroup>
-                                        <Label htmlFor="3_feet">3 Feet Gate Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="3_feet" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="4_feet">4 Feet Gate Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="4_feet" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="5_feet">5 Feet Gate Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="5_feet" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="8_feet">8 Feet Gate Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="8_feet" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="10_feet">10 Feet Gate Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="10_feet" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="panel_price">Panel Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="panel_price" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="post_price">Post Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="post_price" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="heavy_post">Heavy Duty End Post Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="heavy_post" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="end_posts">End Posts</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="end_posts" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="corner_posts">Corner Posts</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="corner_posts" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="flat_cap">Flat Cap Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="flat_cap" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="gothic_cap">Gothic Cap Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="gothic_cap" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="new_england_cap">New England Cap Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="new_england_cap" placeholder="" />
-                                        </InputGroup>
-                                        <Label htmlFor="federation_cap">Federation Cap Price</Label>
-                                        <InputGroup merged>
-                                            <InputGroupText>
-                                                <Icon icon="mdi:dollar" />
-                                            </InputGroupText>
-                                            <Input type="text" id="federation_cap" placeholder="" />
-                                        </InputGroup>
+                                        <div>
+                                            <Label htmlFor="category">Category Name</Label>
+                                            <CreatableSelect
+                                                id="category"
+                                                name="category"
+                                                isClearable
+                                                placeholder={'Type or Choose from the list'}
+                                                styles={createableSelectionStyles}
+                                                onChange={(newValue) => setValue(newValue)}
+                                                onCreateOption={handleCreate}
+                                                options={options}
+                                                value={value}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label htmlFor="style">Style Name</Label>
+                                            <CreatableSelect
+                                                id="style"
+                                                name="style"
+                                                isClearable
+                                                placeholder={'Type or Choose from the list'}
+                                                styles={createableSelectionStyles}
+                                                onChange={(newValue) => setValue(newValue)}
+                                                onCreateOption={handleCreate}
+                                                options={options}
+                                                value={value}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="height"
+                                                name="height"
+                                                isClearable
+                                                placeholder={'Type or Choose from the list'}
+                                                styles={createableSelectionStyles}
+                                                onChange={(newValue) => setValue(newValue)}
+                                                onCreateOption={handleCreate}
+                                                options={options}
+                                                value={value}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Label htmlFor="color">Fence Color</Label>
+                                            <CreatableSelect
+                                                id="color"
+                                                name="color"
+                                                isClearable
+                                                placeholder={'Type or Choose from the list'}
+                                                styles={createableSelectionStyles}
+                                                onChange={(newValue) => setValue(newValue)}
+                                                onCreateOption={handleCreate}
+                                                options={options}
+                                                value={value}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label htmlFor="length">Panel Length ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="length"
+                                                name="length"
+                                                isClearable
+                                                placeholder={'Type or Choose from the list'}
+                                                styles={createableSelectionStyles}
+                                                onChange={(newValue) => setValue(newValue)}
+                                                onCreateOption={handleCreate}
+                                                options={options}
+                                                value={value}
+                                            />
+                                        </div>
+
+                                        {styleProperties.map((prop, index) => (<div key={index}>
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
+                                            <InputGroup merged>
+                                                <InputGroupText>
+                                                    <Icon icon="mdi:dollar" />
+                                                </InputGroupText>
+                                                <Input type="text" name={prop.name} id={prop.name} />
+                                            </InputGroup>
+                                        </div>))}
+
                                     </div>
                                 </div>
                             </form>
@@ -496,8 +261,8 @@ export function StyleForm() {
                         </DialogClose>
                         <Button type="button">Create Style </Button>
                     </div>
-                </div>
-            </DialogContent>
-        </Dialog>
+                </div >
+            </DialogContent >
+        </Dialog >
     );
 }

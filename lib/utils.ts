@@ -5,9 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-
-
-
 export const isLocationMatch = (
   targetLocation: any,
   locationName: any
@@ -175,4 +172,9 @@ export const translate = (title: string, trans: Translations): string => {
 export const formatNumber = (num: number): string => {
   return new Intl.NumberFormat('en-US').format(num);
 }
+
+export const createSelectionOption = (label: string) => ({
+  label,
+  value: label.toLowerCase().replace(/\W/g, ''),
+});
 

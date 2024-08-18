@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { Radius, Shadow, TextAreaColor, TextAreaVariant } from "@/lib/type";
+import { Radius, Shadow, TextAreaColor, TextAreaVariant } from "@/lib/types";
 
 export const textareaVariants = cva(
   "flex flex-1 bg-background w-full min-h-[80px]   px-3 py-[10px] text-sm  file:border-0 file:bg-transparent file:text-sm file:font-medium  read-only:bg-background  disabled:cursor-not-allowed disabled:opacity-50  transition duration-300 ",

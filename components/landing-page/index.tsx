@@ -1,6 +1,6 @@
 "use client";
 import Hero from "./hero";
-import { useMounted } from "@/lib/hooks/use-mounted";
+import { useMounted } from "@/hooks/use-mounted";
 import LayoutLoader from "@/components/layout-loader";
 
 const LandingPageView = () => {

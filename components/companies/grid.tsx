@@ -17,26 +17,19 @@ import {
   CardHeader,
   CardFooter,
 } from "@/components/ui/card";
-import { deleteProjectAction } from "@/actions/project-action";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  AvatarGroup,
 } from "@/components/ui/avatar";
 import { Icon } from "@iconify/react";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import { UserSelect } from '@/db/schemas/users';
 import { formatDate } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { updateCompanyActiveStateAction, deleteCompanyAction } from '@/actions/company'
 import { toast as reToast } from "react-hot-toast";
-
-interface CompanyGridProps {
-  company: UserSelect;
-}
+import { CompanyGridProps } from "@/lib/interfaces";
 
 const CompanyGrid = ({ company }: CompanyGridProps) => {
   const [pending, setPending] = React.useState<boolean>(false);
@@ -155,7 +148,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
             <div className="flex gap-5">
               <div>
                 <Avatar className="w-12 h-12 rounded">
-                  <AvatarImage src={company?.photoPath ?? ""} alt="" />
+                  <AvatarImage src={company?.image ?? ""} alt="" />
                   <AvatarFallback className="uppercase rounded bg-success/30 text-success">
                     {company?.name?.slice(0, 2)}
                   </AvatarFallback>

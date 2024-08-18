@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { InputColor, InputVariant, Radius, Shadow } from "@/lib/type";
+import { InputColor, InputVariant, Radius, Shadow } from "@/lib/types";
 
 //py-[10px]
 export const inputVariants = cva(

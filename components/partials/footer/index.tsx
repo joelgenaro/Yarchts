@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import MobileFooter from "./mobile-footer";
 import FooterLayout from "./footer-layout";
-import { useMounted } from "@/lib/hooks/use-mounted";
+import { useMounted } from "@/hooks/use-mounted";
 
 const Footer = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
   const { collapsed, sidebarType } = useSidebar();
