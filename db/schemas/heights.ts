@@ -1,11 +1,12 @@
 import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { users } from './users';
+import { categories } from './categories';
+import { fences } from './fences';
 
 export const heights = pgTable('heights', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
-    userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    categorId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()
@@ -15,9 +16,13 @@ export const heights = pgTable('heights', {
 export type HeightSelector = typeof heights.$inferSelect;
 export type HeightInsert = typeof heights.$inferInsert;
 
-export const heightsUsersRelations = relations(heights, ({ one }) => ({
-    user: one(users, {
-        fields: [heights.userId],
-        references: [users.id],
+export const heightsCategoriesRelations = relations(heights, ({ one }) => ({
+    category: one(categories, {
+        fields: [heights.categorId],
+        references: [categories.id],
     }),
+}));
+
+export const heightsFencesRelations = relations(heights, ({ many }) => ({
+    fences: many(fences),
 }));

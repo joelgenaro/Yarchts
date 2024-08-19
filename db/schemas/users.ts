@@ -1,9 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, serial, text, timestamp, boolean, numeric } from 'drizzle-orm/pg-core';
 import { usersToRoles } from './roles';
-import { colors } from './colors';
-import { heights } from './heights';
-import { lengths } from './lengths';
 import { categories } from './categories';
 import { gates } from './gates';
 
@@ -39,18 +36,6 @@ export type UserInsert = typeof users.$inferInsert;
 
 export const usersRolesRelations = relations(users, ({ many }) => ({
     usersToRoles: many(usersToRoles),
-}));
-
-export const usersColorsRelations = relations(users, ({ many }) => ({
-    colors: many(colors),
-}));
-
-export const usersHeightsRelations = relations(users, ({ many }) => ({
-    heights: many(heights),
-}));
-
-export const usersLengthsRelations = relations(users, ({ many }) => ({
-    lengths: many(lengths),
 }));
 
 export const usersCategoriesRelations = relations(users, ({ many }) => ({

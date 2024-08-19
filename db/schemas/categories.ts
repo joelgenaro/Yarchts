@@ -2,6 +2,9 @@ import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 import { styles } from './styles';
+import { colors } from './colors';
+import { heights } from './heights';
+import { lengths } from './lengths';
 import { removals } from './removals';
 
 export const categories = pgTable('categories', {
@@ -24,10 +27,22 @@ export const categoriesUsersRelations = relations(categories, ({ one }) => ({
     }),
 }));
 
+export const categoriesRemovalsRelations = relations(categories, ({ one }) => ({
+    removals: one(removals),
+}));
+
 export const categoriesStylesRelations = relations(categories, ({ many }) => ({
     styles: many(styles),
 }));
 
-export const categoriesRemovalsRelations = relations(categories, ({ one }) => ({
-    removals: one(removals),
+export const categoriesColorsRelations = relations(categories, ({ many }) => ({
+    colors: many(colors),
+}));
+
+export const categoriesHeightsRelations = relations(categories, ({ many }) => ({
+    heights: many(heights),
+}));
+
+export const categoriesLengthsRelations = relations(categories, ({ many }) => ({
+    lengths: many(lengths),
 }));
