@@ -102,6 +102,7 @@ export function StyleForm() {
                                                 <CreatableSelect
                                                     id="category"
                                                     name="category"
+                                                    required
                                                     isClearable
                                                     placeholder={'Type a new category or Choose from the list'}
                                                     styles={creatableSelectionStyles}
@@ -116,6 +117,7 @@ export function StyleForm() {
                                                 <CreatableSelect
                                                     id="style"
                                                     name="style"
+                                                    required
                                                     isClearable
                                                     placeholder={'Type a new style or Choose from the list'}
                                                     styles={creatableSelectionStyles}
@@ -131,6 +133,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="height"
                                                 name="height"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -145,6 +148,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="color"
                                                 name="color"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -159,6 +163,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="length"
                                                 name="panelPrice"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -183,7 +188,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" name={prop.name} id={prop.name} />
+                                                <Input type="text" required name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
@@ -196,6 +201,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="category"
                                                 name="category"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new category or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -211,6 +217,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="style"
                                                 name="style"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new style or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -225,6 +232,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="height"
                                                 name="height"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -239,6 +247,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="color"
                                                 name="color"
+                                                required
                                                 isClearable
                                                 placeholder={'Pick a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -254,6 +263,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="length"
                                                 name="panelPrice"
+                                                required
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -264,13 +274,22 @@ export function StyleForm() {
                                             />
                                         </div>
 
-                                        {styleProperties.map((prop, index) => (<div key={index}>
+                                        {styleProperties.map((prop, index) => (<div key={index} className={clsx({
+                                            'invisible':
+                                                (prop.name === 'heavyDutyEndPostPrice' && category?.value.toLowerCase() !== 'aluminum') ||
+                                                (prop.name === 'cornerPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'endPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'flatCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'gothicCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
+                                        })}>
                                             <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="text" name={prop.name} id={prop.name} />
+                                                <Input type="text" required name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
