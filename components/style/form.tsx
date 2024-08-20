@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreatableSelect from 'react-select/creatable';
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,8 @@ import { createSelectionOption } from "@/lib/utils";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import Image from "next/image";
-import avatar from "@/public/images/avatar/avatar-3.jpg"
+import avatar from "@/public/images/avatar/avatar-3.jpg";
+import clsx from 'clsx';
 
 export function StyleForm() {
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
@@ -36,10 +37,27 @@ export function StyleForm() {
     const [lengthOptions, setLengthOptions] = useState([]);
 
     const handleCreate = (inputValue: string, type: string) => {
-        // setTimeout(() => {
-        //     const newOption = createSelectionOption(inputValue);
-        //     setValue(newOption);
-        // }, 1000);
+        const newOption = createSelectionOption(inputValue);
+
+        switch (type) {
+            case 'category':
+                setCategory(newOption);
+                break;
+            case 'style':
+                setStyle(newOption);
+                break;
+            case 'height':
+                setHeight(newOption);
+                break;
+            case 'color':
+                setColor(newOption);
+                break;
+            case 'length':
+                setLength(newOption);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -128,7 +146,7 @@ export function StyleForm() {
                                                 id="color"
                                                 name="color"
                                                 isClearable
-                                                placeholder={'Pick a new color or Choose from the list'}
+                                                placeholder={'Type a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
                                                 onChange={(newValue) => setColor(newValue)}
                                                 onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
@@ -150,7 +168,16 @@ export function StyleForm() {
                                                 value={length}
                                             />
                                         </div>
-                                        {styleProperties.map((prop, index) => (<div key={index} className="col-span-12 lg:col-span-4">
+                                        {styleProperties.map((prop, index) => (<div key={index} className={clsx('col-span-12 lg:col-span-4', {
+                                            'invisible':
+                                                (prop.name === 'heavyDutyEndPostPrice' && category?.value.toLowerCase() !== 'aluminum') ||
+                                                (prop.name === 'cornerPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'endPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'flatCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'gothicCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
+                                        })}>
                                             <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
