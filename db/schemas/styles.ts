@@ -6,6 +6,7 @@ import { fences } from './fences';
 export const styles = pgTable('styles', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
+    image: text('image'),
     categoryId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')

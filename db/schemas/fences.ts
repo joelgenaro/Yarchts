@@ -29,7 +29,6 @@ export const fences = pgTable('fences', {
     federationCapPrice: numeric('federation_cap_price'),
     minProfit: numeric('min_profit'),
     laborCost: numeric('labor_cost'),
-    image: text('image'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()

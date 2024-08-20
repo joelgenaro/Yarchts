@@ -1,5 +1,5 @@
 {
-  "id": "d92a9fef-28e5-4963-b451-e3937238658e",
+  "id": "f1263056-2d18-4c73-ac7c-52ebbe5a2e64",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -81,8 +81,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "user_id": {
-          "name": "user_id",
+        "category_id": {
+          "name": "category_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -103,12 +103,227 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "colors_user_id_users_id_fk": {
-          "name": "colors_user_id_users_id_fk",
+        "colors_category_id_categories_id_fk": {
+          "name": "colors_category_id_categories_id_fk",
           "tableFrom": "colors",
-          "tableTo": "users",
+          "tableTo": "categories",
           "columnsFrom": [
-            "user_id"
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.fences": {
+      "name": "fences",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "style_id": {
+          "name": "style_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "height_id": {
+          "name": "height_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "color_id": {
+          "name": "color_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "length_id": {
+          "name": "length_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "panel_price": {
+          "name": "panel_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_price": {
+          "name": "post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lft_price": {
+          "name": "lft_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "3_feet_gate_price": {
+          "name": "3_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "4_feet_gate_price": {
+          "name": "4_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "5_feet_gate_price": {
+          "name": "5_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "8_feet_gate_price": {
+          "name": "8_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "10_feet_gate_price": {
+          "name": "10_feet_gate_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heavy_duty_end_post_price": {
+          "name": "heavy_duty_end_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_post_price": {
+          "name": "end_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "corner_post_price": {
+          "name": "corner_post_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flat_cap_price": {
+          "name": "flat_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gothic_cap_price": {
+          "name": "gothic_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "new_england_cap_price": {
+          "name": "new_england_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "federation_cap_price": {
+          "name": "federation_cap_price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "min_profit": {
+          "name": "min_profit",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "labor_cost": {
+          "name": "labor_cost",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fences_style_id_styles_id_fk": {
+          "name": "fences_style_id_styles_id_fk",
+          "tableFrom": "fences",
+          "tableTo": "styles",
+          "columnsFrom": [
+            "style_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fences_height_id_heights_id_fk": {
+          "name": "fences_height_id_heights_id_fk",
+          "tableFrom": "fences",
+          "tableTo": "heights",
+          "columnsFrom": [
+            "height_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fences_color_id_colors_id_fk": {
+          "name": "fences_color_id_colors_id_fk",
+          "tableFrom": "fences",
+          "tableTo": "colors",
+          "columnsFrom": [
+            "color_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fences_length_id_lengths_id_fk": {
+          "name": "fences_length_id_lengths_id_fk",
+          "tableFrom": "fences",
+          "tableTo": "lengths",
+          "columnsFrom": [
+            "length_id"
           ],
           "columnsTo": [
             "id"
@@ -197,8 +412,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "category_id": {
+          "name": "category_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -219,12 +434,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "heights_user_id_users_id_fk": {
-          "name": "heights_user_id_users_id_fk",
+        "heights_category_id_categories_id_fk": {
+          "name": "heights_category_id_categories_id_fk",
           "tableFrom": "heights",
-          "tableTo": "users",
+          "tableTo": "categories",
           "columnsFrom": [
-            "user_id"
+            "category_id"
           ],
           "columnsTo": [
             "id"
@@ -252,8 +467,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "category_id": {
+          "name": "category_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -274,12 +489,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "lengths_user_id_users_id_fk": {
-          "name": "lengths_user_id_users_id_fk",
+        "lengths_category_id_categories_id_fk": {
+          "name": "lengths_category_id_categories_id_fk",
           "tableFrom": "lengths",
-          "tableTo": "users",
+          "tableTo": "categories",
           "columnsFrom": [
-            "user_id"
+            "category_id"
           ],
           "columnsTo": [
             "id"
@@ -454,144 +669,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "category_id": {
           "name": "category_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "height_id": {
-          "name": "height_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "color_id": {
-          "name": "color_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "length_id": {
-          "name": "length_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "panel_price": {
-          "name": "panel_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "post_price": {
-          "name": "post_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "lft_price": {
-          "name": "lft_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "3_feet_gate_price": {
-          "name": "3_feet_gate_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "4_feet_gate_price": {
-          "name": "4_feet_gate_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "5_feet_gate_price": {
-          "name": "5_feet_gate_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "8_feet_gate_price": {
-          "name": "8_feet_gate_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "10_feet_gate_price": {
-          "name": "10_feet_gate_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "heavy_duty_end_post_price": {
-          "name": "heavy_duty_end_post_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "end_post_price": {
-          "name": "end_post_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "corner_post_price": {
-          "name": "corner_post_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "flat_cap_price": {
-          "name": "flat_cap_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "gothic_cap_price": {
-          "name": "gothic_cap_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "new_england_cap_price": {
-          "name": "new_england_cap_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "federation_cap_price": {
-          "name": "federation_cap_price",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "min_profit": {
-          "name": "min_profit",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "labor_cost": {
-          "name": "labor_cost",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "photo_path": {
-          "name": "photo_path",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "is_active": {
-          "name": "is_active",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
         },
         "created_at": {
           "name": "created_at",
