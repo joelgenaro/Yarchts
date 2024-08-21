@@ -1,5 +1,6 @@
 import { pgTable, serial, text, integer, numeric, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { categories } from './categories';
 import { styles } from './styles';
 import { colors } from './colors';
 import { heights } from './heights';
@@ -7,6 +8,7 @@ import { lengths } from './lengths';
 
 export const fences = pgTable('fences', {
     id: serial('id').primaryKey(),
+    categoryId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
     styleId: integer('style_id').notNull().references(() => styles.id, { onDelete: 'cascade' }),
     heightId: integer('height_id').notNull().references(() => heights.id, { onDelete: 'cascade' }),
     colorId: integer('color_id').notNull().references(() => colors.id, { onDelete: 'cascade' }),
@@ -37,6 +39,13 @@ export const fences = pgTable('fences', {
 
 export type FenceSelect = typeof fences.$inferSelect;
 export type FenceInsert = typeof fences.$inferInsert;
+
+export const fencesCategoriesRelations = relations(fences, ({ one }) => ({
+    category: one(categories, {
+        fields: [fences.categoryId],
+        references: [categories.id],
+    }),
+}));
 
 export const fencesStylesRelations = relations(fences, ({ one }) => ({
     style: one(styles, {

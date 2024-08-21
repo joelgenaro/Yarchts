@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useActionState } from "react";
+import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom"
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,66 +21,34 @@ import { createSelectionOption } from "@/lib/utils";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { createStyle } from "@/actions/style";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import CreatableSelect from 'react-select/creatable';
 import Image from "next/image";
-import avatar from "@/public/images/avatar/avatar-3.jpg";
+import avatar from "@/public/images/avatar/user.png";
 import clsx from 'clsx';
 import { ValidStylePropNames } from '@/lib/types';
-
-const schema = z.object({
-    category: z.object({
-        value: z.string(),
-        label: z.string(),
-    }),
-    style: z.object({
-        value: z.string(),
-        label: z.string(),
-    }),
-    color: z.object({
-        value: z.string(),
-        label: z.string(),
-    }),
-    height: z.object({
-        value: z.string(),
-        label: z.string(),
-    }),
-    length: z.object({
-        value: z.string(),
-        label: z.string(),
-    }),
-    lftPrice: z.number(),
-    thirdFeetGatePrice: z.number(),
-    foruthFeetGatePrice: z.number(),
-    fifthFeetGatePrice: z.number(),
-    eighthFeetGatePrice: z.number(),
-    tenthFeetGatePrice: z.number(),
-    panelPrice: z.number(),
-    postPrice: z.number(),
-    heavyDutyEndPostPrice: z.number(),
-    endPostPrice: z.number(),
-    cornerPostPrice: z.number(),
-    flatCapPrice: z.number(),
-    gothicCapPrice: z.number(),
-    newEnglandCapPrice: z.number(),
-    federationCapPrice: z.number(),
-});
+import { useSession } from "next-auth/react";
 
 export function StyleForm() {
+    const { data: session } = useSession();
+    console.log(session)
+    const [categoryId, setCategoryId] = useState<string>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
     const [categoryOptions, setCategoryOptions] = useState([]);
+    const [styleId, setStyleId] = useState<string>();
     const [style, setStyle] = useState<CreatableSelectionOptions | null>();
     const [styleOptions, setStyleOptions] = useState([]);
+    const [heightId, setHeightId] = useState<string>();
     const [height, setHeight] = useState<CreatableSelectionOptions | null>();
     const [heightOptions, setHeightOptions] = useState([]);
+    const [colorId, setColorId] = useState<string>();
     const [color, setColor] = useState<CreatableSelectionOptions | null>();
     const [colorOptions, setColorOptions] = useState([]);
+    const [lengthId, setLengthId] = useState<string>();
     const [length, setLength] = useState<CreatableSelectionOptions | null>();
     const [lengthOptions, setLengthOptions] = useState([]);
+    const { pending } = useFormStatus();
 
     const handleCreate = (inputValue: string, type: string) => {
         const newOption = createSelectionOption(inputValue);
@@ -105,20 +74,6 @@ export function StyleForm() {
         }
     };
 
-    useEffect(() => { console.log(category) }, [category]);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<z.infer<typeof schema>>({
-        resolver: zodResolver(schema),
-    });
-
-    function onSubmit(data: z.infer<typeof schema>) {
-        console.log(JSON.stringify(data, null, 2));
-    }
-
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -134,7 +89,14 @@ export function StyleForm() {
                     </DialogTitle>
                 </DialogHeader>
                 <div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form action={createStyle}>
+                        <input type="hidden" name="userId" value={session?.user?.id ?? ''} />
+                        <input type="hidden" name="categoryId" value={categoryId} />
+                        <input type="hidden" name="styleId" value={styleId} />
+                        <input type="hidden" name="colorId" value={colorId} />
+                        <input type="hidden" name="heightId" value={heightId} />
+                        <input type="hidden" name="lengthId" value={lengthId} />
+
                         <div className="h-[300px] sm:h-[600px] w-full">
                             <ScrollArea className="h-full">
                                 <div className="hidden lg:block">
@@ -147,44 +109,36 @@ export function StyleForm() {
                                                     className="absolute bottom-0 right-0 w-8 h-8 rounded-full cursor-pointer"
                                                 >
                                                     <Label
-                                                        htmlFor="avatar"
+                                                        htmlFor="image"
                                                     >
                                                         <Icon className="w-5 h-5 text-primary-foreground" icon="heroicons:pencil-square" />
                                                     </Label>
                                                 </Button>
-                                                <Input type="file" className="hidden" id="avatar" name="photoPath" />
+                                                <Input type="file" className="hidden" id="image" name="image" />
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-8">
                                             <div className="col-span-12 lg:col-span-6">
-                                                <Label htmlFor="category" className={cn("", {
-                                                    "text-destructive": errors.category,
-                                                })}>Category Name</Label>
+                                                <Label htmlFor="category">Category Name</Label>
                                                 <CreatableSelect
                                                     id="category"
-                                                    {...register("category")}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors.category,
-                                                    })}
+                                                    name="category"
+                                                    required={true}
                                                     isClearable
                                                     placeholder={'Type a new category or Choose from the list'}
                                                     styles={creatableSelectionStyles}
-                                                    onChange={(newValue) => setCategory(newValue)}
+                                                    onChange={(newValue) => (setCategory(newValue), setCategoryId(newValue?.id ?? ''))}
                                                     onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
                                                     options={categoryOptions}
                                                     value={category}
                                                 />
                                             </div>
                                             <div className="col-span-12 mt-2 lg:col-span-6 ">
-                                                <Label htmlFor="style" className={cn("", {
-                                                    "text-destructive": errors.style,
-                                                })}>Style Name</Label>
+                                                <Label htmlFor="style">Style Name</Label>
                                                 <CreatableSelect
                                                     id="style"
-                                                    {...register("style")}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors.style,
-                                                    })}
+                                                    name="style"
+                                                    required={true}
                                                     isClearable
                                                     placeholder={'Type a new style or Choose from the list'}
                                                     styles={creatableSelectionStyles}
@@ -196,15 +150,11 @@ export function StyleForm() {
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="height" className={cn("", {
-                                                "text-destructive": errors.height,
-                                            })}>Panel Height ( in foot )</Label>
+                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
                                             <CreatableSelect
                                                 id="height"
-                                                {...register("height")}
-                                                className={cn("", {
-                                                    "border-destructive focus:border-destructive": errors.height,
-                                                })}
+                                                name="height"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -215,15 +165,11 @@ export function StyleForm() {
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="color" className={cn("", {
-                                                "text-destructive": errors.color,
-                                            })}>Fence Color</Label>
+                                            <Label htmlFor="color">Fence Color</Label>
                                             <CreatableSelect
                                                 id="color"
-                                                {...register("color")}
-                                                className={cn("", {
-                                                    "border-destructive focus:border-destructive": errors.color,
-                                                })}
+                                                name="length"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -234,15 +180,11 @@ export function StyleForm() {
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="length" className={cn("", {
-                                                "text-destructive": errors.length,
-                                            })}>Panel Length ( in foot )</Label>
+                                            <Label htmlFor="length" >Panel Length ( in foot )</Label>
                                             <CreatableSelect
                                                 id="length"
-                                                {...register("length")}
-                                                className={cn("", {
-                                                    "border-destructive focus:border-destructive": errors.length,
-                                                })}
+                                                name="length"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -262,17 +204,12 @@ export function StyleForm() {
                                                 (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
                                                 (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label className={cn("", {
-                                                "text-destructive": errors[prop.name as ValidStylePropNames],
-                                            })} htmlFor={prop.name}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input {...register(prop.name as ValidStylePropNames)}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors[prop.name as ValidStylePropNames],
-                                                    })} type="number" name={prop.name} id={prop.name} />
+                                                <Input type="number" defaultValue={0} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
@@ -285,6 +222,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="category"
                                                 name="category"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new category or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -300,6 +238,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="style"
                                                 name="style"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new style or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -314,6 +253,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="height"
                                                 name="height"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -328,6 +268,7 @@ export function StyleForm() {
                                             <CreatableSelect
                                                 id="color"
                                                 name="color"
+                                                required={true}
                                                 isClearable
                                                 placeholder={'Pick a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
@@ -344,6 +285,7 @@ export function StyleForm() {
                                                 id="length"
                                                 name="panelPrice"
                                                 isClearable
+                                                required={true}
                                                 placeholder={'Type a new length or Choose from the list'}
                                                 styles={creatableSelectionStyles}
                                                 onChange={(newValue) => setLength(newValue)}
@@ -363,17 +305,12 @@ export function StyleForm() {
                                                 (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
                                                 (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label className={cn("", {
-                                                "text-destructive": errors[prop.name as ValidStylePropNames],
-                                            })} htmlFor={prop.name}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" {...register(prop.name as ValidStylePropNames)}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors[prop.name as ValidStylePropNames],
-                                                    })} name={prop.name} id={prop.name} />
+                                                <Input type="number" defaultValue={0} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
@@ -388,7 +325,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button type="submit">Create Style</Button>
+                            <Button aria-disabled={pending} type="submit">{pending ? "Creating..." : "Create Style"}</Button>
                         </div>
                     </form>
                 </div >

@@ -5,6 +5,7 @@ import { styles } from './styles';
 import { colors } from './colors';
 import { heights } from './heights';
 import { lengths } from './lengths';
+import { fences } from './fences';
 import { removals } from './removals';
 
 export const categories = pgTable('categories', {
@@ -45,4 +46,8 @@ export const categoriesHeightsRelations = relations(categories, ({ many }) => ({
 
 export const categoriesLengthsRelations = relations(categories, ({ many }) => ({
     lengths: many(lengths),
+}));
+
+export const categoriesFencesRelations = relations(categories, ({ many }) => ({
+    fences: many(fences),
 }));

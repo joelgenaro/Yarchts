@@ -21,7 +21,7 @@ export interface CalendarCategory {
 
 // for style
 export interface CreatableSelectionOptions {
-  id?: number;
+  id?: string;
   value: string;
   label: string;
   isFixed?: boolean;
