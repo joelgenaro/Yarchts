@@ -27,7 +27,7 @@ import { Icon } from "@iconify/react";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { formatDate } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { updateCompanyActiveStateAction, deleteCompanyAction } from '@/actions/company'
+import { updateCompanyActiveState, deleteCompany } from '@/actions/company'
 import { toast as reToast } from "react-hot-toast";
 import { CompanyGridProps } from "@/lib/interfaces";
 
@@ -39,7 +39,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
   const onDeleteAction = async (id: number) => {
     setPending(true);
 
-    const res = await deleteCompanyAction(id);
+    const res = await deleteCompany(id);
 
     if (res.success) {
       reToast.success(res.message)
@@ -50,9 +50,9 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
     setPending(false)
   }
 
-  const updateCompanyActiveState = async (key: string, id: number) => {
+  const updateCompanyState = async (key: string, id: number) => {
     setPending(true);
-    const res = await updateCompanyActiveStateAction(key, id);
+    const res = await updateCompanyActiveState(key, id);
 
     if (res.success) {
       reToast.success(res.message)
@@ -94,7 +94,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
               'pointer-events-none': pending === true,
               'cursor-pointer': pending === false,
             },
-          )} onClick={() => updateCompanyActiveState('isFav', company?.id)}>
+          )} onClick={() => updateCompanyState('isFav', company?.id)}>
             {company?.isFav ? (
               <Icon
                 icon="heroicons:star-solid"
@@ -122,7 +122,7 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
                   'pointer-events-none': pending === true,
                   'cursor-pointer': pending === false,
                 },
-              )} onClick={() => updateCompanyActiveState('isActive', company?.id)}>
+              )} onClick={() => updateCompanyState('isActive', company?.id)}>
                 {company?.isActive ? 'Disable' : 'Enable'}
               </DropdownMenuItem>
               <DropdownMenuItem

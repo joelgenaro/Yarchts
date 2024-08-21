@@ -22,4 +22,33 @@ export type CompanyData = {
     icon: JSX.Element;
 };
 
+// for style
+export type State = {
+    errors?: {
+        styleId?: string[];
+        heightId?: string[];
+        colorId?: string[];
+        lengthId?: string[];
+        panelPrice?: string[];
+        postPrice?: string[];
+        lftPrice?: string[];
+        thirdFeetGatePrice?: string[];
+        foruthFeetGatePrice?: string[];
+        fifthFeetGatePrice?: string[];
+        eighthFeetGatePrice?: string[];
+        tenthFeetGatePrice?: string[];
+        heavyDutyEndPostPrice?: string[];
+        endPostPrice?: string[];
+        cornerPostPrice?: string[];
+        flatCapPrice?: string[];
+        gothicCapPrice?: string[];
+        newEnglandCapPrice?: string[];
+        federationCapPrice?: string[];
+    };
+    message?: string | null;
+};
+
+export type ValidStylePropNames = 'heavyDutyEndPostPrice' | 'cornerPostPrice' | 'endPostPrice' | 'flatCapPrice' | 'gothicCapPrice' | 'newEnglandCapPrice' | 'federationCapPrice' | 'lftPrice' | 'thirdFeetGatePrice' | 'foruthFeetGatePrice' | 'fifthFeetGatePrice' | 'eighthFeetGatePrice' | 'tenthFeetGatePrice' | 'panelPrice' | 'postPrice';
+
+
 

@@ -6,7 +6,7 @@ import { usersToRoles, roles } from '@/db/schemas/roles';
 import { eq, getTableColumns, not, and, isNotNull, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-export const updateCompanyActiveStateAction = async (key: string, id: number) => {
+export const updateCompanyActiveState = async (key: string, id: number) => {
     try {
         await db.update(users)
             .set(key === 'isActive' ? { isActive: not(users.isActive) } : { isFav: not(users.isFav) })
@@ -24,7 +24,7 @@ export const updateCompanyActiveStateAction = async (key: string, id: number) =>
     }
 };
 
-export const deleteCompanyAction = async (id: number) => {
+export const deleteCompany = async (id: number) => {
     try {
         await db.delete(users).where(eq(users.id, id));
 

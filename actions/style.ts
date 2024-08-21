@@ -1,25 +1,25 @@
 "use server"
 
 import { db } from '@/db';
-import { users } from '@/db/schemas/users';
+import { FenceInsert, fences } from '@/db/schemas/fences';
 import { usersToRoles, roles } from '@/db/schemas/roles';
 import { eq, getTableColumns, not, and, isNotNull, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-// export const updateCompanyActiveStateAction = async (key: string, id: number) => {
-//     try {
-//         await db.update(users)
-//             .set(key === 'isActive' ? { isActive: not(users.isActive) } : { isFav: not(users.isFav) })
-//             .where(eq(users.id, id));
+export const createStyle = async (formData: FormData) => {
+    try {
 
-//         revalidatePath('/en/companies');
+        // const newFence: FenceInsert = { ...formData };
+        // await db.insert(fences).values(newFence);
 
-//         return {
-//             success: true, message: 'Successfuly Updated Company Status!',
-//         };
-//     } catch (error) {
-//         return {
-//             success: false, message: 'Failed to Update Company Status.',
-//         };
-//     }
-// };
+        revalidatePath('/en/style');
+
+        return {
+            success: true, message: 'Successfuly Create Style!',
+        };
+    } catch (error) {
+        return {
+            success: false, message: 'Failed to Create Style.',
+        };
+    }
+};
