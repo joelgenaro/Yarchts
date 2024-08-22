@@ -31,7 +31,9 @@ import { useSession } from "next-auth/react";
 
 export function StyleForm() {
     const { data: session } = useSession();
+    const [pending, setPending] = useState(false);
     const [isPending, startTransition] = useTransition();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [categoryId, setCategoryId] = useState<string>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -72,23 +74,25 @@ export function StyleForm() {
         }
     };
 
-    const handleSubmit = () => {
-        startTransition(() => {
-            const form = document.querySelector('#styleForm') as HTMLFormElement;
-            const formData = new FormData(form);
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setPending(true);
 
-            createStyle(formData).then((res) => {
-                if (res?.success) {
-                    reToast.success(res?.message);
-                } else {
-                    reToast.error(res?.message);
-                }
-            })
-        });
+        const form = document.querySelector('#styleForm') as HTMLFormElement;
+        const formData = new FormData(form);
+        const res = await createStyle(formData);
+
+        if (res?.success) {
+            reToast.success(res?.message);
+            setIsDialogOpen(false);
+        } else {
+            reToast.error(res?.message);
+        }
+        setPending(false);
     }
 
     return (
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8">
                     <PlusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
@@ -338,7 +342,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button aria-disabled={isPending} type="submit">{isPending ? "Creating..." : "Create Style"}</Button>
+                            <Button disabled={pending} type="submit">{pending ? "Creating..." : "Create Style"}</Button>
                         </div>
                     </form>
                 </div >

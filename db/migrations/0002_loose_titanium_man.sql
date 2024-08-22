@@ -1,0 +1,1 @@
+ALTER TABLE "fences" ADD COLUMN "image" text;
