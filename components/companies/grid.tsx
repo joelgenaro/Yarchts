@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
@@ -32,34 +32,32 @@ import { toast as reToast } from "react-hot-toast";
 import { CompanyGridProps } from "@/lib/interfaces";
 
 const CompanyGrid = ({ company }: CompanyGridProps) => {
-  const [pending, setPending] = React.useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = React.useState<boolean>(false);
   const { theme: mode } = useTheme();
 
-  const onDeleteAction = async (id: number) => {
-    setPending(true);
-
-    const res = await deleteCompany(id);
-
-    if (res.success) {
-      reToast.success(res.message)
-    } else {
-      console.log(res.message)
-      reToast.error(res.message)
-    }
-    setPending(false)
+  const onDeleteAction = async (id: number): Promise<void> => {
+    await startTransition(() => {
+      return deleteCompany(id).then((res) => {
+        if (res?.success) {
+          reToast.success(res?.message);
+        } else {
+          reToast.error(res?.message);
+        }
+      })
+    });
   }
 
   const updateCompanyState = async (key: string, id: number) => {
-    setPending(true);
-    const res = await updateCompanyActiveState(key, id);
-
-    if (res.success) {
-      reToast.success(res.message)
-    } else {
-      reToast.error(res.message)
-    }
-    setPending(false)
+    startTransition(() => {
+      updateCompanyActiveState(key, id).then((res) => {
+        if (res?.success) {
+          reToast.success(res?.message);
+        } else {
+          reToast.error(res?.message);
+        }
+      })
+    });
   }
 
   return (
@@ -91,8 +89,8 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
           <div className={clsx(
             'flex-none',
             {
-              'pointer-events-none': pending === true,
-              'cursor-pointer': pending === false,
+              'pointer-events-none': isPending === true,
+              'cursor-pointer': isPending === false,
             },
           )} onClick={() => updateCompanyState('isFav', company?.id)}>
             {company?.isFav ? (
@@ -119,8 +117,8 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
             <DropdownMenuContent className='w-[196px]' align="end">
               <DropdownMenuItem className={clsx(
                 {
-                  'pointer-events-none': pending === true,
-                  'cursor-pointer': pending === false,
+                  'pointer-events-none': isPending === true,
+                  'cursor-pointer': isPending === false,
                 },
               )} onClick={() => updateCompanyState('isActive', company?.id)}>
                 {company?.isActive ? 'Disable' : 'Enable'}
@@ -128,8 +126,8 @@ const CompanyGrid = ({ company }: CompanyGridProps) => {
               <DropdownMenuItem
                 className={clsx(
                   {
-                    'pointer-events-none': pending === true,
-                    'cursor-pointer': pending === false,
+                    'pointer-events-none': isPending === true,
+                    'cursor-pointer': isPending === false,
                   },
                 )}
                 onSelect={() => setOpen(true)}

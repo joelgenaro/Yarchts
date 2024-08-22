@@ -83,7 +83,7 @@ export const createStyle = async (formData: FormData) => {
         revalidatePath('/en/style');
 
         return {
-            success: true, message: 'Successfuly Create Style!',
+            success: false, message: 'Successfully Created Style.',
         };
     } catch (error) {
         return {

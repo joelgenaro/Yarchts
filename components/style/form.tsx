@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useFormStatus } from "react-dom"
+import { useEffect, useState, useTransition } from "react";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,9 +19,9 @@ import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
 import { createSelectionOption } from "@/lib/utils";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
+import { toast as reToast } from "react-hot-toast";
 import { createStyle } from "@/actions/style";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 import CreatableSelect from 'react-select/creatable';
 import Image from "next/image";
 import avatar from "@/public/images/avatar/user.png";
@@ -32,7 +31,7 @@ import { useSession } from "next-auth/react";
 
 export function StyleForm() {
     const { data: session } = useSession();
-    const [pending, setPending] = useState(false);
+    const [isPending, startTransition] = useTransition();
     const [categoryId, setCategoryId] = useState<string>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -73,6 +72,21 @@ export function StyleForm() {
         }
     };
 
+    const handleSubmit = () => {
+        startTransition(() => {
+            const form = document.querySelector('#styleForm') as HTMLFormElement;
+            const formData = new FormData(form);
+
+            createStyle(formData).then((res) => {
+                if (res?.success) {
+                    reToast.success(res?.message);
+                } else {
+                    reToast.error(res?.message);
+                }
+            })
+        });
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -88,7 +102,7 @@ export function StyleForm() {
                     </DialogTitle>
                 </DialogHeader>
                 <div>
-                    <form action={createStyle}>
+                    <form id="styleForm" onSubmit={handleSubmit}>
                         <input type="hidden" name="userId" value={session?.user?.id ?? ''} />
                         <input type="hidden" name="categoryId" value={categoryId} />
                         <input type="hidden" name="styleId" value={styleId} />
@@ -324,7 +338,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button aria-disabled={pending} type="submit">{pending ? "Creating..." : "Create Style"}</Button>
+                            <Button aria-disabled={isPending} type="submit">{isPending ? "Creating..." : "Create Style"}</Button>
                         </div>
                     </form>
                 </div >

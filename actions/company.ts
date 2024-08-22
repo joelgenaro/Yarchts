@@ -31,7 +31,7 @@ export const deleteCompany = async (id: number) => {
         revalidatePath('/en/companies');
 
         return {
-            success: true, message: 'Successfuly Deleted Company!',
+            success: true, message: 'Successfuly Deleted Company Status!',
         };
     } catch (error) {
         return {
