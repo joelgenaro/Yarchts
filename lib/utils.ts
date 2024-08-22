@@ -175,6 +175,6 @@ export const formatNumber = (num: number): string => {
 
 export const createSelectionOption = (label: string) => ({
   label,
-  value: label.toLowerCase().replace(/\W/g, ''),
+  value: label,
 });
 

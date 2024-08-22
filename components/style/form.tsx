@@ -32,7 +32,7 @@ import { useSession } from "next-auth/react";
 
 export function StyleForm() {
     const { data: session } = useSession();
-    console.log(session)
+    const [pending, setPending] = useState(false);
     const [categoryId, setCategoryId] = useState<string>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -48,7 +48,6 @@ export function StyleForm() {
     const [lengthId, setLengthId] = useState<string>();
     const [length, setLength] = useState<CreatableSelectionOptions | null>();
     const [lengthOptions, setLengthOptions] = useState([]);
-    const { pending } = useFormStatus();
 
     const handleCreate = (inputValue: string, type: string) => {
         const newOption = createSelectionOption(inputValue);
