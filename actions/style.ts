@@ -7,10 +7,7 @@ import { ColorInsert, colors } from '@/db/schemas/colors';
 import { HeightInsert, heights } from '@/db/schemas/heights';
 import { LengthInsert, lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
-import { usersToRoles, roles } from '@/db/schemas/roles';
-import { eq, getTableColumns, not, and, isNotNull, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { color } from 'framer-motion';
 
 export const createStyle = async (formData: FormData) => {
     try {
@@ -91,3 +88,22 @@ export const createStyle = async (formData: FormData) => {
         };
     }
 };
+
+export const getStyles = async (userId: number) => {
+    try {
+        const result = await db.query.categories.findMany({
+            where: (categories, { eq }) => eq(categories.userId, userId),
+            with: {
+                styles: true,
+                colors: true,
+                heights: true,
+                lengths: true,
+                fences: true,
+            },
+        });
+
+        return result;
+    } catch (error) {
+        throw new Error('Failed to Get Styles.');
+    }
+}

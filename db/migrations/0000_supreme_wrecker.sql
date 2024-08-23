@@ -17,11 +17,13 @@ CREATE TABLE IF NOT EXISTS "colors" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "fences" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"category_id" integer NOT NULL,
 	"style_id" integer NOT NULL,
 	"height_id" integer NOT NULL,
 	"color_id" integer NOT NULL,
 	"length_id" integer NOT NULL,
 	"is_active" boolean DEFAULT false,
+	"image" text,
 	"panel_price" numeric,
 	"post_price" numeric,
 	"lft_price" numeric,
@@ -156,6 +158,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "colors" ADD CONSTRAINT "colors_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "fences" ADD CONSTRAINT "fences_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

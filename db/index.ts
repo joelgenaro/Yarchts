@@ -10,8 +10,9 @@ import * as styles from './schemas/styles';
 import * as subscription_items from './schemas/subscription_items';
 import * as subscriptions from './schemas/subscriptions';
 import * as users from './schemas/users';
+import * as fences from './schemas/fences';
 
 config({ path: '.env' });
 
 export const client = postgres(process.env.DATABASE_URL!);
-export const db = drizzle(client, { schema: { ...categories, ...colors, ...heights, ...lengths, ...roles, ...styles, ...subscription_items, ...subscriptions, ...users } });
+export const db = drizzle(client, { schema: { ...categories, ...colors, ...heights, ...lengths, ...roles, ...styles, ...subscription_items, ...subscriptions, ...users, ...fences } });

@@ -27,10 +27,12 @@ import {
 
 import { StyleTablePagination } from "./pagination";
 import { StyleTableToolbar } from "./toolbar";
+
 interface StyleTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
 }
+
 export function StyleView<TData>({ columns, data }: StyleTableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});

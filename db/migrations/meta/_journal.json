@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1724093853111,
-      "tag": "0000_big_white_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1724256620576,
-      "tag": "0001_sudden_ted_forrester",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1724344355098,
-      "tag": "0002_loose_titanium_man",
+      "when": 1724420478648,
+      "tag": "0000_supreme_wrecker",
       "breakpoints": true
     }
   ]

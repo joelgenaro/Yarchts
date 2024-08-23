@@ -5,6 +5,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { RetrieveUser } from "@/actions/user";
 import { db } from "@/db"
 import bcrypt from 'bcryptjs';
+import NextAuth, { NextAuthOptions } from "next-auth";
 
 export const authOptions = {
   adapter: DrizzleAdapter(db),

@@ -1,5 +1,5 @@
 {
-  "id": "f1263056-2d18-4c73-ac7c-52ebbe5a2e64",
+  "id": "b83fe63e-3ae8-45af-86dc-4576c7661132",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -130,6 +130,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "category_id": {
+          "name": "category_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
         "style_id": {
           "name": "style_id",
           "type": "integer",
@@ -160,6 +166,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "panel_price": {
           "name": "panel_price",
@@ -279,6 +291,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "fences_category_id_categories_id_fk": {
+          "name": "fences_category_id_categories_id_fk",
+          "tableFrom": "fences",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "fences_style_id_styles_id_fk": {
           "name": "fences_style_id_styles_id_fk",
           "tableFrom": "fences",
