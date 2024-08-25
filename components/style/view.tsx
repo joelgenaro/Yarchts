@@ -36,10 +36,6 @@ export function StyleView({ styles }: StyleProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const fitleredData = useMemo(() => {
-    return getFences(styles);
-  }, [styles]);
-
   const table = useReactTable({
     data,
     columns,
@@ -62,7 +58,9 @@ export function StyleView({ styles }: StyleProps) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const fences = useMemo(() => getFences(styles), [styles]);
+  const fitleredData = useMemo(() => {
+    return getFences(styles);
+  }, [styles]);
 
   return (
     <div className="space-y-4">

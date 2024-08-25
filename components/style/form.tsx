@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
-import { createSelectionOption, getStyleOptions } from "@/lib/utils";
+import { createSelectionOption } from "@/lib/utils";
 import { CreatableSelectionOptions, StyleProps, UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
@@ -26,27 +26,44 @@ import Image from "next/image";
 import avatar from "@/public/images/avatar/user.png";
 import clsx from 'clsx';
 import { useSession } from "next-auth/react";
-import { getStyleOptions } from "@/lib/utils";
+import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
 
 export function StyleForm({ styles }: StyleProps) {
     const [session, setSession] = useState<UserSession>(useSession().data as UserSession);
     const [pending, setPending] = useState(false);
     const [isPending, startTransition] = useTransition();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [categoryId, setCategoryId] = useState<string>();
+    const [categoryId, setCategoryId] = useState<number | null>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
-    const [styleId, setStyleId] = useState<string>();
+    const [categoryOptions, setCategoryOptions] = useState<CreatableSelectionOptions[]>([]);
+    const [styleId, setStyleId] = useState<number | null>();
     const [style, setStyle] = useState<CreatableSelectionOptions | null>();
-    const [heightId, setHeightId] = useState<string>();
+    const [styleOptions, setStyleOptions] = useState<CreatableSelectionOptions[]>([]);
+    const [heightId, setHeightId] = useState<number | null>();
     const [height, setHeight] = useState<CreatableSelectionOptions | null>();
-    const [colorId, setColorId] = useState<string>();
+    const [heightOptions, setHeightOptions] = useState<CreatableSelectionOptions[]>([]);
+    const [colorId, setColorId] = useState<number | null>();
     const [color, setColor] = useState<CreatableSelectionOptions | null>();
-    const [lengthId, setLengthId] = useState<string>();
+    const [colorOptions, setColorOptions] = useState<CreatableSelectionOptions[]>([]);
+    const [lengthId, setLengthId] = useState<number | null>();
     const [length, setLength] = useState<CreatableSelectionOptions | null>();
+    const [lengthOptions, setLengthOptions] = useState<CreatableSelectionOptions[]>([]);
 
-    const { categoryOptions, styleOptions, colorOptions, heightOptions, lengthOptions } = useMemo(() => {
-        return getStyleOptions(styles);
+    useEffect(() => {
+        const options = getCategoryOptions(styles);
+        setCategoryOptions(options);
     }, [styles]);
+
+    useEffect(() => {
+        if (categoryId) {
+            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, categoryId);
+
+            setStyleOptions(styleOption);
+            setStyleOptions(colorOption);
+            setStyleOptions(heightOption);
+            setStyleOptions(lengthOption);
+        }
+    }, [category])
 
     const handleCreate = (inputValue: string, type: string) => {
         const newOption = createSelectionOption(inputValue);
@@ -106,11 +123,11 @@ export function StyleForm({ styles }: StyleProps) {
                 <div>
                     <form id="styleForm" onSubmit={handleSubmit}>
                         <input type="hidden" name="userId" value={session?.user?.id ?? ''} />
-                        <input type="hidden" name="categoryId" value={categoryId} />
-                        <input type="hidden" name="styleId" value={styleId} />
-                        <input type="hidden" name="colorId" value={colorId} />
-                        <input type="hidden" name="heightId" value={heightId} />
-                        <input type="hidden" name="lengthId" value={lengthId} />
+                        <input type="hidden" name="categoryId" value={categoryId ?? ''} />
+                        <input type="hidden" name="styleId" value={styleId ?? ''} />
+                        <input type="hidden" name="colorId" value={colorId ?? ''} />
+                        <input type="hidden" name="heightId" value={heightId ?? ''} />
+                        <input type="hidden" name="lengthId" value={lengthId ?? ''} />
 
                         <div className="h-[300px] sm:h-[600px] w-full">
                             <ScrollArea className="h-full">
@@ -142,7 +159,7 @@ export function StyleForm({ styles }: StyleProps) {
                                                     isClearable
                                                     placeholder={'Type a new category or Choose from the list'}
                                                     styles={creatableSelectionStyles}
-                                                    onChange={(newValue) => (setCategory(newValue), setCategoryId(newValue?.id ?? ''))}
+                                                    onChange={(newValue) => (setCategory(newValue), setCategoryId(newValue?.id))}
                                                     onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
                                                     options={categoryOptions}
                                                     value={category}

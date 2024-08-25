@@ -20,35 +20,30 @@ export const createStyle = async (formData: FormData) => {
         if (categoryID === 0) {
             const newCategory: CategoryInsert = { name: formData.get('category') as string, userId: Number(formData.get('userId')) };
             const result = await db.insert(categories).values(newCategory).returning({ insertedId: categories.id });
-
             categoryID = result[0].insertedId;
         }
 
         if (styleId === 0) {
             const newStyle: StyleInsert = { name: formData.get('style') as string, categoryId: categoryID };
             const result = await db.insert(styles).values(newStyle).returning({ insertedId: styles.id });
-
             styleId = result[0].insertedId;
         }
 
         if (colorId === 0) {
             const newColor: ColorInsert = { name: formData.get('color') as string, categoryId: categoryID };
             const result = await db.insert(colors).values(newColor).returning({ insertedId: colors.id });
-
             colorId = result[0].insertedId;
         }
 
         if (heightId === 0) {
             const newHeight: HeightInsert = { name: formData.get('height') as string, categoryId: categoryID };
             const result = await db.insert(heights).values(newHeight).returning({ insertedId: heights.id });
-
             heightId = result[0].insertedId;
         }
 
         if (lengthId === 0) {
             const newLength: LengthInsert = { name: formData.get('length') as string, categoryId: categoryID };
             const result = await db.insert(lengths).values(newLength).returning({ insertedId: lengths.id });
-
             lengthId = result[0].insertedId;
         }
 

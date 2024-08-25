@@ -37,9 +37,10 @@ export interface CompanyGridProps {
 
 // for style
 export interface CreatableSelectionOptions {
-  id?: string;
+  id?: number;
   value: string;
   label: string;
+  image?: string;
   isFixed?: boolean;
   icon?: string;
 }
