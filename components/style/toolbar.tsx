@@ -7,14 +7,14 @@ import { StyleTableViewOptions } from "./view-options";
 import { priorities, statuses } from "./data/data";
 import { StyleTableFacetedFilter } from "./faceted-filter";
 import { StyleForm } from "./form";
-import { Table } from "@tanstack/react-table";
 import { MinusCircle } from "lucide-react";
+import { Table } from "@tanstack/react-table";
+import { Style } from "@/lib/interfaces";
 
-interface StyleTableToolbarProps {
+export function StyleTableToolbar({ table, styles }: {
   table: Table<any>;
-}
-
-export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
+  styles: Style[];
+}) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -32,7 +32,7 @@ export function StyleTableToolbar({ table }: StyleTableToolbarProps) {
         className="h-8 min-w-[200px] max-w-sm"
       />
 
-      <StyleForm />
+      <StyleForm styles={styles} />
 
       <Button variant="outline" size="sm" className="h-8">
         <MinusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />

@@ -57,7 +57,7 @@ export const authOptions = {
   },
   debug: process.env.NODE_ENV !== "production",
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user }: { token: any, user: any }) => {
       if (user) {
         const u = user as unknown as any;
         return {
@@ -68,7 +68,7 @@ export const authOptions = {
       }
       return token;
     },
-    session(params) {
+    session(params: any) {
       return {
         ...params.session,
         user: {

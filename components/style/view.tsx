@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -24,20 +23,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { StyleTablePagination } from "./pagination";
 import { StyleTableToolbar } from "./toolbar";
+import { columns } from "@/components/style/columns";
+import { data } from "@/components/style/data";
+import { StyleProps } from "@/lib/interfaces";
+import { getFences } from "@/lib/utils";
 
-interface StyleTableProps<TData> {
-  columns: ColumnDef<TData>[];
-  data: TData[];
-}
+export function StyleView({ styles }: StyleProps) {
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-export function StyleView<TData>({ columns, data }: StyleTableProps<TData>) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const fitleredData = useMemo(() => {
+    return getFences(styles);
+  }, [styles]);
 
   const table = useReactTable({
     data,
@@ -61,9 +62,11 @@ export function StyleView<TData>({ columns, data }: StyleTableProps<TData>) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const fences = useMemo(() => getFences(styles), [styles]);
+
   return (
     <div className="space-y-4">
-      <StyleTableToolbar table={table} />
+      <StyleTableToolbar styles={styles} table={table} />
       <div className="border rounded-md">
         <Table>
           <TableHeader>

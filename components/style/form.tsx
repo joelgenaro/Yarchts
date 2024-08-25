@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,39 +16,37 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
-import { createSelectionOption } from "@/lib/utils";
-import { CreatableSelectionOptions } from "@/lib/interfaces";
+import { createSelectionOption, getStyleOptions } from "@/lib/utils";
+import { CreatableSelectionOptions, StyleProps, UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
 import { createStyle } from "@/actions/style";
-import { cn } from "@/lib/utils";
 import CreatableSelect from 'react-select/creatable';
 import Image from "next/image";
 import avatar from "@/public/images/avatar/user.png";
 import clsx from 'clsx';
-import { ValidStylePropNames } from '@/lib/types';
 import { useSession } from "next-auth/react";
+import { getStyleOptions } from "@/lib/utils";
 
-export function StyleForm() {
-    const { data: session } = useSession();
+export function StyleForm({ styles }: StyleProps) {
+    const [session, setSession] = useState<UserSession>(useSession().data as UserSession);
     const [pending, setPending] = useState(false);
     const [isPending, startTransition] = useTransition();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [categoryId, setCategoryId] = useState<string>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
-    const [categoryOptions, setCategoryOptions] = useState([]);
     const [styleId, setStyleId] = useState<string>();
     const [style, setStyle] = useState<CreatableSelectionOptions | null>();
-    const [styleOptions, setStyleOptions] = useState([]);
     const [heightId, setHeightId] = useState<string>();
     const [height, setHeight] = useState<CreatableSelectionOptions | null>();
-    const [heightOptions, setHeightOptions] = useState([]);
     const [colorId, setColorId] = useState<string>();
     const [color, setColor] = useState<CreatableSelectionOptions | null>();
-    const [colorOptions, setColorOptions] = useState([]);
     const [lengthId, setLengthId] = useState<string>();
     const [length, setLength] = useState<CreatableSelectionOptions | null>();
-    const [lengthOptions, setLengthOptions] = useState([]);
+
+    const { categoryOptions, styleOptions, colorOptions, heightOptions, lengthOptions } = useMemo(() => {
+        return getStyleOptions(styles);
+    }, [styles]);
 
     const handleCreate = (inputValue: string, type: string) => {
         const newOption = createSelectionOption(inputValue);

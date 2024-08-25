@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge";
+import { Style } from "@/lib/interfaces";
+import { categories } from "@/db/schemas/categories";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -177,4 +179,19 @@ export const createSelectionOption = (label: string) => ({
   label,
   value: label,
 });
+
+export const getStyleOptions = (styles: Style[]) => {
+  const categoryOptions = [];
+  const styleOptions = [];
+  const colorOptions = [];
+  const heightOptions = [];
+  const lengthOptions = [];
+
+  return { categoryOptions, styleOptions, colorOptions, heightOptions, lengthOptions };
+}
+
+export const getFences = (styles: Style[]) => {
+  return styles
+}
+
 

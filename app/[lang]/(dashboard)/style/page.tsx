@@ -4,16 +4,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { columns } from "@/components/style/columns";
 import { StyleView } from "@/components/style/view";
-import { data } from "@/components/style/data";
 import { getStyles } from "@/actions/style";
 import { authOptions } from "@/lib/auth";
 import { getServerSession, NextAuthOptions } from "next-auth";
+import { Style } from "@/lib/interfaces";
+import { UserSession } from "@/lib/interfaces";
 
 const StylePage = async () => {
-  const session = await getServerSession(authOptions as NextAuthOptions);
-  const styles = await getStyles(session?.user?.id);
+  const session: UserSession = await getServerSession(authOptions as NextAuthOptions) as UserSession;
+  const styles = await getStyles(session?.user?.id) as Style[];
 
   return (
     <div className="space-y-5">
@@ -23,8 +23,7 @@ const StylePage = async () => {
         </CardHeader>
         <CardContent >
           <StyleView
-            data={data}
-            columns={columns}
+            styles={styles}
           />
         </CardContent>
       </Card>

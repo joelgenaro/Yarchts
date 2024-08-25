@@ -1,4 +1,11 @@
 import { UserSelect } from '@/db/schemas/users';
+import { CategorySelect } from '@/db/schemas/categories';
+import { StyleSelect } from '@/db/schemas/styles';
+import { ColorSelect } from '@/db/schemas/colors';
+import { HeightSelector } from '@/db/schemas/heights';
+import { LengthSelect } from '@/db/schemas/lengths';
+import { FenceSelect } from '@/db/schemas/fences';
+import { Session } from "next-auth";
 
 // for calendar
 export interface CalendarEvent {
@@ -19,6 +26,15 @@ export interface CalendarCategory {
   className?: string;
 }
 
+// for companies
+export interface CompanyViewProps {
+  data: UserSelect[];
+}
+
+export interface CompanyGridProps {
+  company: UserSelect;
+}
+
 // for style
 export interface CreatableSelectionOptions {
   id?: string;
@@ -28,12 +44,25 @@ export interface CreatableSelectionOptions {
   icon?: string;
 }
 
-// for companies
-export interface CompanyViewProps {
-  data: UserSelect[];
+export interface Style extends CategorySelect {
+  styles: StyleSelect[];
+  colors: ColorSelect[];
+  heights: HeightSelector[];
+  lengths: LengthSelect[];
+  fences: FenceSelect[];
 }
 
-export interface CompanyGridProps {
-  company: UserSelect;
+export interface StyleProps {
+  styles: Style[];
 }
+
+export interface UserSession extends Session {
+  user: {
+    name: string;
+    email: string;
+    image?: string;
+    id: number
+  }
+};
+
 

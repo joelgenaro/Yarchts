@@ -1,4 +1,3 @@
-
 // color type
 export type color = "primary" | "info" | "warning" | "success" | "destructive" | "secondary";
 export type TextAreaColor = "primary" | "info" | "warning" | "success" | "destructive";
@@ -49,6 +48,4 @@ export type State = {
 };
 
 export type ValidStylePropNames = 'heavyDutyEndPostPrice' | 'cornerPostPrice' | 'endPostPrice' | 'flatCapPrice' | 'gothicCapPrice' | 'newEnglandCapPrice' | 'federationCapPrice' | 'lftPrice' | 'thirdFeetGatePrice' | 'foruthFeetGatePrice' | 'fifthFeetGatePrice' | 'eighthFeetGatePrice' | 'tenthFeetGatePrice' | 'panelPrice' | 'postPrice';
-
-
 

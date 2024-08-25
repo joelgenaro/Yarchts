@@ -107,3 +107,4 @@ export const getStyles = async (userId: number) => {
         throw new Error('Failed to Get Styles.');
     }
 }
+
