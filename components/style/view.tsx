@@ -29,6 +29,7 @@ import { columns } from "@/components/style/columns";
 import { data } from "@/components/style/data";
 import { StyleProps } from "@/lib/interfaces";
 import { getFences } from "@/lib/utils";
+import clsx from 'clsx';
 
 export function StyleView({ styles }: StyleProps) {
   const [rowSelection, setRowSelection] = useState({});
@@ -70,18 +71,23 @@ export function StyleView({ styles }: StyleProps) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead className={clsx(
+                    {
+                      'bg-green-50': (header?.column?.parent?.id === '1' || header?.id === '1_1_select'),
+                      'bg-rose-50': (header?.column?.parent?.id === '2' || header?.id === '1_2_height'),
+                      'bg-amber-50': (header?.column?.parent?.id === '3' || header?.id === '1_3_thirdFeetGatePrice'),
+                    },
+                  )} key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                  </TableHead>
+                )
+                )}
               </TableRow>
             ))}
           </TableHeader>
@@ -93,15 +99,23 @@ export function StyleView({ styles }: StyleProps) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className={clsx(
+                      {
+                        'bg-green-50': cell?.column?.parent?.id === '1',
+                        'bg-rose-50': cell?.column?.parent?.id === '2',
+                        'bg-amber-50': cell?.column?.parent?.id === '3',
+                      },
+                    )} key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
                       )}
                     </TableCell>
-                  ))}
+                  )
+                  )}
                 </TableRow>
-              ))
+              )
+              )
             ) : (
               <TableRow>
                 <TableCell

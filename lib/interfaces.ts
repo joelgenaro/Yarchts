@@ -65,5 +65,3 @@ export interface UserSession extends Session {
     id: number
   }
 };
-
-
