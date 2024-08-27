@@ -11,7 +11,7 @@ import { revalidatePath } from 'next/cache';
 
 export const createStyle = async (formData: FormData) => {
     try {
-        let categoryID = Number(formData.get('categoryID'));
+        let categoryID = Number(formData.get('categoryId'));
         let styleId = Number(formData.get('styleId'));
         let colorId = Number(formData.get('colorId'));
         let heightId = Number(formData.get('heightId'));

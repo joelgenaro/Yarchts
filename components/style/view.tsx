@@ -26,16 +26,20 @@ import {
 import { StyleTablePagination } from "./pagination";
 import { StyleTableToolbar } from "./toolbar";
 import { columns } from "@/components/style/columns";
-import { data } from "@/components/style/data";
 import { StyleProps } from "@/lib/interfaces";
 import { getFences } from "@/lib/utils";
 import clsx from 'clsx';
+// import { data } from "./data";
 
 export function StyleView({ styles }: StyleProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const data = useMemo(() => {
+    return getFences(styles);
+  }, [styles]);
 
   const table = useReactTable({
     data,
@@ -59,10 +63,6 @@ export function StyleView({ styles }: StyleProps) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const fitleredData = useMemo(() => {
-    return getFences(styles);
-  }, [styles]);
-
   return (
     <div className="space-y-4">
       <StyleTableToolbar styles={styles} table={table} />
@@ -74,9 +74,9 @@ export function StyleView({ styles }: StyleProps) {
                 {headerGroup.headers.map((header) => (
                   <TableHead className={clsx(
                     {
-                      'bg-green-50': (header?.column?.parent?.id === '1' || header?.id === '1_1_select'),
+                      'bg-green-50': (header?.column?.parent?.id === '1' || header?.id === '1_1_actions'),
                       'bg-rose-50': (header?.column?.parent?.id === '2' || header?.id === '1_2_height'),
-                      'bg-amber-50': (header?.column?.parent?.id === '3' || header?.id === '1_3_thirdFeetGatePrice'),
+                      'bg-amber-50 text-left styleTablePriceHeader': (header?.column?.parent?.id === '3' || header?.id === '1_3_thirdFeetGatePrice'),
                     },
                   )} key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder
@@ -101,7 +101,7 @@ export function StyleView({ styles }: StyleProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className={clsx(
                       {
-                        'bg-green-50': cell?.column?.parent?.id === '1',
+                        'bg-green-50': (cell?.column?.parent?.id === '1'),
                         'bg-rose-50': cell?.column?.parent?.id === '2',
                         'bg-amber-50': cell?.column?.parent?.id === '3',
                       },
@@ -130,6 +130,6 @@ export function StyleView({ styles }: StyleProps) {
         </Table>
       </div>
       <StyleTablePagination table={table} />
-    </div>
+    </div >
   );
 }

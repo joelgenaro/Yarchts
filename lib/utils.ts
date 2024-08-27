@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { Style } from "@/lib/interfaces";
 import { categories } from "@/db/schemas/categories";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
+import { StyleTableColumn } from "@/lib/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -182,7 +183,89 @@ export const createSelectionOption = (label: string) => ({
   value: label,
 });
 
-export const styles = [
+export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[] => {
+  return styles.map((category) => ({
+    id: category.id,
+    value: category.name,
+    label: category.name,
+  }));
+};
+
+export const getStyleOptions = (styles: Style[], categoryId: number) => {
+  const data = styles.find((category) => category.id === categoryId);
+
+  const styleOption = data?.styles.map((style) => ({
+    id: style.id,
+    value: style.name,
+    label: style.name,
+  })) || [];
+
+  const colorOption = data?.colors.map((color) => ({
+    id: color.id,
+    value: color.name,
+    label: color.name,
+  })) || [];
+
+  const heightOption = data?.heights.map((height) => ({
+    id: height.id,
+    value: height.name,
+    label: height.name,
+  })) || [];
+
+  const lengthOption = data?.lengths.map((length) => ({
+    id: length.id,
+    value: length.name,
+    label: length.name,
+  })) || [];
+
+  return { styleOption, colorOption, heightOption, lengthOption };
+};
+
+export const getFences = (styles: Style[]): StyleTableColumn[] => {
+  let fences = styles.flatMap((style) => {
+    return style.fences.map((fence) => {
+      return {
+        id: fence.id,
+        category: style.name,
+        style: style.styles.find((s) => s.id === fence.styleId)?.name ?? '',
+        height: style.heights.find((h) => h.id === fence.heightId)?.name ?? '',
+        color: style.colors.find((c) => c.id === fence.colorId)?.name ?? '',
+        length: style.lengths.find((l) => l.id === fence.lengthId)?.name ?? '',
+        panelPrice: fence.panelPrice?.toString() ?? '',
+        postPrice: fence.postPrice?.toString() ?? '',
+        lftPrice: fence.lftPrice?.toString() ?? '',
+        thirdFeetGatePrice: fence.thirdFeetGatePrice?.toString() ?? '',
+        foruthFeetGatePrice: fence.foruthFeetGatePrice?.toString() ?? '',
+        fifthFeetGatePrice: fence.fifthFeetGatePrice?.toString() ?? '',
+        eighthFeetGatePrice: fence.eighthFeetGatePrice?.toString() ?? '',
+        tenthFeetGatePrice: fence.tenthFeetGatePrice?.toString() ?? '',
+        heavyDutyEndPostPrice: fence.heavyDutyEndPostPrice?.toString() ?? '',
+        endPostPrice: fence.endPostPrice?.toString() ?? '',
+        cornerPostPrice: fence.cornerPostPrice?.toString() ?? '',
+        flatCapPrice: fence.flatCapPrice?.toString() ?? '',
+        gothicCapPrice: fence.gothicCapPrice?.toString() ?? '',
+        newEnglandCapPrice: fence.newEnglandCapPrice?.toString() ?? '',
+        federationCapPrice: fence.federationCapPrice?.toString() ?? '',
+        image: fence.image ?? '',
+        isActive: fence.isActive ?? false,
+      };
+    });
+  });
+
+  fences.sort((a, b) => {
+    if (a.category < b.category) return -1;
+    if (a.category > b.category) return 1;
+    if ((a.style || '').localeCompare(b.style || '')) return (a.style || '').localeCompare(b.style || '');
+    if ((a.height || '').localeCompare(b.height || '')) return (a.height || '').localeCompare(b.height || '');
+    if ((a.color || '').localeCompare(b.color || '')) return (a.color || '').localeCompare(b.color || '');
+    if ((a.length || '').localeCompare(b.length || '')) return (a.length || '').localeCompare(b.length || '');
+    return 0;
+  });
+
+  return fences;
+};
+
+export const data = [
   {
     "id": 14,
     "name": "Aluminum",
@@ -249,9 +332,55 @@ export const styles = [
         "updatedAt": "2024-08-23T01:51:26.000Z"
       }
     ],
-    "heights": [],
-    "lengths": [],
-    "fences": []
+    "heights": [
+      {
+        "id": 16,
+        "name": "1",
+        "categoryId": 14,
+        "createdAt": "2024-08-26T19:01:13.928Z",
+        "updatedAt": "2024-08-26T19:00:17.984Z"
+      }
+    ],
+    "lengths": [
+      {
+        "id": 16,
+        "name": "1",
+        "categoryId": 14,
+        "createdAt": "2024-08-26T19:01:14.489Z",
+        "updatedAt": "2024-08-26T19:00:26.630Z"
+      }
+    ],
+    "fences": [
+      {
+        "id": 16,
+        "categoryId": 14,
+        "styleId": 8,
+        "heightId": 16,
+        "colorId": 10,
+        "lengthId": 16,
+        "isActive": false,
+        "image": null,
+        "panelPrice": 1,
+        "postPrice": 1,
+        "lftPrice": 1,
+        "thirdFeetGatePrice": 1,
+        "foruthFeetGatePrice": 1,
+        "fifthFeetGatePrice": 1,
+        "eighthFeetGatePrice": 1,
+        "tenthFeetGatePrice": 1,
+        "heavyDutyEndPostPrice": 1,
+        "endPostPrice": 0,
+        "cornerPostPrice": 0,
+        "flatCapPrice": 0,
+        "gothicCapPrice": 0,
+        "newEnglandCapPrice": 0,
+        "federationCapPrice": 0,
+        "minProfit": null,
+        "laborCost": null,
+        "createdAt": "2024-08-26T19:01:15.064Z",
+        "updatedAt": "2024-08-26T19:00:27.189Z"
+      }
+    ]
   },
   {
     "id": 15,
@@ -327,9 +456,55 @@ export const styles = [
         "updatedAt": "2024-08-23T01:51:48.000Z"
       }
     ],
-    "heights": [],
-    "lengths": [],
-    "fences": []
+    "heights": [
+      {
+        "id": 17,
+        "name": "2",
+        "categoryId": 15,
+        "createdAt": "2024-08-26T19:01:43.157Z",
+        "updatedAt": "2024-08-26T19:00:55.286Z"
+      }
+    ],
+    "lengths": [
+      {
+        "id": 17,
+        "name": "2",
+        "categoryId": 15,
+        "createdAt": "2024-08-26T19:01:43.717Z",
+        "updatedAt": "2024-08-26T19:00:55.855Z"
+      }
+    ],
+    "fences": [
+      {
+        "id": 17,
+        "categoryId": 15,
+        "styleId": 14,
+        "heightId": 17,
+        "colorId": 11,
+        "lengthId": 17,
+        "isActive": false,
+        "image": null,
+        "panelPrice": 2,
+        "postPrice": 2,
+        "lftPrice": 2,
+        "thirdFeetGatePrice": 2,
+        "foruthFeetGatePrice": 2,
+        "fifthFeetGatePrice": 2,
+        "eighthFeetGatePrice": 2,
+        "tenthFeetGatePrice": 2,
+        "heavyDutyEndPostPrice": 0,
+        "endPostPrice": 0,
+        "cornerPostPrice": 0,
+        "flatCapPrice": 0,
+        "gothicCapPrice": 0,
+        "newEnglandCapPrice": 0,
+        "federationCapPrice": 0,
+        "minProfit": null,
+        "laborCost": null,
+        "createdAt": "2024-08-26T19:01:44.280Z",
+        "updatedAt": "2024-08-26T19:00:56.421Z"
+      }
+    ]
   },
   {
     "id": 16,
@@ -413,9 +588,55 @@ export const styles = [
         "updatedAt": "2024-08-23T02:08:25.000Z"
       }
     ],
-    "heights": [],
-    "lengths": [],
-    "fences": []
+    "heights": [
+      {
+        "id": 18,
+        "name": "3",
+        "categoryId": 16,
+        "createdAt": "2024-08-26T19:02:23.092Z",
+        "updatedAt": "2024-08-26T19:01:35.221Z"
+      }
+    ],
+    "lengths": [
+      {
+        "id": 18,
+        "name": "3",
+        "categoryId": 16,
+        "createdAt": "2024-08-26T19:02:23.650Z",
+        "updatedAt": "2024-08-26T19:01:35.792Z"
+      }
+    ],
+    "fences": [
+      {
+        "id": 18,
+        "categoryId": 16,
+        "styleId": 21,
+        "heightId": 18,
+        "colorId": 12,
+        "lengthId": 18,
+        "isActive": false,
+        "image": null,
+        "panelPrice": 3,
+        "postPrice": 3,
+        "lftPrice": 3,
+        "thirdFeetGatePrice": 3,
+        "foruthFeetGatePrice": 3,
+        "fifthFeetGatePrice": 3,
+        "eighthFeetGatePrice": 3,
+        "tenthFeetGatePrice": 3,
+        "heavyDutyEndPostPrice": 0,
+        "endPostPrice": 3,
+        "cornerPostPrice": 3,
+        "flatCapPrice": 0,
+        "gothicCapPrice": 0,
+        "newEnglandCapPrice": 0,
+        "federationCapPrice": 0,
+        "minProfit": null,
+        "laborCost": null,
+        "createdAt": "2024-08-26T19:02:24.214Z",
+        "updatedAt": "2024-08-26T19:01:36.352Z"
+      }
+    ]
   },
   {
     "id": 17,
@@ -467,9 +688,55 @@ export const styles = [
         "updatedAt": "2024-08-23T02:07:47.000Z"
       }
     ],
-    "heights": [],
-    "lengths": [],
-    "fences": []
+    "heights": [
+      {
+        "id": 19,
+        "name": "4",
+        "categoryId": 17,
+        "createdAt": "2024-08-26T19:02:46.846Z",
+        "updatedAt": "2024-08-26T19:01:58.974Z"
+      }
+    ],
+    "lengths": [
+      {
+        "id": 19,
+        "name": "4",
+        "categoryId": 17,
+        "createdAt": "2024-08-26T19:02:47.415Z",
+        "updatedAt": "2024-08-26T19:01:59.556Z"
+      }
+    ],
+    "fences": [
+      {
+        "id": 19,
+        "categoryId": 17,
+        "styleId": 27,
+        "heightId": 19,
+        "colorId": 15,
+        "lengthId": 19,
+        "isActive": false,
+        "image": null,
+        "panelPrice": 4,
+        "postPrice": 4,
+        "lftPrice": 4,
+        "thirdFeetGatePrice": 4,
+        "foruthFeetGatePrice": 4,
+        "fifthFeetGatePrice": 4,
+        "eighthFeetGatePrice": 4,
+        "tenthFeetGatePrice": 4,
+        "heavyDutyEndPostPrice": 0,
+        "endPostPrice": 0,
+        "cornerPostPrice": 0,
+        "flatCapPrice": 0,
+        "gothicCapPrice": 0,
+        "newEnglandCapPrice": 0,
+        "federationCapPrice": 0,
+        "minProfit": null,
+        "laborCost": null,
+        "createdAt": "2024-08-26T19:02:47.991Z",
+        "updatedAt": "2024-08-26T19:02:00.113Z"
+      }
+    ]
   },
   {
     "id": 18,
@@ -633,57 +900,55 @@ export const styles = [
         "updatedAt": "2024-08-23T02:08:57.000Z"
       }
     ],
-    "heights": [],
-    "lengths": [],
-    "fences": []
+    "heights": [
+      {
+        "id": 20,
+        "name": "5",
+        "categoryId": 18,
+        "createdAt": "2024-08-26T19:03:07.498Z",
+        "updatedAt": "2024-08-26T19:02:19.623Z"
+      }
+    ],
+    "lengths": [
+      {
+        "id": 20,
+        "name": "5",
+        "categoryId": 18,
+        "createdAt": "2024-08-26T19:03:08.056Z",
+        "updatedAt": "2024-08-26T19:02:20.197Z"
+      }
+    ],
+    "fences": [
+      {
+        "id": 20,
+        "categoryId": 18,
+        "styleId": 31,
+        "heightId": 20,
+        "colorId": 8,
+        "lengthId": 20,
+        "isActive": false,
+        "image": null,
+        "panelPrice": 5,
+        "postPrice": 5,
+        "lftPrice": 5,
+        "thirdFeetGatePrice": 5,
+        "foruthFeetGatePrice": 5,
+        "fifthFeetGatePrice": 5,
+        "eighthFeetGatePrice": 5,
+        "tenthFeetGatePrice": 5,
+        "heavyDutyEndPostPrice": 0,
+        "endPostPrice": 0,
+        "cornerPostPrice": 0,
+        "flatCapPrice": 5,
+        "gothicCapPrice": 5,
+        "newEnglandCapPrice": 5,
+        "federationCapPrice": 5,
+        "minProfit": null,
+        "laborCost": null,
+        "createdAt": "2024-08-26T19:03:08.623Z",
+        "updatedAt": "2024-08-26T19:02:20.758Z"
+      }
+    ]
   }
 ]
-
-export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[] => {
-  return styles.map((category) => ({
-    id: category.id,
-    value: category.name,
-    label: category.name,
-  }));
-};
-
-export const getStyleOptions = (styles: Style[], categoryId: number) => {
-  const data = styles.find((category) => category.id === categoryId);
-
-  const styleOption = data?.styles.map((style) => ({
-    id: style.id,
-    value: style.name,
-    label: style.name,
-  })) || [];
-
-  const colorOption = data?.colors.map((color) => ({
-    id: color.id,
-    value: color.name,
-    label: color.name,
-  })) || [];
-
-  const heightOption = data?.heights.map((height) => ({
-    id: height.id,
-    value: height.name,
-    label: height.name,
-  })) || [];
-
-  const lengthOption = data?.lengths.map((length) => ({
-    id: length.id,
-    value: length.name,
-    label: length.name,
-  })) || [];
-
-  return { styleOption, colorOption, heightOption, lengthOption };
-
-};
-
-export const getFences = (styles: Style[]) => {
-  return styles;
-}
-
-
-
-
-
 

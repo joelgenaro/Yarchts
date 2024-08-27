@@ -154,11 +154,11 @@
     position: absolute;
     z-index: -10;
     --tw-backdrop-blur: blur(12px);
-    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
-      var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-      var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-      var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
-      var(--tw-backdrop-sepia);
+    // backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    //   var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    //   var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    //   var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    //   var(--tw-backdrop-sepia);
     --tw-content: "";
     content: var(--tw-content);
     background: linear-gradient(
@@ -315,6 +315,10 @@
 
 .no-scrollbar::-webkit-scrollbar-thumb {
   background-color: transparent;
+}
+
+.styleTablePriceHeader{
+  text-align: left !important;
 }
 
 @import "partials/calendar.scss";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,10 +58,18 @@ export function StyleForm({ styles }: StyleProps) {
         if (categoryId) {
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, categoryId);
 
+            setStyle(null);
+            setStyleId(null);
             setStyleOptions(styleOption);
-            setStyleOptions(colorOption);
-            setStyleOptions(heightOption);
-            setStyleOptions(lengthOption);
+            setColor(null);
+            setColorId(null);
+            setColorOptions(colorOption);
+            setHeight(null);
+            setHeightId(null);
+            setHeightOptions(heightOption);
+            setLength(null);
+            setLengthId(null);
+            setLengthOptions(lengthOption);
         }
     }, [category])
 
@@ -99,7 +107,22 @@ export function StyleForm({ styles }: StyleProps) {
 
         if (res?.success) {
             reToast.success(res?.message);
+            form.reset();
             setIsDialogOpen(false);
+            setCategory(null);
+            setCategoryId(null);
+            setStyle(null);
+            setStyleId(null);
+            setStyleOptions([]);
+            setColor(null);
+            setColorId(null);
+            setColorOptions([]);
+            setHeight(null);
+            setHeightId(null);
+            setHeightOptions([]);
+            setLength(null);
+            setLengthId(null);
+            setLengthOptions([]);
         } else {
             reToast.error(res?.message);
         }
@@ -174,7 +197,7 @@ export function StyleForm({ styles }: StyleProps) {
                                                     isClearable
                                                     placeholder={'Type a new style or Choose from the list'}
                                                     styles={creatableSelectionStyles}
-                                                    onChange={(newValue) => setStyle(newValue)}
+                                                    onChange={(newValue) => (setStyle(newValue), setStyleId(newValue?.id))}
                                                     onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
                                                     options={styleOptions}
                                                     value={style}
@@ -190,7 +213,7 @@ export function StyleForm({ styles }: StyleProps) {
                                                 isClearable
                                                 placeholder={'Type a new height or Choose from the list'}
                                                 styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setHeight(newValue)}
+                                                onChange={(newValue) => (setHeight(newValue), setHeightId(newValue?.id))}
                                                 onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
                                                 options={heightOptions}
                                                 value={height}
@@ -200,12 +223,12 @@ export function StyleForm({ styles }: StyleProps) {
                                             <Label htmlFor="color">Fence Color</Label>
                                             <CreatableSelect
                                                 id="color"
-                                                name="length"
+                                                name="color"
                                                 required={true}
                                                 isClearable
                                                 placeholder={'Type a new color or Choose from the list'}
                                                 styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setColor(newValue)}
+                                                onChange={(newValue) => (setColor(newValue), setColorId(newValue?.id))}
                                                 onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
                                                 options={colorOptions}
                                                 value={color}
@@ -220,7 +243,7 @@ export function StyleForm({ styles }: StyleProps) {
                                                 isClearable
                                                 placeholder={'Type a new length or Choose from the list'}
                                                 styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setLength(newValue)}
+                                                onChange={(newValue) => (setLength(newValue), setLengthId(newValue?.id))}
                                                 onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
                                                 options={lengthOptions}
                                                 value={length}

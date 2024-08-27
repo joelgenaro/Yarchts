@@ -15,6 +15,29 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
     header: '',
     columns: [
       {
+        id: "actions",
+        cell: ({ row }) => <StyleTableRowActions row={row} />
+      },
+      {
+        accessorKey: "image",
+        header: ({ column }) => (
+          <StyleTableColumnHeader column={column} title="" />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex gap-2">
+              <Avatar>
+                <AvatarImage src={row.getValue("image")} />
+                <AvatarFallback></AvatarFallback>
+              </Avatar>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+        enableColumnFilter: false,
+      },
+      {
         id: "select",
         header: ({ table }) => (
           <Checkbox
@@ -39,22 +62,6 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
         enableHiding: false,
       },
       {
-        accessorKey: "image",
-        header: ({ column }) => (
-          <StyleTableColumnHeader column={column} title="" />
-        ),
-        cell: ({ row }) => {
-          return (
-            <div className="flex gap-2">
-              <Avatar>
-                <AvatarImage src={row.getValue("image")} />
-                <AvatarFallback></AvatarFallback>
-              </Avatar>
-            </div>
-          );
-        },
-      },
-      {
         accessorKey: "category",
         header: ({ column }) => (
           <StyleTableColumnHeader column={column} title="Category" />
@@ -68,6 +75,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableSorting: false,
       },
       {
         accessorKey: "style",
@@ -83,6 +91,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableSorting: false,
       },],
   },
   {
@@ -103,6 +112,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableSorting: false,
       },
       {
         accessorKey: "color",
@@ -118,6 +128,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableSorting: false,
       },
       {
         accessorKey: "length",
@@ -133,6 +144,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableSorting: false,
       },],
   },
   {
@@ -365,9 +377,5 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
         },
       },
     ],
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <StyleTableRowActions row={row} />,
   },
 ];
