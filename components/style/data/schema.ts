@@ -24,5 +24,6 @@ export const taskSchema = z.object({
   gothicCapPrice: z.string(),
   newEnglandCapPrice: z.string(),
   federationCapPrice: z.string(),
+  isActive: z.boolean(),
   image: z.string()
 });

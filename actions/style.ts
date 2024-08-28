@@ -1,6 +1,7 @@
 "use server"
 
 import { db } from '@/db';
+import { eq, not, inArray } from 'drizzle-orm';
 import { CategoryInsert, categories } from '@/db/schemas/categories';
 import { StyleInsert, styles } from '@/db/schemas/styles';
 import { ColorInsert, colors } from '@/db/schemas/colors';
@@ -102,4 +103,58 @@ export const getStyles = async (userId: number) => {
         throw new Error('Failed to Get Styles.');
     }
 }
+
+export const deleteStyle = async (id: number) => {
+    try {
+        await db.delete(fences).where(eq(fences.id, id));
+
+        revalidatePath('/en/style');
+
+        return {
+            success: true, message: 'Successfuly Deleted Style!',
+        };
+    } catch (error) {
+        return {
+            success: false, message: 'Failed to Delete Style.',
+        };
+    }
+};
+
+export const deleteStyles = async (ids: number[]) => {
+    try {
+        await db.delete(fences).where(inArray(fences.id, ids));
+
+        revalidatePath('/en/style');
+
+        return {
+            success: true, message: 'Successfuly Deleted Styles!',
+        };
+    } catch (error) {
+        return {
+            success: false, message: 'Failed to Delete Styles.',
+        };
+    }
+};
+
+export const updateStyleState = async (id: number) => {
+    try {
+        const updatedStatus = await db.update(fences)
+            .set({ isActive: not(fences.isActive) })
+            .where(eq(fences.id, id))
+            .returning({ status: fences.isActive });
+
+        const status = updatedStatus[0].status ? 'Activated' : 'Deactivated';
+
+        revalidatePath('/en/style');
+
+        return {
+            success: true, message: 'Successfuly ' + status + ' Style!',
+        };
+    } catch (error) {
+        return {
+            success: false, message: 'Failed to Update Style.',
+        };
+    }
+};
+
 
