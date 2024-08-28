@@ -37,7 +37,7 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
     });
   }
 
-  const updateStyle = async (id: number) => {
+  const updateState = async (id: number) => {
     startTransition(() => {
       updateStyleState(id).then((res) => {
         if (res?.success) {
@@ -73,13 +73,14 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
               'pointer-events-none': isPending === true,
               'cursor-pointer': isPending === false,
             },
-          )} onClick={() => updateStyle(task?.id)}> {task?.isActive ? 'Deactivate' : 'Active'}</DropdownMenuItem>
+          )} onClick={() => updateState(task?.id)}> {task?.isActive ? 'Deactivate' : 'Active'}</DropdownMenuItem>
           <DropdownMenuItem>Edit</DropdownMenuItem>
           <DropdownMenuItem className={clsx(
             {
               'pointer-events-none': isPending === true,
               'cursor-pointer': isPending === false,
             },
+
           )}
             onSelect={() => setOpen(true)}>
             Delete

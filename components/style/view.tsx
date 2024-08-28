@@ -97,6 +97,11 @@ export function StyleView({ styles }: StyleProps) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={clsx(
+                    {
+                      'opacity-50': (!row?.original?.isActive),
+                    },
+                  )}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className={clsx(

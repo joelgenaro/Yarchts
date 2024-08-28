@@ -30,6 +30,15 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
                 <AvatarImage src={row.getValue("image")} />
                 <AvatarFallback></AvatarFallback>
               </Avatar>
+              <Badge
+                variant="soft"
+                color={
+                  (row?.original?.isActive) ? "success" : "destructive"
+                }
+                className="capitalize "
+              >
+                {row?.original?.isActive ? "Activated" : "Deactivated"}
+              </Badge>
             </div>
           );
         },

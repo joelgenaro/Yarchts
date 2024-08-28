@@ -13,7 +13,7 @@ export const fences = pgTable('fences', {
     heightId: integer('height_id').notNull().references(() => heights.id, { onDelete: 'cascade' }),
     colorId: integer('color_id').notNull().references(() => colors.id, { onDelete: 'cascade' }),
     lengthId: integer('length_id').notNull().references(() => lengths.id, { onDelete: 'cascade' }),
-    isActive: boolean('is_active').default(false),
+    isActive: boolean('is_active').default(true),
     image: text('image'),
     panelPrice: numeric('panel_price'),
     postPrice: numeric('post_price'),
