@@ -28,10 +28,11 @@ import { StyleTableToolbar } from "./toolbar";
 import { columns } from "@/components/style/columns";
 import { StyleProps } from "@/lib/interfaces";
 import { getFences } from "@/lib/utils";
+import { useStyleStore } from "@/store/style";
 import clsx from 'clsx';
-// import { data } from "./data";
 
 export function StyleView({ styles }: StyleProps) {
+  const setStyles = useStyleStore((state) => state.setStyles);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -39,6 +40,10 @@ export function StyleView({ styles }: StyleProps) {
 
   const data = useMemo(() => {
     return getFences(styles);
+  }, [styles]);
+
+  useEffect(() => {
+    setStyles(styles);
   }, [styles]);
 
   const table = useReactTable({
@@ -65,7 +70,7 @@ export function StyleView({ styles }: StyleProps) {
 
   return (
     <div className="space-y-4">
-      <StyleTableToolbar styles={styles} table={table} />
+      <StyleTableToolbar table={table} />
       <div className="border rounded-md">
         <Table>
           <TableHeader>

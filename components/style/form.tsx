@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,22 +20,26 @@ import { createSelectionOption } from "@/lib/utils";
 import { CreatableSelectionOptions, StyleProps, UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
-import { createStyle } from "@/actions/style";
+import { createStyle, updateStyle } from "@/actions/style";
 import CreatableSelect from 'react-select/creatable';
 import Image from "next/image";
 import avatar from "@/public/images/avatar/user.png";
 import clsx from 'clsx';
 import { useSession } from "next-auth/react";
 import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
+import { useStyleStore } from "@/store/style";
 
-export function StyleForm({ styles }: StyleProps) {
+export function StyleForm() {
+    const styles = useStyleStore((state) => state.styles);
+    const isFormOpen = useStyleStore((state) => state.isFormOpen);
+    const setIsFormOpen = useStyleStore((state) => state.setIsFormOpen);
+    const selectedStyleId = useStyleStore((state) => state.selectedStyleId);
+    const setSelectedStyleId = useStyleStore((state) => state.setSelectedStyleId);
     const [session, setSession] = useState<UserSession>(useSession().data as UserSession);
     const [pending, setPending] = useState(false);
     const [isPending, startTransition] = useTransition();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [categoryId, setCategoryId] = useState<number | null>();
     const [category, setCategory] = useState<CreatableSelectionOptions | null>();
-    const [categoryOptions, setCategoryOptions] = useState<CreatableSelectionOptions[]>([]);
     const [styleId, setStyleId] = useState<number | null>();
     const [style, setStyle] = useState<CreatableSelectionOptions | null>();
     const [styleOptions, setStyleOptions] = useState<CreatableSelectionOptions[]>([]);
@@ -49,9 +53,8 @@ export function StyleForm({ styles }: StyleProps) {
     const [length, setLength] = useState<CreatableSelectionOptions | null>();
     const [lengthOptions, setLengthOptions] = useState<CreatableSelectionOptions[]>([]);
 
-    useEffect(() => {
-        const options = getCategoryOptions(styles);
-        setCategoryOptions(options);
+    const categoryOptions = useMemo(() => {
+        return getCategoryOptions(styles)
     }, [styles]);
 
     useEffect(() => {
@@ -103,12 +106,12 @@ export function StyleForm({ styles }: StyleProps) {
 
         const form = document.querySelector('#styleForm') as HTMLFormElement;
         const formData = new FormData(form);
-        const res = await createStyle(formData);
+        const res = selectedStyleId ? await createStyle(formData) : await updateStyle(formData);
 
         if (res?.success) {
             reToast.success(res?.message);
             form.reset();
-            setIsDialogOpen(false);
+            setIsFormOpen(false);
             setCategory(null);
             setCategoryId(null);
             setStyle(null);
@@ -129,8 +132,10 @@ export function StyleForm({ styles }: StyleProps) {
         setPending(false);
     }
 
+    useEffect(() => { }, [styles]);
+
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8">
                     <PlusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
@@ -140,7 +145,7 @@ export function StyleForm({ styles }: StyleProps) {
             <DialogContent size="2xl">
                 <DialogHeader className="p-0">
                     <DialogTitle className="text-base font-medium text-default-700 ">
-                        Create a New Style
+                        {selectedStyleId ? 'Create a New Style' : 'Edit Style'}
                     </DialogTitle>
                 </DialogHeader>
                 <div>
@@ -380,7 +385,7 @@ export function StyleForm({ styles }: StyleProps) {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button disabled={pending} type="submit">{pending ? "Creating..." : "Create Style"}</Button>
+                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId ? 'Editing...' : 'Creating...') : (selectedStyleId ? 'Create Style' : 'Edit Style...')}</Button>
                         </div>
                     </form>
                 </div >

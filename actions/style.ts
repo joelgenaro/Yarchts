@@ -85,6 +85,22 @@ export const createStyle = async (formData: FormData) => {
     }
 };
 
+export const updateStyle = async (formData: FormData) => {
+    try {
+
+
+        revalidatePath('/en/style');
+
+        return {
+            success: true, message: 'Successfully Created Style.',
+        };
+    } catch (error) {
+        return {
+            success: false, message: 'Failed to Create Style.',
+        };
+    }
+}
+
 export const getStyles = async (userId: number) => {
     try {
         const result = await db.query.categories.findMany({

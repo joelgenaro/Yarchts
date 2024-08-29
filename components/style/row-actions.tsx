@@ -15,6 +15,7 @@ import { taskSchema } from "./data/schema";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { deleteStyle, updateStyleState } from '@/actions/style'
 import { toast as reToast } from "react-hot-toast";
+import { useStyleStore } from "@/store/style";
 
 interface StyleTableRowActionsProps {
   row: Row<any>;
@@ -24,6 +25,8 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const task = taskSchema.parse(row.original);
+  const setIsFormOpen = useStyleStore((state) => state.setIsFormOpen);
+  const setSelectedStyleId = useStyleStore((state) => state.setSelectedStyleId);
 
   const onDeleteAction = async (id: number): Promise<void> => {
     await startTransition(() => {
@@ -74,7 +77,7 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
               'cursor-pointer': isPending === false,
             },
           )} onClick={() => updateState(task?.id)}> {task?.isActive ? 'Deactivate' : 'Active'}</DropdownMenuItem>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => (setIsFormOpen(true), setSelectedStyleId(task?.id))}>Edit</DropdownMenuItem>
           <DropdownMenuItem className={clsx(
             {
               'pointer-events-none': isPending === true,

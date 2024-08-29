@@ -15,9 +15,8 @@ import { toast as reToast } from "react-hot-toast";
 import { deleteStyles } from '@/actions/style'
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 
-export function StyleTableToolbar({ table, styles }: {
+export function StyleTableToolbar({ table }: {
   table: Table<any>;
-  styles: Style[];
 }) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -67,7 +66,7 @@ export function StyleTableToolbar({ table, styles }: {
           className="h-8 min-w-[200px] max-w-sm"
         />
 
-        <StyleForm styles={styles} />
+        <StyleForm />
 
         <Button onClick={handleDelete} disabled={isPending} variant="outline" size="sm" className="h-8">
           <MinusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
