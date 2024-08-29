@@ -16,8 +16,7 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
-import { createSelectionOption } from "@/lib/utils";
-import { CreatableSelectionOptions, StyleProps, UserSession } from "@/lib/interfaces";
+import { CreatableSelectionOptions, UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
 import { createStyle, updateStyle } from "@/actions/style";
@@ -28,6 +27,54 @@ import clsx from 'clsx';
 import { useSession } from "next-auth/react";
 import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
 import { useStyleStore } from "@/store/style";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { getFence } from "@/lib/utils";
+
+const schema = z.object({
+    category: z.object({
+        id: z.number().optional(),
+        value: z.string().nonempty(''),
+        label: z.string(),
+    }).nullable().refine(val => val !== null, ''),
+    style: z.object({
+        id: z.number().optional(),
+        value: z.string().nonempty(''),
+        label: z.string(),
+    }).nullable().refine(val => val !== null, ''),
+    color: z.object({
+        id: z.number().optional(),
+        value: z.string().nonempty(''),
+        label: z.string(),
+    }).nullable().refine(val => val !== null, ''),
+    height: z.object({
+        id: z.number().optional(),
+        value: z.string().nonempty(''),
+        label: z.string(),
+    }).nullable().refine(val => val !== null, ''),
+    length: z.object({
+        id: z.number().optional(),
+        value: z.string().nonempty(''),
+        label: z.string(),
+    }).nullable().refine(val => val !== null, ''),
+    panelPrice: z.coerce.number().nonnegative(),
+    postPrice: z.coerce.number().nonnegative(),
+    lftPrice: z.coerce.number().nonnegative(),
+    thirdFeetGatePrice: z.coerce.number().nonnegative(),
+    foruthFeetGatePrice: z.coerce.number().nonnegative(),
+    fifthFeetGatePrice: z.coerce.number().nonnegative(),
+    eighthFeetGatePrice: z.coerce.number().nonnegative(),
+    tenthFeetGatePrice: z.coerce.number().nonnegative(),
+    heavyDutyEndPostPrice: z.coerce.number().nonnegative(),
+    endPostPrice: z.coerce.number().nonnegative(),
+    cornerPostPrice: z.coerce.number().nonnegative(),
+    flatCapPrice: z.coerce.number().nonnegative(),
+    gothicCapPrice: z.coerce.number().nonnegative(),
+    newEnglandCapPrice: z.coerce.number().nonnegative(),
+    federationCapPrice: z.coerce.number().nonnegative(),
+});
 
 export function StyleForm() {
     const styles = useStyleStore((state) => state.styles);
@@ -36,103 +83,80 @@ export function StyleForm() {
     const selectedStyleId = useStyleStore((state) => state.selectedStyleId);
     const setSelectedStyleId = useStyleStore((state) => state.setSelectedStyleId);
     const [session, setSession] = useState<UserSession>(useSession().data as UserSession);
-    const [pending, setPending] = useState(false);
     const [isPending, startTransition] = useTransition();
-    const [categoryId, setCategoryId] = useState<number | null>();
-    const [category, setCategory] = useState<CreatableSelectionOptions | null>();
-    const [styleId, setStyleId] = useState<number | null>();
-    const [style, setStyle] = useState<CreatableSelectionOptions | null>();
     const [styleOptions, setStyleOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [heightId, setHeightId] = useState<number | null>();
-    const [height, setHeight] = useState<CreatableSelectionOptions | null>();
     const [heightOptions, setHeightOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [colorId, setColorId] = useState<number | null>();
-    const [color, setColor] = useState<CreatableSelectionOptions | null>();
     const [colorOptions, setColorOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [lengthId, setLengthId] = useState<number | null>();
-    const [length, setLength] = useState<CreatableSelectionOptions | null>();
     const [lengthOptions, setLengthOptions] = useState<CreatableSelectionOptions[]>([]);
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        setValue,
+        getValues,
+        reset,
+        formState: { errors },
+    } = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
+    });
 
     const categoryOptions = useMemo(() => {
         return getCategoryOptions(styles)
     }, [styles]);
 
-    useEffect(() => {
-        if (categoryId) {
-            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, categoryId);
+    const category = useWatch({ control, name: 'category' });
 
-            setStyle(null);
-            setStyleId(null);
+    useEffect(() => {
+        if (category?.id) {
+            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, category?.id);
+
+            setValue('style', {} as CreatableSelectionOptions);
+            setValue('color', {} as CreatableSelectionOptions);
+            setValue('height', {} as CreatableSelectionOptions);
+            setValue('length', {} as CreatableSelectionOptions);
             setStyleOptions(styleOption);
-            setColor(null);
-            setColorId(null);
             setColorOptions(colorOption);
-            setHeight(null);
-            setHeightId(null);
             setHeightOptions(heightOption);
-            setLength(null);
-            setLengthId(null);
             setLengthOptions(lengthOption);
         }
     }, [category])
 
-    const handleCreate = (inputValue: string, type: string) => {
-        const newOption = createSelectionOption(inputValue);
+    useEffect(() => {
+        if (selectedStyleId) {
+            const fence = getFence(selectedStyleId, styles);
 
-        switch (type) {
-            case 'category':
-                setCategory(newOption);
-                break;
-            case 'style':
-                setStyle(newOption);
-                break;
-            case 'height':
-                setHeight(newOption);
-                break;
-            case 'color':
-                setColor(newOption);
-                break;
-            case 'length':
-                setLength(newOption);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setPending(true);
-
-        const form = document.querySelector('#styleForm') as HTMLFormElement;
-        const formData = new FormData(form);
-        const res = selectedStyleId ? await createStyle(formData) : await updateStyle(formData);
-
-        if (res?.success) {
-            reToast.success(res?.message);
-            form.reset();
-            setIsFormOpen(false);
-            setCategory(null);
-            setCategoryId(null);
-            setStyle(null);
-            setStyleId(null);
-            setStyleOptions([]);
-            setColor(null);
-            setColorId(null);
-            setColorOptions([]);
-            setHeight(null);
-            setHeightId(null);
-            setHeightOptions([]);
-            setLength(null);
-            setLengthId(null);
-            setLengthOptions([]);
+            setValue('category', categoryOptions.find(option => option.id === fence?.categoryId) as CreatableSelectionOptions);
+            setValue('style', styleOptions.find(option => option.id === fence?.styleId) as CreatableSelectionOptions);
+            setValue('color', colorOptions.find(option => option.id === fence?.colorId) as CreatableSelectionOptions);
+            setValue('height', heightOptions.find(option => option.id === fence?.heightId) as CreatableSelectionOptions);
+            setValue('length', lengthOptions.find(option => option.id === fence?.lengthId) as CreatableSelectionOptions);
+            setValue('panelPrice', Number(fence?.panelPrice))
+            setValue('postPrice', Number(fence?.postPrice))
+            setValue('lftPrice', Number(fence?.lftPrice))
+            setValue('thirdFeetGatePrice', Number(fence?.thirdFeetGatePrice))
+            setValue('foruthFeetGatePrice', Number(fence?.foruthFeetGatePrice))
+            setValue('fifthFeetGatePrice', Number(fence?.fifthFeetGatePrice))
+            setValue('eighthFeetGatePrice', Number(fence?.eighthFeetGatePrice))
+            setValue('tenthFeetGatePrice', Number(fence?.tenthFeetGatePrice))
+            setValue('heavyDutyEndPostPrice', Number(fence?.heavyDutyEndPostPrice))
+            setValue('endPostPrice', Number(fence?.endPostPrice))
+            setValue('cornerPostPrice', Number(fence?.cornerPostPrice))
+            setValue('flatCapPrice', Number(fence?.flatCapPrice))
+            setValue('gothicCapPrice', Number(fence?.gothicCapPrice))
+            setValue('newEnglandCapPrice', Number(fence?.newEnglandCapPrice))
+            setValue('federationCapPrice', Number(fence?.federationCapPrice))
         } else {
-            reToast.error(res?.message);
+            reset()
         }
-        setPending(false);
-    }
+    }, [isFormOpen]);
 
-    useEffect(() => { }, [styles]);
+    const onSubmit = (data: z.infer<typeof schema>) => {
+
+
+        setIsFormOpen(false);
+        reset();
+    };
 
     return (
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
@@ -145,18 +169,11 @@ export function StyleForm() {
             <DialogContent size="2xl">
                 <DialogHeader className="p-0">
                     <DialogTitle className="text-base font-medium text-default-700 ">
-                        {selectedStyleId ? 'Create a New Style' : 'Edit Style'}
+                        {selectedStyleId !== 0 ? 'Create a New Style' : 'Edit Style'}
                     </DialogTitle>
                 </DialogHeader>
                 <div>
-                    <form id="styleForm" onSubmit={handleSubmit}>
-                        <input type="hidden" name="userId" value={session?.user?.id ?? ''} />
-                        <input type="hidden" name="categoryId" value={categoryId ?? ''} />
-                        <input type="hidden" name="styleId" value={styleId ?? ''} />
-                        <input type="hidden" name="colorId" value={colorId ?? ''} />
-                        <input type="hidden" name="heightId" value={heightId ?? ''} />
-                        <input type="hidden" name="lengthId" value={lengthId ?? ''} />
-
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="h-[300px] sm:h-[600px] w-full">
                             <ScrollArea className="h-full">
                                 <div className="hidden lg:block">
@@ -179,79 +196,94 @@ export function StyleForm() {
                                         </div>
                                         <div className="col-span-12 lg:col-span-8">
                                             <div className="col-span-12 lg:col-span-6">
-                                                <Label htmlFor="category">Category Name</Label>
-                                                <CreatableSelect
-                                                    id="category"
+                                                <Label htmlFor="category" className={cn("", {
+                                                    "text-destructive": errors.category,
+                                                })}>Category Name</Label>
+                                                <Controller
                                                     name="category"
-                                                    required={true}
-                                                    isClearable
-                                                    placeholder={'Type a new category or Choose from the list'}
-                                                    styles={creatableSelectionStyles}
-                                                    onChange={(newValue) => (setCategory(newValue), setCategoryId(newValue?.id))}
-                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
-                                                    options={categoryOptions}
-                                                    value={category}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <CreatableSelect
+                                                            {...field}
+                                                            isClearable
+                                                            placeholder={'Type a new category or Choose from the list'}
+                                                            styles={creatableSelectionStyles}
+                                                            options={categoryOptions}
+                                                        />
+                                                    )}
                                                 />
                                             </div>
                                             <div className="col-span-12 mt-2 lg:col-span-6 ">
-                                                <Label htmlFor="style">Style Name</Label>
-                                                <CreatableSelect
-                                                    id="style"
+                                                <Label htmlFor="style" className={cn("", {
+                                                    "text-destructive": errors.style,
+                                                })}>Style Name</Label>
+                                                <Controller
                                                     name="style"
-                                                    required={true}
-                                                    isClearable
-                                                    placeholder={'Type a new style or Choose from the list'}
-                                                    styles={creatableSelectionStyles}
-                                                    onChange={(newValue) => (setStyle(newValue), setStyleId(newValue?.id))}
-                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
-                                                    options={styleOptions}
-                                                    value={style}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <CreatableSelect
+                                                            {...field}
+                                                            isClearable
+                                                            placeholder={'Type a new style or Choose from the list'}
+                                                            styles={creatableSelectionStyles}
+                                                            options={styleOptions}
+                                                        />
+                                                    )}
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
-                                            <CreatableSelect
-                                                id="height"
+                                            <Label htmlFor="height" className={cn("", {
+                                                "text-destructive": errors.height,
+                                            })}>Panel Height ( in foot )</Label>
+                                            <Controller
                                                 name="height"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new height or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => (setHeight(newValue), setHeightId(newValue?.id))}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
-                                                options={heightOptions}
-                                                value={height}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new height or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={heightOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="color">Fence Color</Label>
-                                            <CreatableSelect
-                                                id="color"
+                                            <Label htmlFor="color" className={cn("", {
+                                                "text-destructive": errors.color,
+                                            })}>Fence Color</Label>
+                                            <Controller
                                                 name="color"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new color or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => (setColor(newValue), setColorId(newValue?.id))}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
-                                                options={colorOptions}
-                                                value={color}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new color or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={colorOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="length" >Panel Length ( in foot )</Label>
-                                            <CreatableSelect
-                                                id="length"
+                                            <Label htmlFor="length" className={cn("", {
+                                                "text-destructive": errors.length,
+                                            })}>Panel Length ( in foot )</Label>
+                                            <Controller
                                                 name="length"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new length or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => (setLength(newValue), setLengthId(newValue?.id))}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
-                                                options={lengthOptions}
-                                                value={length}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new length or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={lengthOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
                                         {styleProperties.map((prop, index) => (<div key={index} className={clsx('col-span-12 lg:col-span-4', {
@@ -264,12 +296,17 @@ export function StyleForm() {
                                                 (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
                                                 (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label htmlFor={prop.name}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name} className={cn("", {
+                                                "text-destructive": errors[prop.name],
+                                            })}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" defaultValue={0} name={prop.name} id={prop.name} />
+                                                <Input type="number" {...register(prop.name)}
+                                                    className={cn("", {
+                                                        "border-destructive focus:border-destructive": errors[prop.name],
+                                                    })} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
@@ -278,80 +315,95 @@ export function StyleForm() {
                                 <div className="block lg:hidden">
                                     <div className="flex flex-col gap-4">
                                         <div>
-                                            <Label htmlFor="category">Category Name</Label>
-                                            <CreatableSelect
-                                                id="category"
+                                            <Label htmlFor="category" className={cn("", {
+                                                "text-destructive": errors.category,
+                                            })}>Category Name</Label>
+                                            <Controller
                                                 name="category"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new category or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setCategory(newValue)}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
-                                                options={categoryOptions}
-                                                value={category}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new category or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={categoryOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
 
                                         <div>
-                                            <Label htmlFor="style">Style Name</Label>
-                                            <CreatableSelect
-                                                id="style"
+                                            <Label htmlFor="style" className={cn("", {
+                                                "text-destructive": errors.style,
+                                            })}>Style Name</Label>
+                                            <Controller
                                                 name="style"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new style or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setStyle(newValue)}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
-                                                options={styleOptions}
-                                                value={style}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new style or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={styleOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
-                                            <CreatableSelect
-                                                id="height"
+                                            <Label htmlFor="height" className={cn("", {
+                                                "text-destructive": errors.height,
+                                            })}>Panel Height ( in foot )</Label>
+                                            <Controller
                                                 name="height"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Type a new height or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setHeight(newValue)}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
-                                                options={heightOptions}
-                                                value={height}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new height or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={heightOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="color">Fence Color</Label>
-                                            <CreatableSelect
-                                                id="color"
+                                            <Label htmlFor="color" className={cn("", {
+                                                "text-destructive": errors.color,
+                                            })}>Fence Color</Label>
+                                            <Controller
                                                 name="color"
-                                                required={true}
-                                                isClearable
-                                                placeholder={'Pick a new color or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setColor(newValue)}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
-                                                options={colorOptions}
-                                                value={color}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new color or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={colorOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
 
                                         <div>
-                                            <Label htmlFor="length">Panel Length ( in foot )</Label>
-                                            <CreatableSelect
-                                                id="length"
-                                                name="panelPrice"
-                                                isClearable
-                                                required={true}
-                                                placeholder={'Type a new length or Choose from the list'}
-                                                styles={creatableSelectionStyles}
-                                                onChange={(newValue) => setLength(newValue)}
-                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
-                                                options={lengthOptions}
-                                                value={length}
+                                            <Label htmlFor="length" className={cn("", {
+                                                "text-destructive": errors.length,
+                                            })}>Panel Length ( in foot )</Label>
+                                            <Controller
+                                                name="length"
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder={'Type a new length or Choose from the list'}
+                                                        styles={creatableSelectionStyles}
+                                                        options={lengthOptions}
+                                                    />
+                                                )}
                                             />
                                         </div>
 
@@ -365,12 +417,17 @@ export function StyleForm() {
                                                 (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
                                                 (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label htmlFor={prop.name}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name} className={cn("", {
+                                                "text-destructive": errors[prop.name],
+                                            })}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" defaultValue={0} name={prop.name} id={prop.name} />
+                                                <Input type="number" {...register(prop.name)}
+                                                    className={cn("", {
+                                                        "border-destructive focus:border-destructive": errors[prop.name],
+                                                    })} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
 
@@ -385,7 +442,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId ? 'Editing...' : 'Creating...') : (selectedStyleId ? 'Create Style' : 'Edit Style...')}</Button>
+                            <Button disabled={isPending} type="submit">{isPending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style')}</Button>
                         </div>
                     </form>
                 </div >
