@@ -10,43 +10,21 @@ import { LengthInsert, lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
 
+const insertIfNotExists = async (id: number, data: any, table: any) => {
+    if (id === 0) {
+        const result = await db.insert(table).values(data).returning({ insertedId: table.id });
+        return result[0].insertedId;
+    }
+    return id;
+};
+
 export const createStyle = async (formData: FormData) => {
     try {
-        let categoryID = Number(formData.get('categoryId'));
-        let styleId = Number(formData.get('styleId'));
-        let colorId = Number(formData.get('colorId'));
-        let heightId = Number(formData.get('heightId'));
-        let lengthId = Number(formData.get('lengthId'));
-
-        if (categoryID === 0) {
-            const newCategory: CategoryInsert = { name: formData.get('category') as string, userId: Number(formData.get('userId')) };
-            const result = await db.insert(categories).values(newCategory).returning({ insertedId: categories.id });
-            categoryID = result[0].insertedId;
-        }
-
-        if (styleId === 0) {
-            const newStyle: StyleInsert = { name: formData.get('style') as string, categoryId: categoryID };
-            const result = await db.insert(styles).values(newStyle).returning({ insertedId: styles.id });
-            styleId = result[0].insertedId;
-        }
-
-        if (colorId === 0) {
-            const newColor: ColorInsert = { name: formData.get('color') as string, categoryId: categoryID };
-            const result = await db.insert(colors).values(newColor).returning({ insertedId: colors.id });
-            colorId = result[0].insertedId;
-        }
-
-        if (heightId === 0) {
-            const newHeight: HeightInsert = { name: formData.get('height') as string, categoryId: categoryID };
-            const result = await db.insert(heights).values(newHeight).returning({ insertedId: heights.id });
-            heightId = result[0].insertedId;
-        }
-
-        if (lengthId === 0) {
-            const newLength: LengthInsert = { name: formData.get('length') as string, categoryId: categoryID };
-            const result = await db.insert(lengths).values(newLength).returning({ insertedId: lengths.id });
-            lengthId = result[0].insertedId;
-        }
+        let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
+        let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
+        let colorId = await insertIfNotExists(Number(formData.get('colorId')), { name: formData.get('color') as string, categoryId: categoryID }, colors);
+        let heightId = await insertIfNotExists(Number(formData.get('heightId')), { name: formData.get('height') as string, categoryId: categoryID }, heights);
+        let lengthId = await insertIfNotExists(Number(formData.get('lengthId')), { name: formData.get('length') as string, categoryId: categoryID }, lengths);
 
         const newFence: FenceInsert = {
             categoryId: categoryID,
@@ -72,56 +50,21 @@ export const createStyle = async (formData: FormData) => {
         };
 
         await db.insert(fences).values(newFence);
-
         revalidatePath('/en/style');
 
-        return {
-            success: true, message: 'Successfully Created Style.',
-        };
+        return { success: true, message: 'Successfully Created Style.' };
     } catch (error) {
-        return {
-            success: false, message: 'Failed to Create Style.',
-        };
+        return { success: false, message: 'Failed to Create Style.' };
     }
 };
 
 export const updateStyle = async (id: number, formData: FormData) => {
     try {
-        let categoryID = Number(formData.get('categoryId'));
-        let styleId = Number(formData.get('styleId'));
-        let colorId = Number(formData.get('colorId'));
-        let heightId = Number(formData.get('heightId'));
-        let lengthId = Number(formData.get('lengthId'));
-
-        if (categoryID === 0) {
-            const newCategory: CategoryInsert = { name: formData.get('category') as string, userId: Number(formData.get('userId')) };
-            const result = await db.insert(categories).values(newCategory).returning({ insertedId: categories.id });
-            categoryID = result[0].insertedId;
-        }
-
-        if (styleId === 0) {
-            const newStyle: StyleInsert = { name: formData.get('style') as string, categoryId: categoryID };
-            const result = await db.insert(styles).values(newStyle).returning({ insertedId: styles.id });
-            styleId = result[0].insertedId;
-        }
-
-        if (colorId === 0) {
-            const newColor: ColorInsert = { name: formData.get('color') as string, categoryId: categoryID };
-            const result = await db.insert(colors).values(newColor).returning({ insertedId: colors.id });
-            colorId = result[0].insertedId;
-        }
-
-        if (heightId === 0) {
-            const newHeight: HeightInsert = { name: formData.get('height') as string, categoryId: categoryID };
-            const result = await db.insert(heights).values(newHeight).returning({ insertedId: heights.id });
-            heightId = result[0].insertedId;
-        }
-
-        if (lengthId === 0) {
-            const newLength: LengthInsert = { name: formData.get('length') as string, categoryId: categoryID };
-            const result = await db.insert(lengths).values(newLength).returning({ insertedId: lengths.id });
-            lengthId = result[0].insertedId;
-        }
+        let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
+        let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
+        let colorId = await insertIfNotExists(Number(formData.get('colorId')), { name: formData.get('color') as string, categoryId: categoryID }, colors);
+        let heightId = await insertIfNotExists(Number(formData.get('heightId')), { name: formData.get('height') as string, categoryId: categoryID }, heights);
+        let lengthId = await insertIfNotExists(Number(formData.get('lengthId')), { name: formData.get('length') as string, categoryId: categoryID }, lengths);
 
         const fence: FenceInsert = {
             categoryId: categoryID,
@@ -146,21 +89,14 @@ export const updateStyle = async (id: number, formData: FormData) => {
             federationCapPrice: formData.get('federationCapPrice')?.toString(),
         };
 
-        await db.update(fences)
-            .set(fence)
-            .where(eq(fences.id, id));
-
+        await db.update(fences).set(fence).where(eq(fences.id, id));
         revalidatePath('/en/style');
 
-        return {
-            success: true, message: 'Successfully Updated Style.',
-        };
+        return { success: true, message: 'Successfully Updated Style.' };
     } catch (error) {
-        return {
-            success: false, message: 'Failed to Update Style.',
-        };
+        return { success: false, message: 'Failed to Update Style.' };
     }
-}
+};
 
 export const getStyles = async (userId: number) => {
     try {
@@ -179,37 +115,27 @@ export const getStyles = async (userId: number) => {
     } catch (error) {
         throw new Error('Failed to Get Styles.');
     }
-}
+};
 
 export const deleteStyle = async (id: number) => {
     try {
         await db.delete(fences).where(eq(fences.id, id));
-
         revalidatePath('/en/style');
 
-        return {
-            success: true, message: 'Successfuly Deleted Style!',
-        };
+        return { success: true, message: 'Successfully Deleted Style!' };
     } catch (error) {
-        return {
-            success: false, message: 'Failed to Delete Style.',
-        };
+        return { success: false, message: 'Failed to Delete Style.' };
     }
 };
 
 export const deleteStyles = async (ids: number[]) => {
     try {
         await db.delete(fences).where(inArray(fences.id, ids));
-
         revalidatePath('/en/style');
 
-        return {
-            success: true, message: 'Successfuly Deleted Styles!',
-        };
+        return { success: true, message: 'Successfully Deleted Styles!' };
     } catch (error) {
-        return {
-            success: false, message: 'Failed to Delete Styles.',
-        };
+        return { success: false, message: 'Failed to Delete Styles.' };
     }
 };
 
@@ -221,17 +147,10 @@ export const updateStyleState = async (id: number) => {
             .returning({ status: fences.isActive });
 
         const status = updatedStatus[0].status ? 'Activated' : 'Deactivated';
-
         revalidatePath('/en/style');
 
-        return {
-            success: true, message: 'Successfuly ' + status + ' Style!',
-        };
+        return { success: true, message: 'Successfully ' + status + ' Style!' };
     } catch (error) {
-        return {
-            success: false, message: 'Failed to Update Style.',
-        };
+        return { success: false, message: 'Failed to Update Style.' };
     }
 };
-
-
