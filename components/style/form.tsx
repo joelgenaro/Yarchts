@@ -32,6 +32,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { getFence } from "@/lib/utils";
+import style from "react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark";
 
 const schema = z.object({
     category: z.object({
@@ -123,14 +124,15 @@ export function StyleForm() {
     }, [category])
 
     useEffect(() => {
-        if (selectedStyleId) {
+        if (selectedStyleId !== 0) {
             const fence = getFence(selectedStyleId, styles);
+            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
 
             setValue('category', categoryOptions.find(option => option.id === fence?.categoryId) as CreatableSelectionOptions);
-            setValue('style', styleOptions.find(option => option.id === fence?.styleId) as CreatableSelectionOptions);
-            setValue('color', colorOptions.find(option => option.id === fence?.colorId) as CreatableSelectionOptions);
-            setValue('height', heightOptions.find(option => option.id === fence?.heightId) as CreatableSelectionOptions);
-            setValue('length', lengthOptions.find(option => option.id === fence?.lengthId) as CreatableSelectionOptions);
+            setValue('style', styleOption.find(option => option.id === fence?.styleId) as CreatableSelectionOptions);
+            setValue('color', colorOption.find(option => option.id === fence?.colorId) as CreatableSelectionOptions);
+            setValue('height', heightOption.find(option => option.id === fence?.heightId) as CreatableSelectionOptions);
+            setValue('length', lengthOption.find(option => option.id === fence?.lengthId) as CreatableSelectionOptions);
             setValue('panelPrice', Number(fence?.panelPrice))
             setValue('postPrice', Number(fence?.postPrice))
             setValue('lftPrice', Number(fence?.lftPrice))
@@ -152,16 +154,27 @@ export function StyleForm() {
     }, [isFormOpen]);
 
     const onSubmit = (data: z.infer<typeof schema>) => {
+        const form = document.querySelector('#styleForm') as HTMLFormElement;
+        const formData = new FormData(form);
 
+        startTransition(async () => {
+            const res = (selectedStyleId === 0) ? await createStyle(formData) : await updateStyle(selectedStyleId, formData);
 
-        setIsFormOpen(false);
-        reset();
+            if (res?.success) {
+                reToast.success(res?.message);
+
+                setIsFormOpen(false);
+                reset();
+            } else {
+                reToast.error(res?.message);
+            }
+        });
     };
 
     return (
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8">
+                <Button onClick={() => (setSelectedStyleId(0))} variant="outline" size="sm" className="h-8">
                     <PlusCircle className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
                     Add
                 </Button>
@@ -169,7 +182,7 @@ export function StyleForm() {
             <DialogContent size="2xl">
                 <DialogHeader className="p-0">
                     <DialogTitle className="text-base font-medium text-default-700 ">
-                        {selectedStyleId !== 0 ? 'Create a New Style' : 'Edit Style'}
+                        {selectedStyleId === 0 ? 'Create a New Style' : 'Edit Style'}
                     </DialogTitle>
                 </DialogHeader>
                 <div>

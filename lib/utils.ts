@@ -191,7 +191,7 @@ export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[]
   }));
 };
 
-export const getStyleOptions = (styles: Style[], categoryId: number) => {
+export const getStyleOptions = (styles: Style[], categoryId: number | undefined) => {
   const data = styles.find((category) => category.id === categoryId);
 
   const styleOption = data?.styles.map((style) => ({

@@ -85,7 +85,7 @@ export const createStyle = async (formData: FormData) => {
     }
 };
 
-export const updateStyle = async (formData: FormData) => {
+export const updateStyle = async (id: number, formData: FormData) => {
     try {
 
 
