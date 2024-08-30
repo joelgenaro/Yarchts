@@ -17,7 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
 import { createSelectionOption, getFence } from "@/lib/utils";
-import { CreatableSelectionOptions, UserSession } from "@/lib/interfaces";
+import { UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
 import { createStyle, updateStyle } from "@/actions/style";
@@ -48,7 +48,10 @@ export function StyleForm() {
         if (formState.categoryId) {
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, formState.categoryId);
 
-            setFormState(styleForm);
+            updateFormState(draft => { draft.style = null })
+            updateFormState(draft => { draft.color = null })
+            updateFormState(draft => { draft.height = null })
+            updateFormState(draft => { draft.length = null })
             updateFormState(draft => { draft.styleOptions = styleOption })
             updateFormState(draft => { draft.colorOptions = colorOption })
             updateFormState(draft => { draft.heightOptions = heightOption })
@@ -123,6 +126,7 @@ export function StyleForm() {
 
         if (res?.success) {
             setFormState(styleForm)
+            setIsFormOpen(false)
             reToast.success(res?.message);
         } else {
             reToast.error(res?.message);
@@ -287,7 +291,6 @@ export function StyleForm() {
                                                 value={formState.category}
                                             />
                                         </div>
-
                                         <div>
                                             <Label htmlFor="style">Style Name</Label>
                                             <CreatableSelect
@@ -333,7 +336,6 @@ export function StyleForm() {
                                                 value={formState.color}
                                             />
                                         </div>
-
                                         <div>
                                             <Label htmlFor="length" >Panel Length ( in foot )</Label>
                                             <CreatableSelect
@@ -349,7 +351,6 @@ export function StyleForm() {
                                                 value={formState.length}
                                             />
                                         </div>
-
                                         {styleProperties.map((prop, index) => (<div key={index} className={clsx('col-span-12 lg:col-span-4', {
                                             'invisible':
                                                 (prop.name === 'heavyDutyEndPostPrice' && formState.category?.value.toLowerCase() !== 'aluminum') ||
@@ -372,14 +373,13 @@ export function StyleForm() {
                                 </div>
                             </ScrollArea>
                         </div>
-
                         <div className="flex justify-center gap-3">
                             <DialogClose asChild>
                                 <Button type="button" variant="outline">
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style...')}</Button>
+                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style')}</Button>
                         </div>
                     </form>
                 </div >
