@@ -54,18 +54,18 @@ export type StyleTableColumn = {
 
 export type FormState = {
     categoryId: number | null | undefined;
-    category: CreatableSelectionOptions | null;
+    category: CreatableSelectionOptions | null | undefined;
     styleId: number | null | undefined;
-    style: CreatableSelectionOptions | null;
+    style: CreatableSelectionOptions | null | undefined;
     styleOptions: CreatableSelectionOptions[];
     heightId: number | null | undefined;
-    height: CreatableSelectionOptions | null;
+    height: CreatableSelectionOptions | null | undefined;
     heightOptions: CreatableSelectionOptions[];
     colorId: number | null | undefined;
-    color: CreatableSelectionOptions | null;
+    color: CreatableSelectionOptions | null | undefined;
     colorOptions: CreatableSelectionOptions[];
     lengthId: number | null | undefined;
-    length: CreatableSelectionOptions | null;
+    length: CreatableSelectionOptions | null | undefined;
     lengthOptions: CreatableSelectionOptions[];
     heavyDutyEndPostPrice: number,
     cornerPostPrice: number,

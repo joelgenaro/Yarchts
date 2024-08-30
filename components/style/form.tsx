@@ -59,30 +59,27 @@ export function StyleForm() {
     useEffect(() => {
         if (selectedStyleId !== 0) {
             const fence = getFence(selectedStyleId, styles)
+            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
 
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
-            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.category = categoryOptions.find(option => option.id === fence?.categoryId) })
+            updateFormState(draft => { draft.style = styleOption.find(option => option.id === fence?.styleId) })
+            updateFormState(draft => { draft.color = colorOption.find(option => option.id === fence?.colorId) })
+            updateFormState(draft => { draft.height = heightOption.find(option => option.id === fence?.heightId) })
+            updateFormState(draft => { draft.length = lengthOption.find(option => option.id === fence?.lengthId) })
+            updateFormState(draft => { draft.panelPrice = Number(fence?.panelPrice) })
+            updateFormState(draft => { draft.lftPrice = Number(fence?.lftPrice) })
+            updateFormState(draft => { draft.thirdFeetGatePrice = Number(fence?.thirdFeetGatePrice) })
+            updateFormState(draft => { draft.foruthFeetGatePrice = Number(fence?.foruthFeetGatePrice) })
+            updateFormState(draft => { draft.fifthFeetGatePrice = Number(fence?.fifthFeetGatePrice) })
+            updateFormState(draft => { draft.eighthFeetGatePrice = Number(fence?.eighthFeetGatePrice) })
+            updateFormState(draft => { draft.tenthFeetGatePrice = Number(fence?.tenthFeetGatePrice) })
+            updateFormState(draft => { draft.heavyDutyEndPostPrice = Number(fence?.heavyDutyEndPostPrice) })
+            updateFormState(draft => { draft.endPostPrice = Number(fence?.endPostPrice) })
+            updateFormState(draft => { draft.cornerPostPrice = Number(fence?.cornerPostPrice) })
+            updateFormState(draft => { draft.flatCapPrice = Number(fence?.flatCapPrice) })
+            updateFormState(draft => { draft.gothicCapPrice = Number(fence?.gothicCapPrice) })
+            updateFormState(draft => { draft.newEnglandCapPrice = Number(fence?.newEnglandCapPrice) })
+            updateFormState(draft => { draft.federationCapPrice = Number(fence?.federationCapPrice) })
         } else {
             setFormState(styleForm)
         }
@@ -268,7 +265,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = e.target.value }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
+                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = Number(e.target.value) }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
                                     </div>
@@ -368,7 +365,7 @@ export function StyleForm() {
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = e.target.value }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
+                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = Number(e.target.value) }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
                                     </div>
