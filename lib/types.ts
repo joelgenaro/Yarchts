@@ -1,3 +1,5 @@
+import { CreatableSelectionOptions } from "@/lib/interfaces";
+
 // color type
 export type color = "primary" | "info" | "warning" | "success" | "destructive" | "secondary";
 export type TextAreaColor = "primary" | "info" | "warning" | "success" | "destructive";
@@ -49,4 +51,36 @@ export type StyleTableColumn = {
     image: string | null;
     isActive: boolean;
 };
+
+export type FormState = {
+    categoryId: number | null | undefined;
+    category: CreatableSelectionOptions | null;
+    styleId: number | null | undefined;
+    style: CreatableSelectionOptions | null;
+    styleOptions: CreatableSelectionOptions[];
+    heightId: number | null | undefined;
+    height: CreatableSelectionOptions | null;
+    heightOptions: CreatableSelectionOptions[];
+    colorId: number | null | undefined;
+    color: CreatableSelectionOptions | null;
+    colorOptions: CreatableSelectionOptions[];
+    lengthId: number | null | undefined;
+    length: CreatableSelectionOptions | null;
+    lengthOptions: CreatableSelectionOptions[];
+    heavyDutyEndPostPrice: number,
+    cornerPostPrice: number,
+    endPostPrice: number,
+    flatCapPrice: number,
+    gothicCapPrice: number,
+    newEnglandCapPrice: number,
+    federationCapPrice: number,
+    lftPrice: number,
+    thirdFeetGatePrice: number,
+    foruthFeetGatePrice: number,
+    fifthFeetGatePrice: number,
+    eighthFeetGatePrice: number,
+    tenthFeetGatePrice: number,
+    panelPrice: number,
+    postPrice: number,
+}
 

@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InputGroup, InputGroupText } from "@/components/ui/input-group";
 import { creatableSelectionStyles, styleProperties } from "@/lib/constants";
+import { createSelectionOption, getFence } from "@/lib/utils";
 import { CreatableSelectionOptions, UserSession } from "@/lib/interfaces";
 import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
@@ -27,55 +28,8 @@ import clsx from 'clsx';
 import { useSession } from "next-auth/react";
 import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
 import { useStyleStore } from "@/store/style";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { getFence } from "@/lib/utils";
-import style from "react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark";
-
-const schema = z.object({
-    category: z.object({
-        id: z.number().optional(),
-        value: z.string().nonempty(''),
-        label: z.string(),
-    }).nullable().refine(val => val !== null, ''),
-    style: z.object({
-        id: z.number().optional(),
-        value: z.string().nonempty(''),
-        label: z.string(),
-    }).nullable().refine(val => val !== null, ''),
-    color: z.object({
-        id: z.number().optional(),
-        value: z.string().nonempty(''),
-        label: z.string(),
-    }).nullable().refine(val => val !== null, ''),
-    height: z.object({
-        id: z.number().optional(),
-        value: z.string().nonempty(''),
-        label: z.string(),
-    }).nullable().refine(val => val !== null, ''),
-    length: z.object({
-        id: z.number().optional(),
-        value: z.string().nonempty(''),
-        label: z.string(),
-    }).nullable().refine(val => val !== null, ''),
-    panelPrice: z.coerce.number().nonnegative(),
-    postPrice: z.coerce.number().nonnegative(),
-    lftPrice: z.coerce.number().nonnegative(),
-    thirdFeetGatePrice: z.coerce.number().nonnegative(),
-    foruthFeetGatePrice: z.coerce.number().nonnegative(),
-    fifthFeetGatePrice: z.coerce.number().nonnegative(),
-    eighthFeetGatePrice: z.coerce.number().nonnegative(),
-    tenthFeetGatePrice: z.coerce.number().nonnegative(),
-    heavyDutyEndPostPrice: z.coerce.number().nonnegative(),
-    endPostPrice: z.coerce.number().nonnegative(),
-    cornerPostPrice: z.coerce.number().nonnegative(),
-    flatCapPrice: z.coerce.number().nonnegative(),
-    gothicCapPrice: z.coerce.number().nonnegative(),
-    newEnglandCapPrice: z.coerce.number().nonnegative(),
-    federationCapPrice: z.coerce.number().nonnegative(),
-});
+import { produce } from 'immer';
+import { styleForm } from "@/lib/constants";
 
 export function StyleForm() {
     const styles = useStyleStore((state) => state.styles);
@@ -84,92 +38,100 @@ export function StyleForm() {
     const selectedStyleId = useStyleStore((state) => state.selectedStyleId);
     const setSelectedStyleId = useStyleStore((state) => state.setSelectedStyleId);
     const [session, setSession] = useState<UserSession>(useSession().data as UserSession);
-    const [isPending, startTransition] = useTransition();
-    const [styleOptions, setStyleOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [heightOptions, setHeightOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [colorOptions, setColorOptions] = useState<CreatableSelectionOptions[]>([]);
-    const [lengthOptions, setLengthOptions] = useState<CreatableSelectionOptions[]>([]);
-
-    const {
-        register,
-        handleSubmit,
-        control,
-        setValue,
-        getValues,
-        reset,
-        formState: { errors },
-    } = useForm<z.infer<typeof schema>>({
-        resolver: zodResolver(schema),
-    });
-
+    const [pending, setPending] = useState(false);
+    const [formState, setFormState] = useState(styleForm);
     const categoryOptions = useMemo(() => {
         return getCategoryOptions(styles)
     }, [styles]);
 
-    const category = useWatch({ control, name: 'category' });
-
     useEffect(() => {
-        if (category?.id) {
-            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, category?.id);
+        if (formState.categoryId) {
+            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, formState.categoryId);
 
-            setValue('style', {} as CreatableSelectionOptions);
-            setValue('color', {} as CreatableSelectionOptions);
-            setValue('height', {} as CreatableSelectionOptions);
-            setValue('length', {} as CreatableSelectionOptions);
-            setStyleOptions(styleOption);
-            setColorOptions(colorOption);
-            setHeightOptions(heightOption);
-            setLengthOptions(lengthOption);
+            setFormState(styleForm);
+            updateFormState(draft => { draft.styleOptions = styleOption })
+            updateFormState(draft => { draft.colorOptions = colorOption })
+            updateFormState(draft => { draft.heightOptions = heightOption })
+            updateFormState(draft => { draft.lengthOptions = lengthOption })
         }
-    }, [category])
+    }, [formState.category])
 
     useEffect(() => {
         if (selectedStyleId !== 0) {
-            const fence = getFence(selectedStyleId, styles);
-            const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
+            const fence = getFence(selectedStyleId, styles)
 
-            setValue('category', categoryOptions.find(option => option.id === fence?.categoryId) as CreatableSelectionOptions);
-            setValue('style', styleOption.find(option => option.id === fence?.styleId) as CreatableSelectionOptions);
-            setValue('color', colorOption.find(option => option.id === fence?.colorId) as CreatableSelectionOptions);
-            setValue('height', heightOption.find(option => option.id === fence?.heightId) as CreatableSelectionOptions);
-            setValue('length', lengthOption.find(option => option.id === fence?.lengthId) as CreatableSelectionOptions);
-            setValue('panelPrice', Number(fence?.panelPrice))
-            setValue('postPrice', Number(fence?.postPrice))
-            setValue('lftPrice', Number(fence?.lftPrice))
-            setValue('thirdFeetGatePrice', Number(fence?.thirdFeetGatePrice))
-            setValue('foruthFeetGatePrice', Number(fence?.foruthFeetGatePrice))
-            setValue('fifthFeetGatePrice', Number(fence?.fifthFeetGatePrice))
-            setValue('eighthFeetGatePrice', Number(fence?.eighthFeetGatePrice))
-            setValue('tenthFeetGatePrice', Number(fence?.tenthFeetGatePrice))
-            setValue('heavyDutyEndPostPrice', Number(fence?.heavyDutyEndPostPrice))
-            setValue('endPostPrice', Number(fence?.endPostPrice))
-            setValue('cornerPostPrice', Number(fence?.cornerPostPrice))
-            setValue('flatCapPrice', Number(fence?.flatCapPrice))
-            setValue('gothicCapPrice', Number(fence?.gothicCapPrice))
-            setValue('newEnglandCapPrice', Number(fence?.newEnglandCapPrice))
-            setValue('federationCapPrice', Number(fence?.federationCapPrice))
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
+            updateFormState(draft => { draft.data = fence?.data })
         } else {
-            reset()
+            setFormState(styleForm)
         }
-    }, [isFormOpen]);
+    }, [isFormOpen, selectedStyleId]);
 
-    const onSubmit = (data: z.infer<typeof schema>) => {
+    const updateFormState = (recipe: (draft: typeof styleForm) => void) => {
+        setFormState((prevState) => produce(prevState, recipe));
+    };
+
+    const handleCreate = (inputValue: string, type: string) => {
+        const newOption = createSelectionOption(inputValue);
+
+        switch (type) {
+            case 'category':
+                updateFormState(draft => { draft.category = newOption })
+                break;
+            case 'style':
+                updateFormState(draft => { draft.style = newOption })
+                break;
+            case 'height':
+                updateFormState(draft => { draft.height = newOption })
+                break;
+            case 'color':
+                updateFormState(draft => { draft.color = newOption })
+                break;
+            case 'length':
+                updateFormState(draft => { draft.length = newOption })
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setPending(true);
+
         const form = document.querySelector('#styleForm') as HTMLFormElement;
         const formData = new FormData(form);
+        const res = selectedStyleId === 0 ? await createStyle(formData) : await updateStyle(selectedStyleId, formData);
 
-        startTransition(async () => {
-            const res = (selectedStyleId === 0) ? await createStyle(formData) : await updateStyle(selectedStyleId, formData);
-
-            if (res?.success) {
-                reToast.success(res?.message);
-
-                setIsFormOpen(false);
-                reset();
-            } else {
-                reToast.error(res?.message);
-            }
-        });
-    };
+        if (res?.success) {
+            setFormState(styleForm)
+            reToast.success(res?.message);
+        } else {
+            reToast.error(res?.message);
+        }
+        setPending(false);
+    }
 
     return (
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
@@ -186,7 +148,14 @@ export function StyleForm() {
                     </DialogTitle>
                 </DialogHeader>
                 <div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form id="styleForm" onSubmit={handleSubmit}>
+                        <input type="hidden" name="userId" value={session?.user?.id ?? ''} />
+                        <input type="hidden" name="categoryId" value={formState.categoryId ?? ''} />
+                        <input type="hidden" name="styleId" value={formState.styleId ?? ''} />
+                        <input type="hidden" name="colorId" value={formState.colorId ?? ''} />
+                        <input type="hidden" name="heightId" value={formState.heightId ?? ''} />
+                        <input type="hidden" name="lengthId" value={formState.lengthId ?? ''} />
+
                         <div className="h-[300px] sm:h-[600px] w-full">
                             <ScrollArea className="h-full">
                                 <div className="hidden lg:block">
@@ -209,241 +178,199 @@ export function StyleForm() {
                                         </div>
                                         <div className="col-span-12 lg:col-span-8">
                                             <div className="col-span-12 lg:col-span-6">
-                                                <Label htmlFor="category" className={cn("", {
-                                                    "text-destructive": errors.category,
-                                                })}>Category Name</Label>
-                                                <Controller
+                                                <Label htmlFor="category">Category Name</Label>
+                                                <CreatableSelect
+                                                    id="category"
                                                     name="category"
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <CreatableSelect
-                                                            {...field}
-                                                            isClearable
-                                                            placeholder={'Type a new category or Choose from the list'}
-                                                            styles={creatableSelectionStyles}
-                                                            options={categoryOptions}
-                                                        />
-                                                    )}
+                                                    required={true}
+                                                    isClearable
+                                                    placeholder={'Type a new category or Choose from the list'}
+                                                    styles={creatableSelectionStyles}
+                                                    onChange={(newValue) => (updateFormState(draft => { draft.category = newValue }), updateFormState(draft => { draft.categoryId = newValue?.id }))}
+                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
+                                                    options={categoryOptions}
+                                                    value={formState.category}
                                                 />
                                             </div>
                                             <div className="col-span-12 mt-2 lg:col-span-6 ">
-                                                <Label htmlFor="style" className={cn("", {
-                                                    "text-destructive": errors.style,
-                                                })}>Style Name</Label>
-                                                <Controller
+                                                <Label htmlFor="style">Style Name</Label>
+                                                <CreatableSelect
+                                                    id="style"
                                                     name="style"
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <CreatableSelect
-                                                            {...field}
-                                                            isClearable
-                                                            placeholder={'Type a new style or Choose from the list'}
-                                                            styles={creatableSelectionStyles}
-                                                            options={styleOptions}
-                                                        />
-                                                    )}
+                                                    required={true}
+                                                    isClearable
+                                                    placeholder={'Type a new style or Choose from the list'}
+                                                    styles={creatableSelectionStyles}
+                                                    onChange={(newValue) => (updateFormState(draft => { draft.style = newValue }), updateFormState(draft => { draft.styleId = newValue?.id }))}
+                                                    onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
+                                                    options={formState.styleOptions}
+                                                    value={formState.style}
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="height" className={cn("", {
-                                                "text-destructive": errors.height,
-                                            })}>Panel Height ( in foot )</Label>
-                                            <Controller
+                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="height"
                                                 name="height"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new height or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={heightOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new height or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.height = newValue }), updateFormState(draft => { draft.heightId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
+                                                options={formState.heightOptions}
+                                                value={formState.height}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="color" className={cn("", {
-                                                "text-destructive": errors.color,
-                                            })}>Fence Color</Label>
-                                            <Controller
+                                            <Label htmlFor="color">Fence Color</Label>
+                                            <CreatableSelect
+                                                id="color"
                                                 name="color"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new color or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={colorOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new color or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.color = newValue }), updateFormState(draft => { draft.colorId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
+                                                options={formState.colorOptions}
+                                                value={formState.color}
                                             />
                                         </div>
                                         <div className="col-span-12 lg:col-span-4">
-                                            <Label htmlFor="length" className={cn("", {
-                                                "text-destructive": errors.length,
-                                            })}>Panel Length ( in foot )</Label>
-                                            <Controller
+                                            <Label htmlFor="length" >Panel Length ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="length"
                                                 name="length"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new length or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={lengthOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new length or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.length = newValue }), updateFormState(draft => { draft.lengthId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
+                                                options={formState.lengthOptions}
+                                                value={formState.length}
                                             />
                                         </div>
                                         {styleProperties.map((prop, index) => (<div key={index} className={clsx('col-span-12 lg:col-span-4', {
                                             'invisible':
-                                                (prop.name === 'heavyDutyEndPostPrice' && category?.value.toLowerCase() !== 'aluminum') ||
-                                                (prop.name === 'cornerPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
-                                                (prop.name === 'endPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
-                                                (prop.name === 'flatCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'gothicCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
+                                                (prop.name === 'heavyDutyEndPostPrice' && formState.category?.value.toLowerCase() !== 'aluminum') ||
+                                                (prop.name === 'cornerPostPrice' && formState.category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'endPostPrice' && formState.category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'flatCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'gothicCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'newEnglandCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'federationCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label htmlFor={prop.name} className={cn("", {
-                                                "text-destructive": errors[prop.name],
-                                            })}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" {...register(prop.name)}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors[prop.name],
-                                                    })} name={prop.name} id={prop.name} />
+                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = e.target.value }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
-
                                     </div>
                                 </div>
                                 <div className="block lg:hidden">
                                     <div className="flex flex-col gap-4">
                                         <div>
-                                            <Label htmlFor="category" className={cn("", {
-                                                "text-destructive": errors.category,
-                                            })}>Category Name</Label>
-                                            <Controller
+                                            <Label htmlFor="category">Category Name</Label>
+                                            <CreatableSelect
+                                                id="category"
                                                 name="category"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new category or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={categoryOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new category or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.category = newValue }), updateFormState(draft => { draft.categoryId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'category')}
+                                                options={categoryOptions}
+                                                value={formState.category}
                                             />
                                         </div>
 
                                         <div>
-                                            <Label htmlFor="style" className={cn("", {
-                                                "text-destructive": errors.style,
-                                            })}>Style Name</Label>
-                                            <Controller
+                                            <Label htmlFor="style">Style Name</Label>
+                                            <CreatableSelect
+                                                id="style"
                                                 name="style"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new style or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={styleOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new style or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.style = newValue }), updateFormState(draft => { draft.styleId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'style')}
+                                                options={formState.styleOptions}
+                                                value={formState.style}
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="height" className={cn("", {
-                                                "text-destructive": errors.height,
-                                            })}>Panel Height ( in foot )</Label>
-                                            <Controller
+                                            <Label htmlFor="height">Panel Height ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="height"
                                                 name="height"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new height or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={heightOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new height or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.height = newValue }), updateFormState(draft => { draft.heightId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'height')}
+                                                options={formState.heightOptions}
+                                                value={formState.height}
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="color" className={cn("", {
-                                                "text-destructive": errors.color,
-                                            })}>Fence Color</Label>
-                                            <Controller
+                                            <Label htmlFor="color">Fence Color</Label>
+                                            <CreatableSelect
+                                                id="color"
                                                 name="color"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new color or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={colorOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new color or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.color = newValue }), updateFormState(draft => { draft.colorId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'color')}
+                                                options={formState.colorOptions}
+                                                value={formState.color}
                                             />
                                         </div>
 
                                         <div>
-                                            <Label htmlFor="length" className={cn("", {
-                                                "text-destructive": errors.length,
-                                            })}>Panel Length ( in foot )</Label>
-                                            <Controller
+                                            <Label htmlFor="length" >Panel Length ( in foot )</Label>
+                                            <CreatableSelect
+                                                id="length"
                                                 name="length"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CreatableSelect
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder={'Type a new length or Choose from the list'}
-                                                        styles={creatableSelectionStyles}
-                                                        options={lengthOptions}
-                                                    />
-                                                )}
+                                                required={true}
+                                                isClearable
+                                                placeholder={'Type a new length or Choose from the list'}
+                                                styles={creatableSelectionStyles}
+                                                onChange={(newValue) => (updateFormState(draft => { draft.length = newValue }), updateFormState(draft => { draft.lengthId = newValue?.id }))}
+                                                onCreateOption={(inputValue) => handleCreate(inputValue, 'length')}
+                                                options={formState.lengthOptions}
+                                                value={formState.length}
                                             />
                                         </div>
 
-                                        {styleProperties.map((prop, index) => (<div key={index} className={clsx({
+                                        {styleProperties.map((prop, index) => (<div key={index} className={clsx('col-span-12 lg:col-span-4', {
                                             'invisible':
-                                                (prop.name === 'heavyDutyEndPostPrice' && category?.value.toLowerCase() !== 'aluminum') ||
-                                                (prop.name === 'cornerPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
-                                                (prop.name === 'endPostPrice' && category?.value.toLowerCase() !== 'chain link') ||
-                                                (prop.name === 'flatCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'gothicCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'newEnglandCapPrice' && category?.value.toLowerCase() !== 'vinyl') ||
-                                                (prop.name === 'federationCapPrice' && category?.value.toLowerCase() !== 'vinyl')
+                                                (prop.name === 'heavyDutyEndPostPrice' && formState.category?.value.toLowerCase() !== 'aluminum') ||
+                                                (prop.name === 'cornerPostPrice' && formState.category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'endPostPrice' && formState.category?.value.toLowerCase() !== 'chain link') ||
+                                                (prop.name === 'flatCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'gothicCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'newEnglandCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl') ||
+                                                (prop.name === 'federationCapPrice' && formState.category?.value.toLowerCase() !== 'vinyl')
                                         })}>
-                                            <Label htmlFor={prop.name} className={cn("", {
-                                                "text-destructive": errors[prop.name],
-                                            })}>{prop.label}</Label>
+                                            <Label htmlFor={prop.name}>{prop.label}</Label>
                                             <InputGroup merged>
                                                 <InputGroupText>
                                                     <Icon icon="mdi:dollar" />
                                                 </InputGroupText>
-                                                <Input type="number" {...register(prop.name)}
-                                                    className={cn("", {
-                                                        "border-destructive focus:border-destructive": errors[prop.name],
-                                                    })} name={prop.name} id={prop.name} />
+                                                <Input type="number" onChange={(e) => (updateFormState(draft => { draft[prop.name] = e.target.value }))} defaultValue={formState[prop.name]} name={prop.name} id={prop.name} />
                                             </InputGroup>
                                         </div>))}
-
                                     </div>
                                 </div>
                             </ScrollArea>
@@ -455,7 +382,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button disabled={isPending} type="submit">{isPending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style')}</Button>
+                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style...')}</Button>
                         </div>
                     </form>
                 </div >
