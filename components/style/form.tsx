@@ -48,14 +48,16 @@ export function StyleForm() {
         if (formState.categoryId) {
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, formState.categoryId);
 
-            updateFormState(draft => { draft.style = null })
-            updateFormState(draft => { draft.color = null })
-            updateFormState(draft => { draft.height = null })
-            updateFormState(draft => { draft.length = null })
-            updateFormState(draft => { draft.styleOptions = styleOption })
-            updateFormState(draft => { draft.colorOptions = colorOption })
-            updateFormState(draft => { draft.heightOptions = heightOption })
-            updateFormState(draft => { draft.lengthOptions = lengthOption })
+            updateFormState(draft => {
+                draft.style = null;
+                draft.color = null;
+                draft.height = null;
+                draft.length = null;
+                draft.styleOptions = styleOption;
+                draft.colorOptions = colorOption;
+                draft.heightOptions = heightOption;
+                draft.lengthOptions = lengthOption;
+            });
         }
     }, [formState.category])
 
@@ -64,25 +66,36 @@ export function StyleForm() {
             const fence = getFence(selectedStyleId, styles)
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
 
-            updateFormState(draft => { draft.category = categoryOptions.find(option => option.id === fence?.categoryId) })
-            updateFormState(draft => { draft.style = styleOption.find(option => option.id === fence?.styleId) })
-            updateFormState(draft => { draft.color = colorOption.find(option => option.id === fence?.colorId) })
-            updateFormState(draft => { draft.height = heightOption.find(option => option.id === fence?.heightId) })
-            updateFormState(draft => { draft.length = lengthOption.find(option => option.id === fence?.lengthId) })
-            updateFormState(draft => { draft.panelPrice = Number(fence?.panelPrice) })
-            updateFormState(draft => { draft.lftPrice = Number(fence?.lftPrice) })
-            updateFormState(draft => { draft.thirdFeetGatePrice = Number(fence?.thirdFeetGatePrice) })
-            updateFormState(draft => { draft.foruthFeetGatePrice = Number(fence?.foruthFeetGatePrice) })
-            updateFormState(draft => { draft.fifthFeetGatePrice = Number(fence?.fifthFeetGatePrice) })
-            updateFormState(draft => { draft.eighthFeetGatePrice = Number(fence?.eighthFeetGatePrice) })
-            updateFormState(draft => { draft.tenthFeetGatePrice = Number(fence?.tenthFeetGatePrice) })
-            updateFormState(draft => { draft.heavyDutyEndPostPrice = Number(fence?.heavyDutyEndPostPrice) })
-            updateFormState(draft => { draft.endPostPrice = Number(fence?.endPostPrice) })
-            updateFormState(draft => { draft.cornerPostPrice = Number(fence?.cornerPostPrice) })
-            updateFormState(draft => { draft.flatCapPrice = Number(fence?.flatCapPrice) })
-            updateFormState(draft => { draft.gothicCapPrice = Number(fence?.gothicCapPrice) })
-            updateFormState(draft => { draft.newEnglandCapPrice = Number(fence?.newEnglandCapPrice) })
-            updateFormState(draft => { draft.federationCapPrice = Number(fence?.federationCapPrice) })
+            updateFormState(draft => {
+                draft.categoryId = fence?.categoryId;
+                draft.styleId = fence?.styleId;
+                draft.colorId = fence?.colorId;
+                draft.heightId = fence?.heightId;
+                draft.lengthId = fence?.lengthId;
+                draft.styleOptions = styleOption;
+                draft.colorOptions = colorOption;
+                draft.heightOptions = heightOption;
+                draft.lengthOptions = lengthOption;
+                draft.category = categoryOptions.find(option => option.id === fence?.categoryId);
+                draft.style = styleOption.find(option => option.id === fence?.styleId);
+                draft.color = colorOption.find(option => option.id === fence?.colorId);
+                draft.height = heightOption.find(option => option.id === fence?.heightId);
+                draft.length = lengthOption.find(option => option.id === fence?.lengthId);
+                draft.panelPrice = Number(fence?.panelPrice);
+                draft.lftPrice = Number(fence?.lftPrice);
+                draft.thirdFeetGatePrice = Number(fence?.thirdFeetGatePrice);
+                draft.foruthFeetGatePrice = Number(fence?.foruthFeetGatePrice);
+                draft.fifthFeetGatePrice = Number(fence?.fifthFeetGatePrice);
+                draft.eighthFeetGatePrice = Number(fence?.eighthFeetGatePrice);
+                draft.tenthFeetGatePrice = Number(fence?.tenthFeetGatePrice);
+                draft.heavyDutyEndPostPrice = Number(fence?.heavyDutyEndPostPrice);
+                draft.endPostPrice = Number(fence?.endPostPrice);
+                draft.cornerPostPrice = Number(fence?.cornerPostPrice);
+                draft.flatCapPrice = Number(fence?.flatCapPrice);
+                draft.gothicCapPrice = Number(fence?.gothicCapPrice);
+                draft.newEnglandCapPrice = Number(fence?.newEnglandCapPrice);
+                draft.federationCapPrice = Number(fence?.federationCapPrice);
+            });
         } else {
             setFormState(styleForm)
         }

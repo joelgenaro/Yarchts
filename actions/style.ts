@@ -2,11 +2,11 @@
 
 import { db } from '@/db';
 import { eq, not, inArray } from 'drizzle-orm';
-import { CategoryInsert, categories } from '@/db/schemas/categories';
-import { StyleInsert, styles } from '@/db/schemas/styles';
-import { ColorInsert, colors } from '@/db/schemas/colors';
-import { HeightInsert, heights } from '@/db/schemas/heights';
-import { LengthInsert, lengths } from '@/db/schemas/lengths';
+import { categories } from '@/db/schemas/categories';
+import { styles } from '@/db/schemas/styles';
+import { colors } from '@/db/schemas/colors';
+import { heights } from '@/db/schemas/heights';
+import { lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
 
