@@ -52,3 +52,14 @@ export const styleForm: FormState = {
     panelPrice: 0,
     postPrice: 0,
 };
+
+export const statuses = [
+    {
+        value: "Activated",
+        label: "Activated",
+    },
+    {
+        value: "Deactivated",
+        label: "Deactivated",
+    },
+]

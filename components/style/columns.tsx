@@ -30,15 +30,6 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
                 <AvatarImage src={row.getValue("image")} />
                 <AvatarFallback></AvatarFallback>
               </Avatar>
-              <Badge
-                variant="soft"
-                color={
-                  (row?.original?.isActive) ? "success" : "destructive"
-                }
-                className="capitalize "
-              >
-                {row?.original?.isActive ? "Activated" : "Deactivated"}
-              </Badge>
             </div>
           );
         },
@@ -69,9 +60,34 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
         ),
         enableSorting: false,
         enableHiding: false,
+        enableColumnFilter: false,
+      },
+      {
+        accessorKey: "isActive",
+        header: ({ column }) => (
+          <StyleTableColumnHeader column={column} title="Status" />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex gap-2">
+              <Badge
+                variant="soft"
+                color={
+                  (row?.original?.isActive) ? "success" : "destructive"
+                }
+                className="capitalize "
+              >
+                {row?.original?.isActive ? "Activated" : "Deactivated"}
+              </Badge>
+            </div>
+          );
+        },
       },
       {
         accessorKey: "category",
+        filterFn: (row, id, value) => {
+          return value.includes(row.getValue(id))
+        },
         header: ({ column }) => (
           <StyleTableColumnHeader column={column} title="Category" />
         ),
@@ -84,7 +100,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
-        enableSorting: false,
+        enableHiding: false,
       },
       {
         accessorKey: "style",
@@ -100,7 +116,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
-        enableSorting: false,
+        enableHiding: false,
       },],
   },
   {
@@ -121,7 +137,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
-        enableSorting: false,
+        enableHiding: false,
       },
       {
         accessorKey: "color",
@@ -137,7 +153,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
-        enableSorting: false,
+        enableHiding: false,
       },
       {
         accessorKey: "length",
@@ -153,7 +169,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
-        enableSorting: false,
+        enableHiding: false,
       },],
   },
   {
@@ -174,6 +190,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "foruthFeetGatePrice",
@@ -189,6 +206,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "fifthFeetGatePrice",
@@ -204,6 +222,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "eighthFeetGatePrice",
@@ -219,6 +238,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "tenthFeetGatePrice",
@@ -234,6 +254,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "panelPrice",
@@ -249,6 +270,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "lftPrice",
@@ -264,6 +286,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "postPrice",
@@ -279,6 +302,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "heavyDutyEndPostPrice",
@@ -294,6 +318,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "endPostPrice",
@@ -309,6 +334,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "cornerPostPrice",
@@ -324,6 +350,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "flatCapPrice",
@@ -339,6 +366,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "gothicCapPrice",
@@ -354,6 +382,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "newEnglandCapPrice",
@@ -369,6 +398,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
       {
         accessorKey: "federationCapPrice",
@@ -384,6 +414,7 @@ export const columns: ColumnDef<StyleTableColumn>[] = [
             </div>
           );
         },
+        enableHiding: false,
       },
     ],
   },

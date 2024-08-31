@@ -5,28 +5,29 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StyleTableViewOptions } from "./view-options";
-import { priorities, statuses } from "./data/data";
 import { StyleTableFacetedFilter } from "./faceted-filter";
 import { StyleForm } from "./form";
 import { MinusCircle } from "lucide-react";
 import { Table } from "@tanstack/react-table";
-import { Style } from "@/lib/interfaces";
 import { toast as reToast } from "react-hot-toast";
 import { deleteStyles } from '@/actions/style'
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import { getCategories } from "@/lib/utils";
+import { useStyleStore } from "@/store/style";
 
 export function StyleTableToolbar({ table }: {
   table: Table<any>;
 }) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const styles = useStyleStore((state) => state.styles);
   const isFiltered = table.getState().columnFilters.length > 0;
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     table.getColumn("style")?.setFilterValue(value);
   };
-  const statusColumn = table.getColumn("status");
-  const priorityColumn = table.getColumn("priority");
+  const categoryColumn = table.getColumn("category");
+  const categories = getCategories(styles);
 
   const handleDelete = async () => {
     if (Object.keys(table.getSelectedRowModel().rows).length === 0) {
@@ -73,18 +74,11 @@ export function StyleTableToolbar({ table }: {
           {isPending ? "Deleting..." : "Delete"}
         </Button>
 
-        {statusColumn && (
+        {categoryColumn && (
           <StyleTableFacetedFilter
-            column={statusColumn}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {priorityColumn && (
-          <StyleTableFacetedFilter
-            column={priorityColumn}
-            title="Priority"
-            options={priorities}
+            column={categoryColumn}
+            title="Category"
+            options={categories}
           />
         )}
         {isFiltered && (
@@ -97,7 +91,6 @@ export function StyleTableToolbar({ table }: {
             <X className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
           </Button>
         )}
-        <StyleTableViewOptions table={table} />
       </div>
     </>
   );

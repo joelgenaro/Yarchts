@@ -191,6 +191,13 @@ export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[]
   }));
 };
 
+export const getCategories = (styles: Style[]) => {
+  return styles.map((category) => ({
+    value: category.name,
+    label: category.name,
+  }));
+};
+
 export const getStyleOptions = (styles: Style[], categoryId: number | undefined) => {
   const data = styles.find((category) => category.id === categoryId);
 

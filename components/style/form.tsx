@@ -49,10 +49,6 @@ export function StyleForm() {
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, formState.categoryId);
 
             updateFormState(draft => {
-                draft.style = null;
-                draft.color = null;
-                draft.height = null;
-                draft.length = null;
                 draft.styleOptions = styleOption;
                 draft.colorOptions = colorOption;
                 draft.heightOptions = heightOption;
