@@ -15,6 +15,13 @@
       "when": 1724867437032,
       "tag": "0001_talented_miek",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1725129938541,
+      "tag": "0002_square_umar",
+      "breakpoints": true
     }
   ]
 }

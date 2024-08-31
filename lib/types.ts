@@ -82,5 +82,6 @@ export type FormState = {
     tenthFeetGatePrice: number,
     panelPrice: number,
     postPrice: number,
+    image: string | null | undefined;
 }
 

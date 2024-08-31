@@ -22,7 +22,6 @@ import { Icon } from '@iconify/react';
 import { toast as reToast } from "react-hot-toast";
 import { createStyle, updateStyle } from "@/actions/style";
 import CreatableSelect from 'react-select/creatable';
-import Image from "next/image";
 import avatar from "@/public/images/avatar/user.png";
 import clsx from 'clsx';
 import { useSession } from "next-auth/react";
@@ -30,6 +29,7 @@ import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
 import { useStyleStore } from "@/store/style";
 import { produce } from 'immer';
 import { styleForm } from "@/lib/constants";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function StyleForm() {
     const styles = useStyleStore((state) => state.styles);
@@ -60,6 +60,7 @@ export function StyleForm() {
     useEffect(() => {
         if (selectedStyleId !== 0) {
             const fence = getFence(selectedStyleId, styles)
+            console.log(fence)
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
 
             updateFormState(draft => {
@@ -91,6 +92,7 @@ export function StyleForm() {
                 draft.gothicCapPrice = Number(fence?.gothicCapPrice);
                 draft.newEnglandCapPrice = Number(fence?.newEnglandCapPrice);
                 draft.federationCapPrice = Number(fence?.federationCapPrice);
+                draft.image = fence?.image
             });
         } else {
             setFormState(styleForm)
@@ -99,6 +101,14 @@ export function StyleForm() {
 
     const updateFormState = (recipe: (draft: typeof styleForm) => void) => {
         setFormState((prevState) => produce(prevState, recipe));
+    };
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            updateFormState(draft => { draft.image = imageUrl });
+        }
     };
 
     const handleCreate = (inputValue: string, type: string) => {
@@ -172,7 +182,10 @@ export function StyleForm() {
                                     <div className="grid grid-cols-12 gap-x-[30px] gap-y-4 ">
                                         <div className="flex justify-center col-span-12 lg:col-span-4">
                                             <div className=" w-[124px] h-[124px] relative rounded-full">
-                                                <Image src={avatar} alt="avatar" className="object-cover w-full h-full rounded-full" priority={true} />
+                                                <Avatar className="w-full h-full">
+                                                    <AvatarImage src={formState.image ?? ''} />
+                                                    <AvatarFallback></AvatarFallback>
+                                                </Avatar>
                                                 <Button asChild
                                                     size="icon"
                                                     className="absolute bottom-0 right-0 w-8 h-8 rounded-full cursor-pointer"
@@ -183,7 +196,7 @@ export function StyleForm() {
                                                         <Icon className="w-5 h-5 text-primary-foreground" icon="heroicons:pencil-square" />
                                                     </Label>
                                                 </Button>
-                                                <Input type="file" className="hidden" id="image" name="image" />
+                                                <Input type="file" className="hidden" id="image" name="image" accept="image/*" onChange={handleImageChange} />
                                             </div>
                                         </div>
                                         <div className="col-span-12 lg:col-span-8">
@@ -284,7 +297,27 @@ export function StyleForm() {
                                     </div>
                                 </div>
                                 <div className="block lg:hidden">
+
                                     <div className="flex flex-col gap-4">
+                                        <div className="flex justify-center">
+                                            <div className=" w-[124px] h-[124px] relative rounded-full">
+                                                <Avatar className="w-full h-full">
+                                                    <AvatarImage src={formState.image ?? ''} />
+                                                    <AvatarFallback></AvatarFallback>
+                                                </Avatar>
+                                                <Button asChild
+                                                    size="icon"
+                                                    className="absolute bottom-0 right-0 w-8 h-8 rounded-full cursor-pointer"
+                                                >
+                                                    <Label
+                                                        htmlFor="image"
+                                                    >
+                                                        <Icon className="w-5 h-5 text-primary-foreground" icon="heroicons:pencil-square" />
+                                                    </Label>
+                                                </Button>
+                                                <Input type="file" className="hidden" id="image" name="image" accept="image/*" onChange={handleImageChange} />
+                                            </div>
+                                        </div>
                                         <div>
                                             <Label htmlFor="category">Category Name</Label>
                                             <CreatableSelect

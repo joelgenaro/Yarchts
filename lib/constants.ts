@@ -51,6 +51,7 @@ export const styleForm: FormState = {
     tenthFeetGatePrice: 0,
     panelPrice: 0,
     postPrice: 0,
+    image: '',
 };
 
 export const statuses = [

@@ -9,17 +9,62 @@ import { heights } from '@/db/schemas/heights';
 import { lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
+import { createClient } from '@/config/supabase';
 
 const insertIfNotExists = async (id: number, data: any, table: any) => {
-    if (id === 0) {
-        const result = await db.insert(table).values(data).returning({ insertedId: table.id });
-        return result[0].insertedId;
+    try {
+        if (id === 0) {
+            const result = await db.insert(table).values(data).returning({ insertedId: table.id });
+            return result[0].insertedId;
+        }
+        return id;
+    } catch (error) {
+        throw new Error('Failed to Create Styles.');
     }
-    return id;
+};
+
+export const uploadFile = async (file: File, folder: string) => {
+    try {
+        if (file) {
+            const supabase = createClient();
+
+            await supabase.storage
+                .from('fence')
+                .upload(`${folder}/${file.name}`, file);
+
+            const { data } = await supabase.storage
+                .from('fence')
+                .getPublicUrl(`${folder}/${file.name}`);
+
+            return data.publicUrl
+        }
+        return ''
+    } catch (error) {
+        throw new Error('Failed to Upload Files.');
+    }
+}
+
+export const deleteFile = async (fileUrl: string) => {
+    try {
+        const supabase = createClient();
+        const filePath = fileUrl.match(/\/storage\/v1\/object\/public\/fence\/(.+)/);
+
+        if (filePath && filePath[1]) {
+            await supabase.storage
+                .from('fence')
+                .remove(filePath[1]);
+            return true
+        }
+
+        return false;
+    } catch (error) {
+        throw new Error('Failed to Delete Files.');
+    }
 };
 
 export const createStyle = async (formData: FormData) => {
     try {
+        const image = await uploadFile(formData.get("image") as File, 'styles');
         let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
         let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
         let colorId = await insertIfNotExists(Number(formData.get('colorId')), { name: formData.get('color') as string, categoryId: categoryID }, colors);
@@ -47,6 +92,7 @@ export const createStyle = async (formData: FormData) => {
             gothicCapPrice: formData.get('gothicCapPrice')?.toString(),
             newEnglandCapPrice: formData.get('newEnglandCapPrice')?.toString(),
             federationCapPrice: formData.get('federationCapPrice')?.toString(),
+            image: image
         };
 
         await db.insert(fences).values(newFence);
@@ -60,6 +106,14 @@ export const createStyle = async (formData: FormData) => {
 
 export const updateStyle = async (id: number, formData: FormData) => {
     try {
+        const result = await db.select({
+            imagePath: fences.image,
+        }).from(fences).where(eq(fences.id, id));;
+        const { imagePath } = result[0];
+
+        if (imagePath) await deleteFile(imagePath);
+        const image = await uploadFile(formData.get("image") as File, 'styles');
+
         let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
         let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
         let colorId = await insertIfNotExists(Number(formData.get('colorId')), { name: formData.get('color') as string, categoryId: categoryID }, colors);
@@ -87,6 +141,7 @@ export const updateStyle = async (id: number, formData: FormData) => {
             gothicCapPrice: formData.get('gothicCapPrice')?.toString(),
             newEnglandCapPrice: formData.get('newEnglandCapPrice')?.toString(),
             federationCapPrice: formData.get('federationCapPrice')?.toString(),
+            image: image
         };
 
         await db.update(fences).set(fence).where(eq(fences.id, id));
@@ -119,6 +174,13 @@ export const getStyles = async (userId: number) => {
 
 export const deleteStyle = async (id: number) => {
     try {
+        const result = await db.select({
+            imagePath: fences.image,
+        }).from(fences).where(eq(fences.id, id));;
+        const { imagePath } = result[0];
+
+        if (imagePath) await deleteFile(imagePath);
+
         await db.delete(fences).where(eq(fences.id, id));
         revalidatePath('/en/style');
 
@@ -130,6 +192,15 @@ export const deleteStyle = async (id: number) => {
 
 export const deleteStyles = async (ids: number[]) => {
     try {
+        const result = await db.select({
+            imagePath: fences.image,
+        }).from(fences).where(inArray(fences.id, ids));
+        const images = result.map((item: any) => item.imagePath);
+
+        for (let index = 0; index < images.length; index++) {
+            await deleteFile(images[index])
+        }
+
         await db.delete(fences).where(inArray(fences.id, ids));
         revalidatePath('/en/style');
 

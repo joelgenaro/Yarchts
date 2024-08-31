@@ -30,8 +30,6 @@ export const fences = pgTable('fences', {
     gothicCapPrice: numeric('gothic_cap_price'),
     newEnglandCapPrice: numeric('new_england_cap_price'),
     federationCapPrice: numeric('federation_cap_price'),
-    minProfit: numeric('min_profit'),
-    laborCost: numeric('labor_cost'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()
