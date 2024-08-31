@@ -388,7 +388,7 @@ export function StyleForm() {
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId === 0 ? 'Creating...' : 'Editing...') : (selectedStyleId === 0 ? 'Create Style' : 'Edit Style')}</Button>
+                            <Button disabled={pending} type="submit">{pending ? (selectedStyleId === 0 ? 'Creating...' : 'Saving...') : (selectedStyleId === 0 ? 'Create Style' : 'Save Style')}</Button>
                         </div>
                     </form>
                 </div >
