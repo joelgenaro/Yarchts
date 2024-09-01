@@ -1,15 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { StyleView } from "@/components/style/view";
 import { getStyles } from "@/actions/style";
 import { authOptions } from "@/lib/auth";
 import { getServerSession, NextAuthOptions } from "next-auth";
 import { Style } from "@/lib/interfaces";
 import { UserSession } from "@/lib/interfaces";
+import StyleView from "@/components/style/view";
 
 const StylePage = async () => {
   const session: UserSession = await getServerSession(authOptions as NextAuthOptions) as UserSession;
@@ -17,16 +11,7 @@ const StylePage = async () => {
 
   return (
     <div className="space-y-5">
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Styles</CardTitle>
-        </CardHeader>
-        <CardContent >
-          <StyleView
-            styles={styles}
-          />
-        </CardContent>
-      </Card>
+      <StyleView styles={styles} />
     </div>
   );
 };
