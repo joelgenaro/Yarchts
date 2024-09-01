@@ -4,6 +4,7 @@ import { Style } from "@/lib/interfaces";
 import { categories } from "@/db/schemas/categories";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
 import { StyleTableColumn } from "@/lib/types";
+import { GateSelect } from "@/db/schemas/gates";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -191,6 +192,14 @@ export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[]
   }));
 };
 
+export const getGateOptions = (gates: GateSelect[]): CreatableSelectionOptions[] => {
+  return gates.map((gate) => ({
+    id: gate.id,
+    value: gate.name,
+    label: gate.name,
+  })).sort((a, b) => a.id.localeCompare(b.id));
+};
+
 export const getCategories = (styles: Style[]) => {
   return styles.map((category) => ({
     value: category.name,
@@ -281,3 +290,22 @@ export const getFence = (id: number, styles: Style[]) => {
   }
   return null;
 };
+
+export const getStyleLabor = (id: number | undefined, styles: Style[]) => {
+  for (const style of styles) {
+    const child = style.styles.find(style => style.id === id);
+    if (child) {
+      return child;
+    }
+  }
+};
+
+export const getCategoryById = (id: number | undefined, styles: Style[]) => {
+  return styles.find((style) => style.id === id);
+};
+
+export const getGateById = (id: number | undefined, gates: GateSelect[]) => {
+  return gates.find((gate) => gate.id === id);
+};
+
+

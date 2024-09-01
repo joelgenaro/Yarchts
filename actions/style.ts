@@ -10,7 +10,7 @@ import { lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/config/supabase';
-import { StyleLaborForm } from '@/lib/types';
+import { CategoryRemoval, StyleLaborForm } from '@/lib/types';
 
 const insertIfNotExists = async (id: number, data: any, table: any) => {
     try {
@@ -253,6 +253,20 @@ export const updateStyleLabor = async (data: StyleLaborForm) => {
         return { success: true, message: 'Successfully Updated Style Labor!' };
     } catch (error) {
         return { success: false, message: 'Failed to Update Style Labor.' };
+    }
+};
+
+export const updateCategoryRemoval = async (data: CategoryRemoval) => {
+    try {
+        await db.update(categories)
+            .set({ removalCharge: data?.removalCharge })
+            .where(eq(categories.id, Number(data?.category?.id)))
+
+        revalidatePath('/en/style');
+
+        return { success: true, message: 'Successfully Updated Removal Charge!' };
+    } catch (error) {
+        return { success: false, message: 'Failed to Update Removal Charge.' };
     }
 };
 

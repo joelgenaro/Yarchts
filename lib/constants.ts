@@ -1,5 +1,6 @@
-import { FormState, StyleLaborForm, ValidStylePropNames } from "@/lib/types";
+import { FormState, GateLabor, StyleLaborForm, ValidStylePropNames } from "@/lib/types";
 import { z } from "zod";
+import { CategoryRemoval } from "@/lib/types";
 
 // for style
 export const styleProperties: { label: string, name: ValidStylePropNames }[] = [{ label: '$/Lft Price', name: 'lftPrice' }, { label: '3 Feet Gate Price', name: 'thirdFeetGatePrice' }, { label: '4 Feet Gate Price', name: 'foruthFeetGatePrice' }, { label: '5 Feet Gate Price', name: 'fifthFeetGatePrice' }, { label: '8 Feet Gate Price', name: 'eighthFeetGatePrice' }, { label: '10 Feet Gate Price', name: 'tenthFeetGatePrice' }, { label: 'Panel Price', name: 'panelPrice' }, { label: 'Post Price', name: 'postPrice' }, { label: 'Heavy Duty End Post Price', name: 'heavyDutyEndPostPrice' }, { label: 'End Posts Price', name: 'endPostPrice' }, { label: 'Corner Posts Price', name: 'cornerPostPrice' }, { label: 'Flat Cap Price', name: 'flatCapPrice' }, { label: 'Gothic Cap Price', name: 'gothicCapPrice' }, { label: 'New England Cap Price', name: 'newEnglandCapPrice' }, { label: 'Federation Cap Price', name: 'federationCapPrice' }];
@@ -99,4 +100,14 @@ export const styleLaborForm: StyleLaborForm = {
     styleOptions: [],
     laborPrice: '0',
     minProfit: '0',
+};
+
+export const categoryRemoval: CategoryRemoval = {
+    category: null,
+    removalCharge: '0',
+};
+
+export const gateLabor: GateLabor = {
+    gate: null,
+    laborPrice: '0',
 };

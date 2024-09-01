@@ -10,7 +10,7 @@ import Select from "react-select";
 import { creatableSelectionStyles, styleLaborForm } from "@/lib/constants";
 import { useStyleStore } from "@/store/style";
 import { produce } from 'immer';
-import { getCategoryOptions, getStyleOptions } from "@/lib/utils";
+import { getCategoryOptions, getStyleOptions, getStyleLabor } from "@/lib/utils";
 import { updateStyleLabor } from "@/actions/style";
 import { toast as reToast } from "react-hot-toast";
 
@@ -37,6 +37,17 @@ const StyleLabor = () => {
       });
     }
   }, [formState.category])
+
+  useEffect(() => {
+    if (formState.style) {
+      const style = getStyleLabor(formState.style.id, styles);
+
+      updateFormState(draft => {
+        draft.laborPrice = style?.laborPrice ?? '0';
+        draft.minProfit = style?.minProfit ?? '0';
+      });
+    }
+  }, [formState.style])
 
   const updateFormState = (recipe: (draft: typeof styleLaborForm) => void) => {
     setFormState((prevState) => produce(prevState, recipe));
@@ -85,7 +96,7 @@ const StyleLabor = () => {
           />
         </div>
         <div className="col-span-2 flex flex-col gap-2">
-          <Label htmlFor="styleLabor">Labor Charge per Post (Style)</Label>
+          <Label htmlFor="styleLabor">Labor Charge</Label>
           <InputGroup merged >
             <InputGroupText>
               <Icon icon="mdi:dollar" />
@@ -94,7 +105,7 @@ const StyleLabor = () => {
           </InputGroup>
         </div>
         <div className="col-span-2 flex flex-col gap-2">
-          <Label htmlFor="minProfit">minProfit per Style</Label>
+          <Label htmlFor="minProfit">Minium Profit</Label>
           <InputGroup merged >
             <InputGroupText>
               <Icon icon="mdi:dollar" />

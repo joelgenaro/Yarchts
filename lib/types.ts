@@ -94,5 +94,14 @@ export type StyleLaborForm = {
     minProfit: string,
 }
 
+export type CategoryRemoval = {
+    category: CreatableSelectionOptions | null | undefined;
+    removalCharge: string,
+}
 
+
+export type GateLabor = {
+    gate: CreatableSelectionOptions | null | undefined;
+    laborPrice: string,
+}
 

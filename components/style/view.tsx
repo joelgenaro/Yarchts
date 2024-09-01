@@ -10,12 +10,14 @@ import { Setup } from "./setup";
 import { Labor } from "./labor";
 import { Price } from "./price";
 
-const StyleView = ({ styles }: StyleProps) => {
+const StyleView = ({ styles, gates }: StyleProps) => {
     const setStyles = useStyleStore((state) => state.setStyles);
+    const setGates = useStyleStore((state) => state.setGates);
 
     useEffect(() => {
         setStyles(styles);
-    }, [styles]);
+        setGates(gates)
+    }, [styles, gates]);
 
     return (
         <Card>

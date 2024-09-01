@@ -1,5 +1,7 @@
 import Card from "@/components/ui/card-snippet";
 import StyleLabor from './style-labor'
+import CategoryRemoval from "./category-removal";
+import GateLabor from "./gate-labor";
 
 export function Labor() {
     return (
@@ -8,15 +10,15 @@ export function Labor() {
                 <Card title="Depends on Style - Installation">
                     <StyleLabor />
                 </Card>
-                {/* <Card title="Depends on Category - Removal">
-                    <VFormWithIcon />
+                <Card title="Depends on Category - Removal">
+                    <CategoryRemoval />
                 </Card>
                 <Card title="Depends on Gate - Installation">
-                    <VFormWithIcon />
+                    <GateLabor />
                 </Card>
-                <Card title="Common Settings">
+                {/*<Card title="Common Settings">
                     <VFormWithIcon />
-                </Card> */}
+                </Card>  */}
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ import * as heights from './schemas/heights';
 import * as lengths from './schemas/lengths';
 import * as roles from './schemas/roles';
 import * as styles from './schemas/styles';
+import * as gates from './schemas/gates';
 import * as subscription_items from './schemas/subscription_items';
 import * as subscriptions from './schemas/subscriptions';
 import * as users from './schemas/users';
@@ -15,4 +16,4 @@ import * as fences from './schemas/fences';
 config({ path: '.env' });
 
 export const client = postgres(process.env.DATABASE_URL!);
-export const db = drizzle(client, { schema: { ...categories, ...colors, ...heights, ...lengths, ...roles, ...styles, ...subscription_items, ...subscriptions, ...users, ...fences } });
+export const db = drizzle(client, { schema: { ...categories, ...colors, ...heights, ...lengths, ...roles, ...styles, ...subscription_items, ...subscriptions, ...users, ...fences, ...gates } });

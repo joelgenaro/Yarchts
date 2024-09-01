@@ -26,7 +26,6 @@ import {
 import { StyleTablePagination } from "./pagination";
 import { StyleTableToolbar } from "./toolbar";
 import { columns } from "@/components/style/setup/columns";
-import { StyleProps } from "@/lib/interfaces";
 import { getFences } from "@/lib/utils";
 import { useStyleStore } from "@/store/style";
 import clsx from 'clsx';
