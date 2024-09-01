@@ -8,6 +8,8 @@ export const styles = pgTable('styles', {
     name: text('name').notNull(),
     image: text('image'),
     categoryId: integer('category_id').notNull().references(() => categories.id, { onDelete: 'cascade' }),
+    laborPrice: numeric('labor_price'),
+    minProfit: numeric('min_profit'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
         .notNull()

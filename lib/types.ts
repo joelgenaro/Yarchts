@@ -85,3 +85,14 @@ export type FormState = {
     image: string | null | undefined;
 }
 
+export type StyleLaborForm = {
+    category: CreatableSelectionOptions | null | undefined;
+    categoryOptions: CreatableSelectionOptions[];
+    style: CreatableSelectionOptions | null | undefined;
+    styleOptions: CreatableSelectionOptions[];
+    laborPrice: string,
+    minProfit: string,
+}
+
+
+

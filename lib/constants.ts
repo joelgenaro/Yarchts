@@ -1,4 +1,4 @@
-import { FormState, ValidStylePropNames } from "@/lib/types";
+import { FormState, StyleLaborForm, ValidStylePropNames } from "@/lib/types";
 import { z } from "zod";
 
 // for style
@@ -91,3 +91,12 @@ export const styleSchema = z.object({
     isActive: z.boolean(),
     image: z.string()
 });
+
+export const styleLaborForm: StyleLaborForm = {
+    category: null,
+    categoryOptions: [],
+    style: null,
+    styleOptions: [],
+    laborPrice: '0',
+    minProfit: '0',
+};

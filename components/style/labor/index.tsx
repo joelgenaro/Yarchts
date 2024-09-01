@@ -1,6 +1,24 @@
+import Card from "@/components/ui/card-snippet";
+import StyleLabor from './style-labor'
+
 export function Labor() {
     return (
-        <h1>Labor</h1>
+        <div className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card title="Depends on Style - Installation">
+                    <StyleLabor />
+                </Card>
+                {/* <Card title="Depends on Category - Removal">
+                    <VFormWithIcon />
+                </Card>
+                <Card title="Depends on Gate - Installation">
+                    <VFormWithIcon />
+                </Card>
+                <Card title="Common Settings">
+                    <VFormWithIcon />
+                </Card> */}
+            </div>
+        </div>
     )
 }
 

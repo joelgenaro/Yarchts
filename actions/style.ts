@@ -10,6 +10,7 @@ import { lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/config/supabase';
+import { StyleLaborForm } from '@/lib/types';
 
 const insertIfNotExists = async (id: number, data: any, table: any) => {
     try {
@@ -240,3 +241,18 @@ export const updateStyleState = async (id: number) => {
         return { success: false, message: 'Failed to Update Style.' };
     }
 };
+
+export const updateStyleLabor = async (data: StyleLaborForm) => {
+    try {
+        await db.update(styles)
+            .set({ laborPrice: data?.laborPrice, minProfit: data?.minProfit })
+            .where(eq(styles.id, Number(data?.style?.id)))
+
+        revalidatePath('/en/style');
+
+        return { success: true, message: 'Successfully Updated Style Labor!' };
+    } catch (error) {
+        return { success: false, message: 'Failed to Update Style Labor.' };
+    }
+};
+
