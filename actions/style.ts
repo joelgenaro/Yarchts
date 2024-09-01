@@ -38,7 +38,7 @@ export const uploadFile = async (file: File, folder: string) => {
 
             return data.publicUrl
         }
-        return ''
+        return null
     } catch (error) {
         throw new Error('Failed to Upload Files.');
     }
@@ -64,7 +64,7 @@ export const deleteFile = async (fileUrl: string) => {
 
 export const createStyle = async (formData: FormData) => {
     try {
-        const image = await uploadFile(formData.get("image") as File, 'styles');
+        const image = formData.get("image") ? await uploadFile(formData.get("image") as File, 'styles') : null;
         let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
         let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
         let colorId = await insertIfNotExists(Number(formData.get('colorId')), { name: formData.get('color') as string, categoryId: categoryID }, colors);
@@ -106,13 +106,17 @@ export const createStyle = async (formData: FormData) => {
 
 export const updateStyle = async (id: number, formData: FormData) => {
     try {
-        const result = await db.select({
-            imagePath: fences.image,
-        }).from(fences).where(eq(fences.id, id));;
-        const { imagePath } = result[0];
+        const file = formData.get("image") as File;
+        const image = file.size !== 0 ? await uploadFile(file, 'styles') : null;
 
-        if (imagePath) await deleteFile(imagePath);
-        const image = await uploadFile(formData.get("image") as File, 'styles');
+        if (image) {
+            const result = await db.select({
+                imagePath: fences.image,
+            }).from(fences).where(eq(fences.id, id));;
+            const { imagePath } = result[0];
+
+            if (imagePath) await deleteFile(imagePath);
+        }
 
         let categoryID = await insertIfNotExists(Number(formData.get('categoryId')), { name: formData.get('category') as string, userId: Number(formData.get('userId')) }, categories);
         let styleId = await insertIfNotExists(Number(formData.get('styleId')), { name: formData.get('style') as string, categoryId: categoryID }, styles);
@@ -141,10 +145,21 @@ export const updateStyle = async (id: number, formData: FormData) => {
             gothicCapPrice: formData.get('gothicCapPrice')?.toString(),
             newEnglandCapPrice: formData.get('newEnglandCapPrice')?.toString(),
             federationCapPrice: formData.get('federationCapPrice')?.toString(),
-            image: image
         };
 
-        await db.update(fences).set(fence).where(eq(fences.id, id));
+        let updatedFence: FenceInsert = {
+            categoryId: 0,
+            styleId: 0,
+            heightId: 0,
+            colorId: 0,
+            lengthId: 0,
+        }
+
+        if (image) {
+            updatedFence = { ...fence, image: image }
+        }
+
+        await db.update(fences).set(image ? updatedFence : fence).where(eq(fences.id, id));
         revalidatePath('/en/style');
 
         return { success: true, message: 'Successfully Updated Style.' };

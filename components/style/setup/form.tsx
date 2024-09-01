@@ -60,7 +60,6 @@ export function StyleForm() {
     useEffect(() => {
         if (selectedStyleId !== 0) {
             const fence = getFence(selectedStyleId, styles)
-            console.log(fence)
             const { styleOption, colorOption, heightOption, lengthOption } = getStyleOptions(styles, fence?.categoryId);
 
             updateFormState(draft => {
