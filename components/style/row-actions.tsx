@@ -11,11 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import clsx from 'clsx';
-import { taskSchema } from "./data/schema";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import { deleteStyle, updateStyleState } from '@/actions/style'
 import { toast as reToast } from "react-hot-toast";
 import { useStyleStore } from "@/store/style";
+import { styleSchema } from "@/lib/constants";
 
 interface StyleTableRowActionsProps {
   row: Row<any>;
@@ -24,7 +24,7 @@ interface StyleTableRowActionsProps {
 export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const task = taskSchema.parse(row.original);
+  const style = styleSchema.parse(row.original);
   const setIsFormOpen = useStyleStore((state) => state.setIsFormOpen);
   const setSelectedStyleId = useStyleStore((state) => state.setSelectedStyleId);
 
@@ -57,7 +57,7 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
       <DeleteConfirmationDialog
         open={open}
         onClose={() => setOpen(false)}
-        onConfirm={() => onDeleteAction(task?.id)}
+        onConfirm={() => onDeleteAction(style?.id)}
         defaultToast={false}
       />
       <DropdownMenu>
@@ -76,8 +76,8 @@ export function StyleTableRowActions({ row }: StyleTableRowActionsProps) {
               'pointer-events-none': isPending === true,
               'cursor-pointer': isPending === false,
             },
-          )} onClick={() => updateState(task?.id)}> {task?.isActive ? 'Deactivate' : 'Active'}</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => (setIsFormOpen(true), setSelectedStyleId(task?.id))}>Edit</DropdownMenuItem>
+          )} onClick={() => updateState(style?.id)}> {style?.isActive ? 'Deactivate' : 'Active'}</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => (setIsFormOpen(true), setSelectedStyleId(style?.id))}>Edit</DropdownMenuItem>
           <DropdownMenuItem className={clsx(
             {
               'pointer-events-none': isPending === true,
