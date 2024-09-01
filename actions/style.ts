@@ -52,7 +52,7 @@ export const deleteFile = async (fileUrl: string) => {
         if (filePath && filePath[1]) {
             await supabase.storage
                 .from('fence')
-                .remove(filePath[1]);
+                .remove([filePath[1]]);
             return true
         }
 
