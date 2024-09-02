@@ -2,6 +2,7 @@ import Card from "@/components/ui/card-snippet";
 import StyleLabor from './style-labor'
 import CategoryRemoval from "./category-removal";
 import GateLabor from "./gate-labor";
+import CommonSettings from "./common-settings";
 
 export function Labor() {
     return (
@@ -16,9 +17,9 @@ export function Labor() {
                 <Card title="Depends on Gate - Installation">
                     <GateLabor />
                 </Card>
-                {/*<Card title="Common Settings">
-                    <VFormWithIcon />
-                </Card>  */}
+                <Card title="Common Settings">
+                    <CommonSettings />
+                </Card>
             </div>
         </div>
     )

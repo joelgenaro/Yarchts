@@ -99,9 +99,13 @@ export type CategoryRemoval = {
     removalCharge: string,
 }
 
-
 export type GateLabor = {
     gate: CreatableSelectionOptions | null | undefined;
     laborPrice: string,
+}
+
+export type UserProfit = {
+    minProfit: string,
+    holePrice: string
 }
 

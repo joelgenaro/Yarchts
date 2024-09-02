@@ -7,6 +7,7 @@ import { LengthSelect } from '@/db/schemas/lengths';
 import { FenceSelect } from '@/db/schemas/fences';
 import { Session } from "next-auth";
 import { GateSelect } from '@/db/schemas/gates';
+import { UserProfit } from './types';
 
 // for calendar
 export interface CalendarEvent {
@@ -57,6 +58,7 @@ export interface Style extends CategorySelect {
 export interface StyleProps {
   styles: Style[];
   gates: GateSelect[];
+  userProfit: UserProfit
 }
 
 export interface UserSession extends Session {

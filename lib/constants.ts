@@ -1,4 +1,4 @@
-import { FormState, GateLabor, StyleLaborForm, ValidStylePropNames } from "@/lib/types";
+import { FormState, GateLabor, StyleLaborForm, UserProfit, ValidStylePropNames } from "@/lib/types";
 import { z } from "zod";
 import { CategoryRemoval } from "@/lib/types";
 
@@ -110,4 +110,9 @@ export const categoryRemoval: CategoryRemoval = {
 export const gateLabor: GateLabor = {
     gate: null,
     laborPrice: '0',
+};
+
+export const userProfit: UserProfit = {
+    minProfit: '0',
+    holePrice: '0',
 };

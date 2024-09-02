@@ -193,11 +193,13 @@ export const getCategoryOptions = (styles: Style[]): CreatableSelectionOptions[]
 };
 
 export const getGateOptions = (gates: GateSelect[]): CreatableSelectionOptions[] => {
-  return gates.map((gate) => ({
-    id: gate.id,
-    value: gate.name,
-    label: gate.name,
-  })).sort((a, b) => a.id.localeCompare(b.id));
+  return gates
+    .sort((a, b) => a.id - b.id)
+    .map((gate) => ({
+      id: gate.id,
+      value: gate.name,
+      label: gate.name,
+    }));
 };
 
 export const getCategories = (styles: Style[]) => {
