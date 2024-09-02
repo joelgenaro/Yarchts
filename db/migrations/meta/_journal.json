@@ -36,6 +36,13 @@
       "when": 1725212844051,
       "tag": "0004_nappy_lady_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1725259847942,
+      "tag": "0005_thin_nick_fury",
+      "breakpoints": true
     }
   ]
 }
