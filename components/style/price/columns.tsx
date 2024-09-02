@@ -159,7 +159,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("thirdFeetGatePrice")}
+                {row.getValue("ourThirdFeetGatePrice")}
               </span>
             </div>
           );
@@ -175,7 +175,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("foruthFeetGatePrice")}
+                {row.getValue("ourForuthFeetGatePrice")}
               </span>
             </div>
           );
@@ -191,7 +191,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("fifthFeetGatePrice")}
+                {row.getValue("ourFifthFeetGatePrice")}
               </span>
             </div>
           );
@@ -207,7 +207,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("eighthFeetGatePrice")}
+                {row.getValue("ourEighthFeetGatePrice")}
               </span>
             </div>
           );
@@ -223,7 +223,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("tenthFeetGatePrice")}
+                {row.getValue("ourTenthFeetGatePrice")}
               </span>
             </div>
           );
@@ -239,7 +239,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("panelPrice")}
+                {row.getValue("ourPanelPrice")}
               </span>
             </div>
           );
@@ -255,7 +255,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("lftPrice")}
+                {row.getValue("ourLftPrice")}
               </span>
             </div>
           );
@@ -271,7 +271,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("postPrice")}
+                {row.getValue("ourPostPrice")}
               </span>
             </div>
           );
@@ -287,7 +287,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("heavyDutyEndPostPrice")}
+                {row.getValue("ourHeavyDutyEndPostPrice")}
               </span>
             </div>
           );
@@ -303,7 +303,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("endPostPrice")}
+                {row.getValue("ourEndPostPrice")}
               </span>
             </div>
           );
@@ -319,7 +319,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("cornerPostPrice")}
+                {row.getValue("ourCornerPostPrice")}
               </span>
             </div>
           );
@@ -335,7 +335,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("flatCapPrice")}
+                {row.getValue("ourFlatCapPrice")}
               </span>
             </div>
           );
@@ -351,7 +351,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("gothicCapPrice")}
+                {row.getValue("ourGothicCapPrice")}
               </span>
             </div>
           );
@@ -367,7 +367,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("newEnglandCapPrice")}
+                {row.getValue("ourNewEnglandCapPrice")}
               </span>
             </div>
           );
@@ -383,7 +383,7 @@ export const columns: ColumnDef<OurStyleTableColumn>[] = [
           return (
             <div className="flex gap-2">
               <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("federationCapPrice")}
+                {row.getValue("ourFederationCapPrice")}
               </span>
             </div>
           );
