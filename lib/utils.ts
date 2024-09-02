@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { Style } from "@/lib/interfaces";
 import { categories } from "@/db/schemas/categories";
 import { CreatableSelectionOptions } from "@/lib/interfaces";
-import { StyleTableColumn } from "@/lib/types";
+import { OurStyleTableColumn, StyleTableColumn } from "@/lib/types";
 import { GateSelect } from "@/db/schemas/gates";
 
 export function cn(...inputs: ClassValue[]) {
@@ -264,6 +264,51 @@ export const getFences = (styles: Style[]): StyleTableColumn[] => {
         gothicCapPrice: fence.gothicCapPrice?.toString() ?? '',
         newEnglandCapPrice: fence.newEnglandCapPrice?.toString() ?? '',
         federationCapPrice: fence.federationCapPrice?.toString() ?? '',
+        image: fence.image ?? '',
+        isActive: fence.isActive ?? false,
+      };
+    });
+  });
+
+  fences.sort((a, b) => {
+    if (a.category < b.category) return -1;
+    if (a.category > b.category) return 1;
+    if ((a.style || '').localeCompare(b.style || '')) return (a.style || '').localeCompare(b.style || '');
+    if ((a.height || '').localeCompare(b.height || '')) return (a.height || '').localeCompare(b.height || '');
+    if ((a.color || '').localeCompare(b.color || '')) return (a.color || '').localeCompare(b.color || '');
+    if ((a.length || '').localeCompare(b.length || '')) return (a.length || '').localeCompare(b.length || '');
+    return 0;
+  });
+
+  return fences;
+};
+
+
+export const getOurFences = (styles: Style[]): OurStyleTableColumn[] => {
+  let fences = styles.flatMap((style) => {
+    return style.fences.map((fence) => {
+      return {
+        id: fence.id,
+        category: style.name,
+        style: style.styles.find((s) => s.id === fence.styleId)?.name ?? '',
+        height: style.heights.find((h) => h.id === fence.heightId)?.name ?? '',
+        color: style.colors.find((c) => c.id === fence.colorId)?.name ?? '',
+        length: style.lengths.find((l) => l.id === fence.lengthId)?.name ?? '',
+        ourPanelPrice: fence.ourPanelPrice?.toString() ?? '',
+        ourPostPrice: fence.ourPostPrice?.toString() ?? '',
+        ourLftPrice: fence.ourLftPrice?.toString() ?? '',
+        ourThirdFeetGatePrice: fence.ourThirdFeetGatePrice?.toString() ?? '',
+        ourForuthFeetGatePrice: fence.ourForuthFeetGatePrice?.toString() ?? '',
+        ourFifthFeetGatePrice: fence.ourFifthFeetGatePrice?.toString() ?? '',
+        ourEighthFeetGatePrice: fence.ourEighthFeetGatePrice?.toString() ?? '',
+        ourTenthFeetGatePrice: fence.ourTenthFeetGatePrice?.toString() ?? '',
+        ourHeavyDutyEndPostPrice: fence.ourHeavyDutyEndPostPrice?.toString() ?? '',
+        ourEndPostPrice: fence.ourEndPostPrice?.toString() ?? '',
+        ourCornerPostPrice: fence.ourCornerPostPrice?.toString() ?? '',
+        ourFlatCapPrice: fence.ourFlatCapPrice?.toString() ?? '',
+        ourGothicCapPrice: fence.ourGothicCapPrice?.toString() ?? '',
+        ourNewEnglandCapPrice: fence.ourNewEnglandCapPrice?.toString() ?? '',
+        ourFederationCapPrice: fence.ourFederationCapPrice?.toString() ?? '',
         image: fence.image ?? '',
         isActive: fence.isActive ?? false,
       };

@@ -26,6 +26,9 @@ export type CompanyData = {
 // for style
 export type ValidStylePropNames = 'heavyDutyEndPostPrice' | 'cornerPostPrice' | 'endPostPrice' | 'flatCapPrice' | 'gothicCapPrice' | 'newEnglandCapPrice' | 'federationCapPrice' | 'lftPrice' | 'thirdFeetGatePrice' | 'foruthFeetGatePrice' | 'fifthFeetGatePrice' | 'eighthFeetGatePrice' | 'tenthFeetGatePrice' | 'panelPrice' | 'postPrice';
 
+
+export type ourStyleFormValidStylePropNames = 'ourHeavyDutyEndPostPrice' | 'ourCornerPostPrice' | 'ourEndPostPrice' | 'ourFlatCapPrice' | 'ourGothicCapPrice' | 'ourNewEnglandCapPrice' | 'ourFederationCapPrice' | 'ourLftPrice' | 'ourThirdFeetGatePrice' | 'ourForuthFeetGatePrice' | 'ourFifthFeetGatePrice' | 'ourEighthFeetGatePrice' | 'ourTenthFeetGatePrice' | 'ourPanelPrice' | 'ourPostPrice';
+
 export type StyleTableColumn = {
     id: number;
     category: string;
@@ -48,6 +51,33 @@ export type StyleTableColumn = {
     gothicCapPrice: string | null;
     newEnglandCapPrice: string | null;
     federationCapPrice: string | null;
+    image: string | null;
+    isActive: boolean;
+};
+
+
+export type OurStyleTableColumn = {
+    id: number;
+    category: string;
+    style: string;
+    height: string;
+    color: string;
+    length: string;
+    ourPanelPrice: string | null;
+    ourPostPrice: string | null;
+    ourLftPrice: string | null;
+    ourThirdFeetGatePrice: string | null;
+    ourForuthFeetGatePrice: string | null;
+    ourFifthFeetGatePrice: string | null;
+    ourEighthFeetGatePrice: string | null;
+    ourTenthFeetGatePrice: string | null;
+    ourHeavyDutyEndPostPrice: string | null;
+    ourEndPostPrice: string | null;
+    ourCornerPostPrice: string | null;
+    ourFlatCapPrice: string | null;
+    ourGothicCapPrice: string | null;
+    ourNewEnglandCapPrice: string | null;
+    ourFederationCapPrice: string | null;
     image: string | null;
     isActive: boolean;
 };
@@ -109,3 +139,27 @@ export type UserProfit = {
     holePrice: string
 }
 
+export type OurStyleFormState = {
+    id: number | null | undefined;
+    category: string | null | undefined;
+    style: string | null | undefined;
+    height: string | null | undefined;
+    color: string | null | undefined;
+    length: string | null | undefined;
+    ourHeavyDutyEndPostPrice: number,
+    ourCornerPostPrice: number,
+    ourEndPostPrice: number,
+    ourFlatCapPrice: number,
+    ourGothicCapPrice: number,
+    ourNewEnglandCapPrice: number,
+    ourFederationCapPrice: number,
+    ourLftPrice: number,
+    ourThirdFeetGatePrice: number,
+    ourForuthFeetGatePrice: number,
+    ourFifthFeetGatePrice: number,
+    ourEighthFeetGatePrice: number,
+    ourTenthFeetGatePrice: number,
+    ourPanelPrice: number,
+    ourPostPrice: number,
+    image: string | null | undefined
+}

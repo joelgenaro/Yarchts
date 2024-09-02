@@ -9,7 +9,9 @@ type State = {
     gates: GateSelect[],
     userProfit: UserProfit,
     isFormOpen: boolean;
+    isOurFormOpen: boolean;
     selectedStyleId: number;
+    selectedOurStyleId: number;
 }
 
 type Action = {
@@ -17,7 +19,9 @@ type Action = {
     setGates: (Gates: GateSelect[]) => void;
     setUserProfit: (userProfit: UserProfit) => void;
     setIsFormOpen: (isFormOpen: boolean) => void;
+    setIsOurFormOpen: (isOurFormOpen: boolean) => void;
     setSelectedStyleId: (selectedStyleId: number) => void;
+    setSelectedOurStyleId: (selectedOurStyleId: number) => void;
 }
 
 export const useStyleStore = create<State & Action>((set) => ({
@@ -33,8 +37,16 @@ export const useStyleStore = create<State & Action>((set) => ({
     setIsFormOpen(isFormOpen) {
         set(() => ({ isFormOpen }))
     },
+    isOurFormOpen: false,
+    setIsOurFormOpen(isOurFormOpen) {
+        set(() => ({ isOurFormOpen }))
+    },
     selectedStyleId: 0,
     setSelectedStyleId(selectedStyleId) {
         set(() => ({ selectedStyleId }))
+    },
+    selectedOurStyleId: 0,
+    setSelectedOurStyleId(selectedOurStyleId) {
+        set(() => ({ selectedOurStyleId }))
     }
 }))

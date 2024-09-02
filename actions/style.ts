@@ -10,7 +10,7 @@ import { lengths } from '@/db/schemas/lengths';
 import { FenceInsert, fences } from '@/db/schemas/fences';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/config/supabase';
-import { CategoryRemoval, StyleLaborForm } from '@/lib/types';
+import { CategoryRemoval, OurStyleFormState, StyleLaborForm } from '@/lib/types';
 
 const insertIfNotExists = async (id: number, data: any, table: any) => {
     try {
@@ -93,6 +93,21 @@ export const createStyle = async (formData: FormData) => {
             gothicCapPrice: formData.get('gothicCapPrice')?.toString(),
             newEnglandCapPrice: formData.get('newEnglandCapPrice')?.toString(),
             federationCapPrice: formData.get('federationCapPrice')?.toString(),
+            ourPanelPrice: formData.get('panelPrice')?.toString(),
+            ourPostPrice: formData.get('postPrice')?.toString(),
+            ourLftPrice: formData.get('lftPrice')?.toString(),
+            ourThirdFeetGatePrice: formData.get('thirdFeetGatePrice')?.toString(),
+            ourForuthFeetGatePrice: formData.get('foruthFeetGatePrice')?.toString(),
+            ourFifthFeetGatePrice: formData.get('fifthFeetGatePrice')?.toString(),
+            ourEighthFeetGatePrice: formData.get('eighthFeetGatePrice')?.toString(),
+            ourTenthFeetGatePrice: formData.get('tenthFeetGatePrice')?.toString(),
+            ourHeavyDutyEndPostPrice: formData.get('heavyDutyEndPostPrice')?.toString(),
+            ourEndPostPrice: formData.get('endPostPrice')?.toString(),
+            ourCornerPostPrice: formData.get('cornerPostPrice')?.toString(),
+            ourFlatCapPrice: formData.get('flatCapPrice')?.toString(),
+            ourGothicCapPrice: formData.get('gothicCapPrice')?.toString(),
+            ourNewEnglandCapPrice: formData.get('newEnglandCapPrice')?.toString(),
+            ourFederationCapPrice: formData.get('federationCapPrice')?.toString(),
             image: image
         };
 
@@ -270,3 +285,32 @@ export const updateCategoryRemoval = async (data: CategoryRemoval) => {
     }
 };
 
+
+export const updateOurPrice = async (data: OurStyleFormState) => {
+    try {
+        const fence = {
+            ourPanelPrice: data?.ourPanelPrice.toString(),
+            ourPostPrice: data?.ourPostPrice.toString(),
+            ourLftPrice: data?.ourLftPrice.toString(),
+            ourThirdFeetGatePrice: data?.ourThirdFeetGatePrice.toString(),
+            ourForuthFeetGatePrice: data?.ourForuthFeetGatePrice.toString(),
+            ourFifthFeetGatePrice: data?.ourFifthFeetGatePrice.toString(),
+            ourEighthFeetGatePrice: data?.ourEighthFeetGatePrice.toString(),
+            ourTenthFeetGatePrice: data?.ourTenthFeetGatePrice.toString(),
+            ourHeavyDutyEndPostPrice: data?.ourHeavyDutyEndPostPrice.toString(),
+            ourEndPostPrice: data?.ourEndPostPrice.toString(),
+            ourCornerPostPrice: data?.ourCornerPostPrice.toString(),
+            ourFlatCapPrice: data?.ourFlatCapPrice.toString(),
+            ourGothicCapPrice: data?.ourGothicCapPrice.toString(),
+            ourNewEnglandCapPrice: data?.ourNewEnglandCapPrice.toString(),
+            ourFederationCapPrice: data?.ourFederationCapPrice.toString(),
+        };
+
+        await db.update(fences).set(fence).where(eq(fences.id, Number(data?.id)));
+        revalidatePath('/en/style');
+
+        return { success: true, message: 'Successfully Updated Our Price.' };
+    } catch (error) {
+        return { success: false, message: 'Failed to Update Our Price.' };
+    }
+};
